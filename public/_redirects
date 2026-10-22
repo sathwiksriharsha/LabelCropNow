@@ -1,2 +1,3 @@
-# Clean canonical redirects if any
-https://shiplabelkit.com/* https://shiplabelkit.pages.dev/:splat 301!
+https://labelcropnow.com/* https://labelcropnow.pages.dev/:splat 301!
+https://shiplabelkit.com/* https://labelcropnow.pages.dev/:splat 301!
+https://shiplabelkit.pages.dev/* https://labelcropnow.pages.dev/:splat 301!

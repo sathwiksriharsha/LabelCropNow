@@ -16,7 +16,7 @@ import {
 import { cropPdfLabels, DIMENSIONS } from '../utils/pdfCropEngine.js';
 import { parseZpl, zplToPdf, SAMPLE_ZPL } from '../utils/zplEngine.js';
 
-describe('ShipLabelKit Core Engines', () => {
+describe('LabelCropNow Core Engines', () => {
   it('generates multi-page synthetic sample PDFs in memory', async () => {
     // Meesho 6-page sample
     const meeshoBytes = await generateMeeshoSamplePdf();

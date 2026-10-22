@@ -435,7 +435,7 @@ export const US_MARKETPLACE_TOOLS: ToolPreset[] = [
     faq: [
       {
         q: 'How does Amazon FBA 2-up splitting work?',
-        a: 'When you upload an FBA box label PDF, ShipLabelKit extracts the FBA Box ID label and the UPS/FedEx shipping label from each 8.5x11 sheet, creating two 4x6 thermal pages per original page.'
+        a: 'When you upload an FBA box label PDF, LabelCropNow extracts the FBA Box ID label and the UPS/FedEx shipping label from each 8.5x11 sheet, creating two 4x6 thermal pages per original page.'
       }
     ]
   },
@@ -556,7 +556,7 @@ export const US_MARKETPLACE_TOOLS: ToolPreset[] = [
     couriers: ['USPS Priority Mail'],
     paperSaverTip: 'Converts default letter-size Poshmark labels to 4x6 rolls so you never have to tape paper to boxes.',
     features: ['Thermal roll sizing', 'Sharp USPS Priority barcode', '1-click preview'],
-    faq: [{ q: 'Do I need to change my Poshmark shipping settings?', a: 'No, even if you downloaded the standard 8.5x11 PDF, ShipLabelKit crops it to 4x6 instantly.' }]
+    faq: [{ q: 'Do I need to change my Poshmark shipping settings?', a: 'No, even if you downloaded the standard 8.5x11 PDF, LabelCropNow crops it to 4x6 instantly.' }]
   },
   {
     slug: 'etsy-shipping-label-cropper',
@@ -760,7 +760,7 @@ export const US_MARKETPLACE_TOOLS: ToolPreset[] = [
     couriers: ['Rollo Compatible With All Couriers'],
     paperSaverTip: 'Direct 288x432 pt sizing means you never have to adjust margin or scaling settings in Rollo print dialogs.',
     features: ['Exact Rollo 4x6 page-box geometry', 'Instant optical barcode readability', 'Interactive crop slider preview'],
-    faq: [{ q: 'Why do my labels print blurry on Rollo?', a: 'Screenshots or rasterized PDFs blur thermal barcodes. ShipLabelKit preserves vector paths so Rollo prints at maximum 203 DPI sharpness.' }]
+    faq: [{ q: 'Why do my labels print blurry on Rollo?', a: 'Screenshots or rasterized PDFs blur thermal barcodes. LabelCropNow preserves vector paths so Rollo prints at maximum 203 DPI sharpness.' }]
   },
   {
     slug: 'zebra-printer-4x6-pdf-converter',
@@ -777,7 +777,7 @@ export const US_MARKETPLACE_TOOLS: ToolPreset[] = [
     couriers: ['Zebra Compatible With All Couriers'],
     paperSaverTip: 'Perfect 4x6 page boxes prevent Zebra printers from feeding extra blank labels.',
     features: ['Prevents Zebra blank label skipping', 'Vector barcode preservation', 'Offline browser execution'],
-    faq: [{ q: 'How do I stop Zebra from skipping a blank label?', a: 'Setting the exact 288x432 pt page size with ShipLabelKit eliminates blank label skips caused by oversized PDF margins.' }]
+    faq: [{ q: 'How do I stop Zebra from skipping a blank label?', a: 'Setting the exact 288x432 pt page size with LabelCropNow eliminates blank label skips caused by oversized PDF margins.' }]
   },
   {
     slug: 'dymo-4xl-label-cropper',
@@ -1030,7 +1030,7 @@ export const CORE_TOOLS: ToolPreset[] = [
     category: 'core',
     targetKeyword: 'supported marketplaces thermal label',
     metaTitle: 'Supported Marketplaces & Printers: Meesho, Flipkart, Amazon, USPS, Rollo, Zebra',
-    metaDescription: 'Complete directory of 40+ supported Indian and US e-commerce platforms, couriers, and thermal printer hardware compatible with ShipLabelKit.',
+    metaDescription: 'Complete directory of 40+ supported Indian and US e-commerce platforms, couriers, and thermal printer hardware compatible with LabelCropNow.',
     h1: 'Supported E-Commerce Marketplaces, Couriers & Printers',
     tagline: 'Comprehensive compatibility guide for 40+ global platforms and thermal label printers.',
     defaultMode: 'thermal4x6',
@@ -1042,20 +1042,20 @@ export const CORE_TOOLS: ToolPreset[] = [
   },
   {
     slug: 'about',
-    name: 'About ShipLabelKit & Privacy Architecture',
+    name: 'About LabelCropNow & Privacy Architecture',
     shortName: 'About',
     category: 'core',
-    targetKeyword: 'about shiplabelkit',
-    metaTitle: 'About ShipLabelKit: 100% Client-Side E-Commerce Shipping Architecture',
-    metaDescription: 'Learn why ShipLabelKit was built with 100% browser RAM processing. Zero server uploads, zero data storage, ₹0 cost for sellers.',
-    h1: 'About ShipLabelKit: Privacy-First Warehouse Utility',
+    targetKeyword: 'about labelcropnow',
+    metaTitle: 'About LabelCropNow: 100% Client-Side E-Commerce Shipping Architecture',
+    metaDescription: 'Learn why LabelCropNow was built with 100% browser RAM processing. Zero server uploads, zero data storage, ₹0 cost for sellers.',
+    h1: 'About LabelCropNow: Privacy-First Warehouse Utility',
     tagline: 'Engineered for independent marketplace sellers who demand speed, razor-sharp barcodes, and absolute data privacy.',
     defaultMode: 'thermal4x6',
     defaultCrop: { topPercent: 0, bottomPercent: 0, leftPercent: 0, rightPercent: 0 },
     couriers: ['Privacy Guaranteed'],
     paperSaverTip: 'No subscription fees, no per-page charges, no watermarks, and no data tracking.',
     features: ['Zero server-side execution', 'Zero tracking of customer addresses', 'Blazing-fast WebAssembly & vector engines'],
-    faq: [{ q: 'How does ShipLabelKit make money?', a: 'ShipLabelKit is a free community engineering project hosted statically on Cloudflare Pages.' }]
+    faq: [{ q: 'How does LabelCropNow make money?', a: 'LabelCropNow is a free community engineering project hosted statically on Cloudflare Pages.' }]
   }
 ];
 

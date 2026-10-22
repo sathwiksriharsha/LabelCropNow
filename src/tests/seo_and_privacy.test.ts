@@ -2,8 +2,9 @@ import { describe, it, expect } from 'vitest';
 import fs from 'node:fs';
 import path from 'node:path';
 
-describe('ShipLabelKit SEO, Sitemap, Static Assets & Privacy Invariants', () => {
+describe('LabelCropNow SEO, Canonical Domain, Sitemap & Privacy Invariants', () => {
   const distDir = path.resolve('dist');
+  const CANONICAL_ORIGIN = 'https://labelcropnow.pages.dev';
 
   it('verifies critical Cloudflare Pages and SEO static files exist in dist', () => {
     const requiredFiles = [
@@ -22,31 +23,40 @@ describe('ShipLabelKit SEO, Sitemap, Static Assets & Privacy Invariants', () => 
     }
   });
 
-  it('verifies sitemaps reference canonical host https://labelcropnow.pages.dev', () => {
+  it('verifies sitemaps strictly reference canonical host https://labelcropnow.pages.dev', () => {
     const sitemap0Path = path.join(distDir, 'sitemap-0.xml');
     const sitemapIndex = path.join(distDir, 'sitemap-index.xml');
 
     const sitemap0Content = fs.readFileSync(sitemap0Path, 'utf-8');
     const indexContent = fs.readFileSync(sitemapIndex, 'utf-8');
 
-    expect(sitemap0Content).toMatch(/https:\/\/(labelcropnow|shiplabelkit)\.pages\.dev/);
-    expect(indexContent).toMatch(/https:\/\/(labelcropnow|shiplabelkit)\.pages\.dev/);
+    expect(sitemap0Content).toContain(CANONICAL_ORIGIN);
+    expect(indexContent).toContain(CANONICAL_ORIGIN);
+    expect(sitemap0Content).not.toContain('shiplabelkit');
+    expect(indexContent).not.toContain('shiplabelkit');
 
     // Verify key high-value route URLs are indexed
     expect(sitemap0Content).toContain('/crop/meesho');
     expect(sitemap0Content).toContain('/crop/flipkart');
+    expect(sitemap0Content).toContain('/shopify-calculator');
+    expect(sitemap0Content).toContain('/low-shipping');
+    expect(sitemap0Content).toContain('/barcode-generator');
+    expect(sitemap0Content).toContain('/image-compressor');
+    expect(sitemap0Content).toContain('/image-converter');
+    expect(sitemap0Content).toContain('/whatsapp');
     expect(sitemap0Content).toContain('/us/amazon-fba-8-5x11-to-4x6');
     expect(sitemap0Content).toContain('/zpl-to-pdf-converter');
     expect(sitemap0Content).toContain('/a4-4-labels-per-page-converter');
   });
 
-  it('verifies robots.txt points to sitemap-index.xml', () => {
+  it('verifies robots.txt strictly points to sitemap-index.xml on https://labelcropnow.pages.dev', () => {
     const robotsContent = fs.readFileSync(path.join(distDir, 'robots.txt'), 'utf-8');
-    expect(robotsContent).toMatch(/Sitemap: https:\/\/(labelcropnow|shiplabelkit)\.pages\.dev\/sitemap-index\.xml/);
+    expect(robotsContent).toContain(`Sitemap: ${CANONICAL_ORIGIN}/sitemap-index.xml`);
+    expect(robotsContent).not.toContain('shiplabelkit');
     expect(robotsContent).toContain('Allow: /');
   });
 
-  it('verifies zero literal dots in any route directory slug', () => {
+  it('verifies zero literal dots in any route directory slug in dist', () => {
     function checkDirSlugs(dir: string) {
       const entries = fs.readdirSync(dir, { withFileTypes: true });
       for (const ent of entries) {
@@ -61,7 +71,7 @@ describe('ShipLabelKit SEO, Sitemap, Static Assets & Privacy Invariants', () => 
     checkDirSlugs(distDir);
   });
 
-  it('verifies unique title and meta description across all built HTML pages', () => {
+  it('verifies canonical tags, OG URLs, and JSON-LD schemas use https://labelcropnow.pages.dev across all built HTML pages', () => {
     const htmlFiles: string[] = [];
 
     function collectHtmlFiles(dir: string) {
@@ -77,7 +87,7 @@ describe('ShipLabelKit SEO, Sitemap, Static Assets & Privacy Invariants', () => 
     }
 
     collectHtmlFiles(distDir);
-    expect(htmlFiles.length).toBeGreaterThanOrEqual(50);
+    expect(htmlFiles.length).toBeGreaterThanOrEqual(60);
 
     const titleSet = new Set<string>();
     const descSet = new Set<string>();
@@ -101,10 +111,23 @@ describe('ShipLabelKit SEO, Sitemap, Static Assets & Privacy Invariants', () => 
       expect(descSet.has(desc), `Duplicate <meta name="description"> found in ${file}`).toBe(false);
       descSet.add(desc);
 
-      // Extract canonical URL
+      // Extract canonical URL: must start strictly with https://labelcropnow.pages.dev
       const canonMatch = html.match(/<link\s+rel=["']canonical["']\s+href=["']([^"']+)["']/i);
       expect(canonMatch, `Missing canonical link in ${file}`).toBeTruthy();
-      expect(canonMatch![1]).toMatch(/https:\/\/(labelcropnow|shiplabelkit)\.pages\.dev/);
+      expect(canonMatch![1].startsWith(CANONICAL_ORIGIN), `Canonical tag ${canonMatch![1]} does not start with ${CANONICAL_ORIGIN} in ${file}`).toBe(true);
+      expect(canonMatch![1]).not.toContain('shiplabelkit');
+
+      // Extract OpenGraph URL: must start strictly with https://labelcropnow.pages.dev
+      const ogUrlMatch = html.match(/<meta\s+property=["']og:url["']\s+content=["']([^"']+)["']/i);
+      if (ogUrlMatch) {
+        expect(ogUrlMatch[1].startsWith(CANONICAL_ORIGIN), `og:url ${ogUrlMatch[1]} does not start with ${CANONICAL_ORIGIN} in ${file}`).toBe(true);
+      }
+
+      // JSON-LD validation: schemas should reference LabelCropNow and CANONICAL_ORIGIN
+      const jsonLdMatches = [...html.matchAll(/<script\s+type=["']application\/ld\+json["']>([\s\S]*?)<\/script>/gi)];
+      for (const jm of jsonLdMatches) {
+        expect(jm[1]).not.toContain('shiplabelkit');
+      }
 
       // Verify privacy guarantee: zero external analytics or tracking URLs
       expect(html).not.toContain('google-analytics.com');
@@ -113,7 +136,7 @@ describe('ShipLabelKit SEO, Sitemap, Static Assets & Privacy Invariants', () => 
     }
   });
 
-  it('verifies internal links in built HTML files resolve to existing pages', () => {
+  it('verifies internal links in built HTML files resolve to existing pages with 0 broken links', () => {
     const htmlFiles: string[] = [];
 
     function collectHtmlFiles(dir: string) {

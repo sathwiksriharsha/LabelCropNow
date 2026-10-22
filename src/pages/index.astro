@@ -7,24 +7,24 @@ import { siteConfig } from '../config/site.js';
 
 const homeFaq = [
   {
-    q: 'How does ShipLabelKit protect seller privacy and customer data?',
-    a: 'ShipLabelKit is engineered with a 100% client-side architecture. When you drop a PDF into the tool, all parsing, vector cropping, SKU sorting, and page re-arrangements happen directly inside your web browser’s memory (RAM). No files, customer names, addresses, phone numbers, or GSTINs are ever transmitted to any server.'
+    q: 'How does LabelCropNow protect seller privacy and customer data?',
+    a: 'LabelCropNow is engineered with a 100% client-side architecture. When you drop a PDF into the tool, all parsing, vector cropping, SKU sorting, and page re-arrangements happen directly inside your web browser’s memory (RAM). No files, customer names, addresses, phone numbers, or GSTINs are ever transmitted to any server.'
   },
   {
-    q: 'Why do my thermal barcodes stay sharp with ShipLabelKit while other online tools make them blurry?',
-    a: 'Most free online converters convert your PDF pages into low-resolution raster images (JPG or PNG) and re-pack them into a new PDF. This blurs delicate 1D/2D barcodes and causes scanner rejection at courier hubs. ShipLabelKit directly mutates vector CropBoxes and MediaBoxes using WebAssembly, ensuring 100% lossless line-art clarity for high-speed optical scanning.'
+    q: 'Why do my thermal barcodes stay sharp with LabelCropNow while other online tools make them blurry?',
+    a: 'Most free online converters convert your PDF pages into low-resolution raster images (JPG or PNG) and re-pack them into a new PDF. This blurs delicate 1D/2D barcodes and causes scanner rejection at courier hubs. LabelCropNow directly mutates vector CropBoxes and MediaBoxes using WebAssembly, ensuring 100% lossless line-art clarity for high-speed optical scanning.'
   },
   {
     q: 'Can I print 4 Meesho or Flipkart labels on a single A4 sheet to save paper?',
-    a: 'Yes! Select the "A4 4-Up Grid" mode. ShipLabelKit crops out the bottom tax invoice from each order and arranges 4 shipping labels onto a single A4 page in a 2x2 grid with cutting lines, saving up to 75% paper on standard inkjet or laser printers.'
+    a: 'Yes! Select the "A4 4-Up Grid" mode. LabelCropNow crops out the bottom tax invoice from each order and arranges 4 shipping labels onto a single A4 page in a 2x2 grid with cutting lines, saving up to 75% paper on standard inkjet or laser printers.'
   },
   {
     q: 'How does the automatic SKU and Courier sorting work?',
     a: 'Before cropping, our client-side text extractor analyzes each dispatch slip for Courier Partners (Valmo, Delhivery, Shadowfax, Ekart, ATS, etc.), product SKU codes, and quantities. You can re-order hundreds of labels alphabetically by SKU or grouped by courier partner in one click.'
   },
   {
-    q: 'Does ShipLabelKit work offline?',
-    a: 'Yes! Once loaded in your browser, ShipLabelKit can process PDF files and ZPL code completely offline without an active internet connection.'
+    q: 'Does LabelCropNow work offline?',
+    a: 'Yes! Once loaded in your browser, LabelCropNow can process PDF files and ZPL code completely offline without an active internet connection.'
   },
   {
     q: 'Which printers are supported?',
@@ -160,7 +160,7 @@ const PRESET_HIGHLIGHTS = [
             </div>
             <img
               src="/images/seller_dashboard_preview.jpg"
-              alt="ShipLabelKit shipping label cropper and SKU sorter dashboard preview"
+              alt="LabelCropNow shipping label cropper and SKU sorter dashboard preview"
               class="dashboard-mockup-img"
               width="680"
               height="382"
@@ -319,7 +319,7 @@ const PRESET_HIGHLIGHTS = [
             </div>
           </div>
           <p class="stat-desc font-sans">
-            Sellers use ShipLabelKit daily to prepare shipping labels without manual software or costly subscriptions.
+            Sellers use LabelCropNow daily to prepare shipping labels without manual software or costly subscriptions.
           </p>
         </div>
 
@@ -454,7 +454,7 @@ const PRESET_HIGHLIGHTS = [
               </div>
               <h4 class="showcase-heading font-serif">Instant A4 to 4×6" Thermal Cropper</h4>
               <p class="showcase-desc font-sans">
-                Unlike online tools that turn PDFs into blurry pixel images, ShipLabelKit modifies vector coordinates directly. Barcodes scan with 100% optical accuracy at sorting hubs.
+                Unlike online tools that turn PDFs into blurry pixel images, LabelCropNow modifies vector coordinates directly. Barcodes scan with 100% optical accuracy at sorting hubs.
               </p>
               <div class="showcase-bullets">
                 <div class="bullet-item">
@@ -516,7 +516,7 @@ const PRESET_HIGHLIGHTS = [
               </div>
               <h4 class="showcase-heading font-serif">A4 4-Up Grid Paper Saver</h4>
               <p class="showcase-desc font-sans">
-                Don't own a thermal printer yet? ShipLabelKit packs 4 shipping labels onto a single A4 page with clean dotted cutting borders, slashing your paper costs by up to 75%.
+                Don't own a thermal printer yet? LabelCropNow packs 4 shipping labels onto a single A4 page with clean dotted cutting borders, slashing your paper costs by up to 75%.
               </p>
               <div class="showcase-bullets">
                 <div class="bullet-item">
@@ -1059,7 +1059,7 @@ const PRESET_HIGHLIGHTS = [
           </div>
           <h3 class="benefit-title font-sans">100% In-Browser Privacy</h3>
           <p class="benefit-desc font-sans">
-            Customer shipping addresses, mobile numbers, and GSTINs are confidential trade secrets. ShipLabelKit executes completely in your browser RAM with zero server storage.
+            Customer shipping addresses, mobile numbers, and GSTINs are confidential trade secrets. LabelCropNow executes completely in your browser RAM with zero server storage.
           </p>
         </div>
 

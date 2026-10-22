@@ -298,7 +298,7 @@ async function appendManifestPage(
     color: rgb(0.08, 0.12, 0.2),
   });
 
-  page.drawText('SHIPLABELKIT — DAILY DISPATCH & COURIER HANDOVER MANIFEST', {
+  page.drawText('LABELCROPNOW — DAILY DISPATCH & COURIER HANDOVER MANIFEST', {
     x: 35,
     y: 798,
     size: 13,
