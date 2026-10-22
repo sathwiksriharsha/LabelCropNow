@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" fill="none">
+  <!-- Rounded Card Container -->
+  <rect x="5" y="5" width="118" height="118" rx="26" fill="#ffffff" stroke="#cbd5e1" stroke-width="3"/>
+
+  <!-- Outer Crop Mark (Deep Navy #0d2054) -->
+  <path d="M 40 24 V 84 A 10 10 0 0 0 50 94 H 108" stroke="#0d2054" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>
+  <line x1="30" y1="42" x2="40" y2="42" stroke="#0d2054" stroke-width="9" stroke-linecap="round"/>
+  <line x1="96" y1="94" x2="96" y2="104" stroke="#0d2054" stroke-width="9" stroke-linecap="round"/>
+
+  <!-- Inner Shipping Label Frame (Vibrant Blue #2662d3) -->
+  <path d="M 50 42 H 90 A 8 8 0 0 1 98 50 V 82" stroke="#2662d3" stroke-width="7.5" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- Barcode Stripes -->
+  <line x1="55" y1="53" x2="55" y2="67" stroke="#2662d3" stroke-width="3.5" stroke-linecap="round"/>
+  <line x1="62" y1="53" x2="62" y2="67" stroke="#2662d3" stroke-width="3.5" stroke-linecap="round"/>
+  <line x1="69" y1="53" x2="69" y2="67" stroke="#2662d3" stroke-width="3.5" stroke-linecap="round"/>
+  <line x1="76" y1="53" x2="76" y2="67" stroke="#2662d3" stroke-width="3.5" stroke-linecap="round"/>
+  <line x1="83" y1="53" x2="83" y2="67" stroke="#2662d3" stroke-width="3.5" stroke-linecap="round"/>
+  <line x1="90" y1="53" x2="90" y2="67" stroke="#2662d3" stroke-width="3.5" stroke-linecap="round"/>
+
+  <!-- Text Rule Lines -->
+  <line x1="53" y1="74" x2="90" y2="74" stroke="#2662d3" stroke-width="3.2" stroke-linecap="round"/>
+  <line x1="53" y1="81" x2="74" y2="81" stroke="#2662d3" stroke-width="3.2" stroke-linecap="round"/>
+</svg>

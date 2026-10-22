@@ -6,18 +6,8 @@ import { siteConfig } from '../config/site.js';
   <div class="container footer-content">
     <div class="footer-grid">
       <div class="footer-brand">
-        <a href="/" class="brand-link">
-          <div class="brand-icon">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-              <rect x="3" y="4" width="18" height="16" rx="3" stroke="#0f172a" />
-              <line x1="7" y1="8" x2="7" y2="12" stroke="#0f172a" />
-              <line x1="10" y1="8" x2="10" y2="12" stroke="#0f172a" />
-              <line x1="13" y1="8" x2="13" y2="12" stroke="#0f172a" />
-              <line x1="17" y1="8" x2="17" y2="12" stroke="#0f172a" />
-              <line x1="7" y1="15" x2="17" y2="15" stroke="#64748b" />
-            </svg>
-          </div>
-          <span class="brand-title font-sans">LabelCrop<span class="brand-suffix">Now</span></span>
+        <a href="/" class="brand-link" aria-label="LabelCropNow Home">
+          <img src="/logo.png" alt="LabelCropNow - 100% Client-Side" class="footer-brand-logo-img" width="168" height="42" />
         </a>
         <p class="brand-desc">
           100% Client-Side shipping label cropper, SKU batch sorter, A4 4-Up grid builder, and offline Zebra ZPL II converter for Indian & US e-commerce sellers.
@@ -114,32 +104,20 @@ import { siteConfig } from '../config/site.js';
   .brand-link {
     display: inline-flex;
     align-items: center;
-    gap: 0.65rem;
     text-decoration: none;
     margin-bottom: 0.85rem;
+    transition: opacity 0.15s ease;
   }
 
-  .brand-icon {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 32px;
-    height: 32px;
-    background: #ffffff;
-    border: 1px solid var(--border-subtle);
-    border-radius: 8px;
+  .brand-link:hover {
+    opacity: 0.9;
   }
 
-  .brand-title {
-    font-size: 1.25rem;
-    font-weight: 700;
-    color: var(--text-main);
-    letter-spacing: -0.02em;
-  }
-
-  .brand-suffix {
-    color: #475569;
-    font-weight: 600;
+  .footer-brand-logo-img {
+    height: 38px;
+    width: auto;
+    display: block;
+    object-fit: contain;
   }
 
   .brand-desc {

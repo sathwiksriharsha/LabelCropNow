@@ -5,20 +5,7 @@
   <div class="container nav-content">
     <!-- Brand Logo -->
     <a href="/" class="brand" aria-label="LabelCropNow Home">
-      <div class="brand-icon">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-          <rect x="3" y="4" width="18" height="16" rx="3" stroke="#0f172a" />
-          <line x1="7" y1="8" x2="7" y2="12" stroke="#2563eb" />
-          <line x1="10" y1="8" x2="10" y2="12" stroke="#0f172a" />
-          <line x1="13" y1="8" x2="13" y2="12" stroke="#0f172a" />
-          <line x1="17" y1="8" x2="17" y2="12" stroke="#2563eb" />
-          <line x1="7" y1="15" x2="17" y2="15" stroke="#64748b" />
-        </svg>
-      </div>
-      <div class="brand-text">
-        <span class="brand-title font-sans">LabelCrop<span class="brand-suffix">Now</span></span>
-        <span class="brand-tag font-mono">100% Client-Side</span>
-      </div>
+      <img src="/logo.png" alt="LabelCropNow - 100% Client-Side" class="brand-logo-img" width="168" height="42" />
     </a>
 
     <!-- Clean Single-Line Navigation Links -->
@@ -157,50 +144,27 @@
   .brand {
     display: flex;
     align-items: center;
-    gap: 0.75rem;
     text-decoration: none;
-    color: #0f172a;
     flex-shrink: 0;
+    transition: opacity 0.15s ease;
   }
 
   .brand:hover {
     text-decoration: none;
+    opacity: 0.9;
   }
 
-  .brand-icon {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 36px;
-    height: 36px;
-    background: #f8fafc;
-    border: 1px solid #e2e8f0;
-    border-radius: 10px;
-    box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04);
+  .brand-logo-img {
+    height: 38px;
+    width: auto;
+    display: block;
+    object-fit: contain;
   }
 
-  .brand-text {
-    display: flex;
-    flex-direction: column;
-    line-height: 1.15;
-  }
-
-  .brand-title {
-    font-size: 1.25rem;
-    font-weight: 700;
-    color: #0f172a;
-    letter-spacing: -0.03em;
-  }
-
-  .brand-suffix {
-    color: #2563eb;
-  }
-
-  .brand-tag {
-    font-size: 0.65rem;
-    color: #64748b;
-    letter-spacing: 0.04em;
-    font-weight: 600;
+  @media (max-width: 480px) {
+    .brand-logo-img {
+      height: 32px;
+    }
   }
 
   /* Center Clean Nav Links (Uncluttered, well spaced) */
