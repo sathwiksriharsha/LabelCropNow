@@ -1,0 +1,605 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const whatsappFaq = [
+  {
+    q: 'Does this tool save or store customer phone numbers or messages?',
+    a: 'No! 100% of the link generation happens locally inside your browser. No phone numbers, order messages, or customer details are ever logged or uploaded to any remote server.'
+  },
+  {
+    q: 'Does this work on mobile phones and desktop computers?',
+    a: 'Yes! On mobile devices, clicking "Send WhatsApp Message" opens the native WhatsApp or WhatsApp Business application directly. On desktop computers, it opens WhatsApp Web or the WhatsApp desktop client.'
+  },
+  {
+    q: 'Is there any limit to how many messages I can send?',
+    a: 'No limit! You can send unlimited direct messages to buyers, courier delivery agents, and vendors completely free without saving cluttering phone contacts in your address book.'
+  },
+  {
+    q: 'Can I use this for Cash on Delivery (COD) verification?',
+    a: 'Absolutely! Our pre-made message templates let eCommerce sellers verify COD orders and request missing address landmarks with a single click before courier dispatch.'
+  }
+];
+---
+
+<BaseLayout
+  title="WhatsApp Direct Message Tool - Send Messages Without Saving Numbers | LabelCropNow"
+  description="Send WhatsApp direct messages instantly without saving contacts. The perfect 100% free tool for e-commerce sellers to send tracking links, COD confirmations, and address updates."
+  canonicalPath="/whatsapp"
+  faq={whatsappFaq}
+>
+  <div class="whatsapp-page container">
+    <!-- Breadcrumb -->
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <a href="/">Home</a>
+      <span class="sep">/</span>
+      <span class="current">WhatsApp Direct Tool</span>
+    </nav>
+
+    <!-- Header -->
+    <header class="page-header text-center">
+      <div class="badge-row">
+        <span class="badge badge-emerald">100% Private & Client-Side</span>
+        <span class="badge badge-blue">Zero Contact Clutter</span>
+        <span class="badge badge-amber">Direct WhatsApp Web / App</span>
+      </div>
+      <h1 class="page-title font-serif">WhatsApp Direct Message Tool</h1>
+      <p class="page-subtitle font-sans">
+        Send direct WhatsApp messages to customers, couriers, and buyers instantly without saving temporary phone numbers in your contacts.
+      </p>
+    </header>
+
+    <!-- Main Message Studio Card -->
+    <div class="card whatsapp-card">
+      <div class="card-header">
+        <div class="wa-icon-pill">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="#25d366"><path d="M17.472 14.382c-.301-.15-1.78-.878-2.056-.979-.276-.1-.477-.15-.678.15-.2.301-.778.979-.954 1.18-.176.201-.352.226-.653.075-1.745-.873-2.887-1.558-4.041-3.535-.306-.525.306-.487.876-1.626.096-.2.048-.376-.025-.526-.073-.15-.677-1.632-.927-2.235-.244-.588-.492-.508-.677-.518l-.578-.01c-.2 0-.526.075-.802.376-.276.301-1.053 1.03-1.053 2.511 0 1.482 1.079 2.912 1.23 3.113.15.201 2.124 3.243 5.147 4.549 2.138.924 2.973.992 4.044.834.653-.097 2.055-.84 2.345-1.654.291-.814.291-1.512.203-1.654-.087-.142-.288-.228-.589-.379zM12 21.688c-1.895 0-3.692-.533-5.239-1.455l-.376-.223-3.885 1.018 1.037-3.788-.245-.39A9.637 9.637 0 0 1 2.313 12c0-5.342 4.345-9.688 9.687-9.688 5.343 0 9.688 4.346 9.688 9.688 0 5.342-4.345 9.688-9.688 9.688zm0-17.688c-4.411 0-8 3.589-8 8 0 1.545.441 2.99 1.207 4.218l.189.304-.707 2.584 2.645-.693.293.174A7.95 7.95 0 0 0 12 19.688c4.411 0 8-3.589 8-8 0-4.411-3.589-8-8-8z"/></svg>
+          <span class="font-sans">New Direct WhatsApp Chat</span>
+        </div>
+        <span class="privacy-badge font-mono">100% Client-Side Private</span>
+      </div>
+
+      <div class="wa-form">
+        <!-- Phone Input Row -->
+        <div class="form-group">
+          <label for="phoneNumber" class="form-label font-sans">
+            <span>Recipient Country & Phone Number *</span>
+            <span class="hint font-mono">(Without Saving Number)</span>
+          </label>
+          <div class="phone-input-row">
+            <select id="countryCode" class="wa-select font-sans">
+              <option value="+91" selected>+91 (India)</option>
+              <option value="+1">+1 (USA / Canada)</option>
+              <option value="+44">+44 (UK)</option>
+              <option value="+971">+971 (UAE / Dubai)</option>
+              <option value="+966">+966 (Saudi Arabia)</option>
+              <option value="+65">+65 (Singapore)</option>
+              <option value="+61">+61 (Australia)</option>
+              <option value="+60">+60 (Malaysia)</option>
+              <option value="+49">+49 (Germany)</option>
+              <option value="+33">+33 (France)</option>
+              <option value="+39">+39 (Italy)</option>
+              <option value="+81">+81 (Japan)</option>
+              <option value="+880">+880 (Bangladesh)</option>
+              <option value="+977">+977 (Nepal)</option>
+              <option value="+94">+94 (Sri Lanka)</option>
+              <option value="+27">+27 (South Africa)</option>
+              <option value="+34">+34 (Spain)</option>
+              <option value="+31">+31 (Netherlands)</option>
+              <option value="+46">+46 (Sweden)</option>
+              <option value="+55">+55 (Brazil)</option>
+              <option value="+52">+52 (Mexico)</option>
+              <option value="+62">+62 (Indonesia)</option>
+              <option value="+63">+63 (Philippines)</option>
+              <option value="+84">+84 (Vietnam)</option>
+            </select>
+            <input
+              type="tel"
+              id="phoneNumber"
+              class="wa-input font-mono"
+              placeholder="e.g. 9876543210 (10 digits)"
+              maxlength="15"
+              autocomplete="tel"
+            />
+          </div>
+          <div class="preview-number font-mono" id="previewNumber">
+            Full International Number: <strong>+91</strong>
+          </div>
+        </div>
+
+        <!-- Quick Seller Templates -->
+        <div class="templates-section">
+          <span class="templates-label font-sans">Quick E-Commerce Message Templates:</span>
+          <div class="templates-chips">
+            <button type="button" class="template-chip" data-template="dispatch">📦 Order Dispatched & Tracking</button>
+            <button type="button" class="template-chip" data-template="address">📍 Incomplete Address Verification</button>
+            <button type="button" class="template-chip" data-template="cod">💵 COD Order Confirmation</button>
+            <button type="button" class="template-chip" data-template="review">⭐ Review & Unboxing Request</button>
+            <button type="button" class="template-chip" data-template="clear">❌ Clear Message</button>
+          </div>
+        </div>
+
+        <!-- Message Body -->
+        <div class="form-group">
+          <div class="form-label font-sans">
+            <label for="messageText">Custom Message Text</label>
+            <span class="char-count font-mono" id="charCount">0 / 1000 characters</span>
+          </div>
+          <textarea
+            id="messageText"
+            class="wa-textarea font-sans"
+            placeholder="Type your message here, or click a template above..."
+            rows="5"
+            maxlength="1000"
+          ></textarea>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="action-buttons-row">
+          <button type="button" class="btn btn-primary btn-send-wa" id="btnSendWa" disabled>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.301-.15-1.78-.878-2.056-.979-.276-.1-.477-.15-.678.15-.2.301-.778.979-.954 1.18-.176.201-.352.226-.653.075-1.745-.873-2.887-1.558-4.041-3.535-.306-.525.306-.487.876-1.626.096-.2.048-.376-.025-.526-.073-.15-.677-1.632-.927-2.235-.244-.588-.492-.508-.677-.518l-.578-.01c-.2 0-.526.075-.802.376-.276.301-1.053 1.03-1.053 2.511 0 1.482 1.079 2.912 1.23 3.113.15.201 2.124 3.243 5.147 4.549 2.138.924 2.973.992 4.044.834.653-.097 2.055-.84 2.345-1.654.291-.814.291-1.512.203-1.654-.087-.142-.288-.228-.589-.379zM12 21.688c-1.895 0-3.692-.533-5.239-1.455l-.376-.223-3.885 1.018 1.037-3.788-.245-.39A9.637 9.637 0 0 1 2.313 12c0-5.342 4.345-9.688 9.687-9.688 5.343 0 9.688 4.346 9.688 9.688 0 5.342-4.345 9.688-9.688 9.688zm0-17.688c-4.411 0-8 3.589-8 8 0 1.545.441 2.99 1.207 4.218l.189.304-.707 2.584 2.645-.693.293.174A7.95 7.95 0 0 0 12 19.688c4.411 0 8-3.589 8-8 0-4.411-3.589-8-8-8z"/></svg>
+            <span>Open in WhatsApp</span>
+          </button>
+
+          <button type="button" class="btn btn-secondary" id="btnCopyWaLink" disabled>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+            <span>Copy wa.me Link</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Recent Chats Stored in Local Device RAM -->
+    <div class="recent-chats-card card" id="recentChatsCard" style="display: none;">
+      <div class="recent-header">
+        <h3 class="recent-title font-sans">Recent Numbers Messaged (Stored locally on your device)</h3>
+        <button type="button" class="btn-clear-history font-sans" id="btnClearHistory">Clear History</button>
+      </div>
+      <div class="recent-chips" id="recentChips"></div>
+    </div>
+
+    <!-- Educational Section -->
+    <section class="guide-section card">
+      <h2 class="guide-title font-serif">Why Indian E-Commerce Sellers Use WhatsApp Direct</h2>
+      <div class="guide-grid">
+        <div class="guide-card">
+          <h3 class="guide-h3 font-sans">Reduce RTO on COD Orders</h3>
+          <p class="guide-p font-sans">Sending a 10-second WhatsApp confirmation message before packaging filters out bogus buyers, fake addresses, and impulse COD orders before you pay courier fees.</p>
+        </div>
+        <div class="guide-card">
+          <h3 class="guide-h3 font-sans">Keep Address Books Clean</h3>
+          <p class="guide-p font-sans">E-commerce sellers fulfill 50 to 500 orders a day. Saving every single customer’s phone number clutters phone contacts and Google sync. This tool bypasses saving completely.</p>
+        </div>
+        <div class="guide-card">
+          <h3 class="guide-h3 font-sans">Direct AWB Tracking Handover</h3>
+          <p class="guide-p font-sans">Directly alert buyers with their Delhivery, Ekart, or Shadowfax tracking number so customers stay home on delivery day, guaranteeing higher first-attempt delivery rates.</p>
+        </div>
+      </div>
+    </section>
+  </div>
+</BaseLayout>
+
+<script>
+  const countryCodeSelect = document.getElementById('countryCode') as HTMLSelectElement;
+  const phoneNumberInput = document.getElementById('phoneNumber') as HTMLInputElement;
+  const messageTextArea = document.getElementById('messageText') as HTMLTextAreaElement;
+  const previewNumberEl = document.getElementById('previewNumber') as HTMLElement;
+  const charCountEl = document.getElementById('charCount') as HTMLElement;
+  const btnSend = document.getElementById('btnSendWa') as HTMLButtonElement;
+  const btnCopy = document.getElementById('btnCopyWaLink') as HTMLButtonElement;
+  const recentCard = document.getElementById('recentChatsCard') as HTMLElement;
+  const recentChips = document.getElementById('recentChips') as HTMLElement;
+  const btnClearHistory = document.getElementById('btnClearHistory') as HTMLButtonElement;
+
+  const TEMPLATES: Record<string, string> = {
+    dispatch: `Hello! Your order has been packed and dispatched via courier. Track your shipment here: [AWB_LINK]. Thank you for shopping with us!`,
+    address: `Hello! We are preparing to dispatch your order, but we noticed an incomplete delivery address. Please share your complete House/Flat No. and Landmark so our courier can deliver on time.`,
+    cod: `Hi! Thank you for ordering with us. Please confirm your Cash on Delivery (COD) order of ₹[AMOUNT] so we can hand it over to the courier today.`,
+    review: `Hi! We hope you loved your recent purchase. If you enjoyed the product, please share a quick 5-star review on our store page! Let us know if you need any assistance.`
+  };
+
+  function getCleanNumber(): string {
+    const code = countryCodeSelect.value.replace(/\D/g, '');
+    const num = phoneNumberInput.value.replace(/\D/g, '');
+    return `${code}${num}`;
+  }
+
+  function updateState() {
+    const cleanNum = phoneNumberInput.value.replace(/\D/g, '');
+    const code = countryCodeSelect.value;
+    previewNumberEl.innerHTML = `Full International Number: <strong>${code} ${cleanNum}</strong>`;
+
+    charCountEl.innerText = `${messageTextArea.value.length} / 1000 characters`;
+
+    const isValid = cleanNum.length >= 7;
+    btnSend.disabled = !isValid;
+    btnCopy.disabled = !isValid;
+  }
+
+  countryCodeSelect.addEventListener('change', updateState);
+  phoneNumberInput.addEventListener('input', () => {
+    phoneNumberInput.value = phoneNumberInput.value.replace(/[^0-9\s-]/g, '');
+    updateState();
+  });
+  messageTextArea.addEventListener('input', updateState);
+
+  // Quick Template Chips
+  const templateChips = document.querySelectorAll('.template-chip');
+  templateChips.forEach((chip) => {
+    chip.addEventListener('click', () => {
+      const type = chip.getAttribute('data-template') || '';
+      if (type === 'clear') {
+        messageTextArea.value = '';
+      } else if (TEMPLATES[type]) {
+        messageTextArea.value = TEMPLATES[type];
+      }
+      updateState();
+    });
+  });
+
+  function saveToHistory(fullNum: string) {
+    try {
+      let history: string[] = JSON.parse(localStorage.getItem('wa_recent_nums') || '[]');
+      history = history.filter((n) => n !== fullNum);
+      history.unshift(fullNum);
+      if (history.length > 8) history = history.slice(0, 8);
+      localStorage.setItem('wa_recent_nums', JSON.stringify(history));
+      renderHistory();
+    } catch (e) {}
+  }
+
+  function renderHistory() {
+    try {
+      const history: string[] = JSON.parse(localStorage.getItem('wa_recent_nums') || '[]');
+      if (history.length === 0) {
+        recentCard.style.display = 'none';
+        return;
+      }
+      recentCard.style.display = 'block';
+      recentChips.innerHTML = '';
+      history.forEach((num) => {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'recent-chip font-mono';
+        btn.innerText = `+${num}`;
+        btn.addEventListener('click', () => {
+          phoneNumberInput.value = num.slice(2);
+          updateState();
+        });
+        recentChips.appendChild(btn);
+      });
+    } catch (e) {}
+  }
+
+  btnClearHistory?.addEventListener('click', () => {
+    localStorage.removeItem('wa_recent_nums');
+    renderHistory();
+  });
+
+  function getWaUrl(): string {
+    const fullNum = getCleanNumber();
+    const text = encodeURIComponent(messageTextArea.value.trim());
+    return `https://api.whatsapp.com/send?phone=${fullNum}${text ? `&text=${text}` : ''}`;
+  }
+
+  btnSend?.addEventListener('click', () => {
+    const fullNum = getCleanNumber();
+    saveToHistory(fullNum);
+    const url = getWaUrl();
+    window.open(url, '_blank', 'noopener,noreferrer');
+  });
+
+  btnCopy?.addEventListener('click', () => {
+    const fullNum = getCleanNumber();
+    saveToHistory(fullNum);
+    const text = encodeURIComponent(messageTextArea.value.trim());
+    const shortUrl = `https://wa.me/${fullNum}${text ? `?text=${text}` : ''}`;
+    navigator.clipboard.writeText(shortUrl).then(() => {
+      alert(`WhatsApp direct link copied: ${shortUrl}`);
+    });
+  });
+
+  // Initial load
+  updateState();
+  renderHistory();
+</script>
+
+<style>
+  .whatsapp-page {
+    padding-top: 1.5rem;
+    padding-bottom: 4rem;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+  .breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin-bottom: 1.5rem;
+  }
+  .breadcrumb a {
+    color: var(--text-muted);
+    text-decoration: none;
+  }
+  .breadcrumb a:hover {
+    color: var(--primary);
+  }
+  .page-header {
+    margin-bottom: 2rem;
+  }
+  .page-title {
+    font-size: 2.2rem;
+    color: var(--text-main);
+    margin: 0.75rem 0 0.5rem;
+  }
+  .page-subtitle {
+    font-size: 1.05rem;
+    color: var(--text-muted);
+    max-width: 650px;
+    margin: 0 auto;
+    line-height: 1.5;
+  }
+  .whatsapp-card {
+    background: #ffffff;
+    border: 1px solid var(--border-subtle);
+    border-radius: 16px;
+    padding: 2rem;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.04);
+    margin-bottom: 2rem;
+  }
+  .card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 1.25rem;
+    margin-bottom: 1.5rem;
+    border-bottom: 1px solid var(--border-subtle);
+  }
+  .wa-icon-pill {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: #0f172a;
+  }
+  .privacy-badge {
+    background: #ecfdf5;
+    color: #065f46;
+    padding: 0.25rem 0.65rem;
+    border-radius: 6px;
+    font-size: 0.78rem;
+    font-weight: 700;
+  }
+  .wa-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+  .form-label {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--text-main);
+  }
+  .form-label .hint {
+    font-size: 0.78rem;
+    color: var(--text-muted);
+  }
+  .phone-input-row {
+    display: flex;
+    gap: 0.75rem;
+  }
+  @media (max-width: 600px) {
+    .phone-input-row {
+      flex-direction: column;
+    }
+  }
+  .wa-select {
+    padding: 0.75rem 1rem;
+    border: 1px solid var(--border-subtle);
+    border-radius: 10px;
+    background: #f8fafc;
+    color: var(--text-main);
+    font-size: 0.95rem;
+    outline: none;
+    cursor: pointer;
+    min-width: 170px;
+  }
+  .wa-input {
+    flex: 1;
+    padding: 0.75rem 1rem;
+    border: 1px solid var(--border-subtle);
+    border-radius: 10px;
+    background: #f8fafc;
+    color: var(--text-main);
+    font-size: 1.05rem;
+    outline: none;
+    transition: all 0.15s ease;
+  }
+  .wa-input:focus, .wa-select:focus, .wa-textarea:focus {
+    border-color: #25d366;
+    background: #ffffff;
+    box-shadow: 0 0 0 3px rgba(37,211,102,0.15);
+  }
+  .preview-number {
+    font-size: 0.82rem;
+    color: #64748b;
+    margin-top: 0.25rem;
+  }
+  .templates-section {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+  .templates-label {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--text-muted);
+  }
+  .templates-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  .template-chip {
+    background: #f1f5f9;
+    border: 1px solid #cbd5e1;
+    color: #334155;
+    padding: 0.4rem 0.85rem;
+    border-radius: 50px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s ease;
+  }
+  .template-chip:hover {
+    background: #e2e8f0;
+    color: #0f172a;
+  }
+  .wa-textarea {
+    width: 100%;
+    padding: 0.85rem 1rem;
+    border: 1px solid var(--border-subtle);
+    border-radius: 10px;
+    background: #f8fafc;
+    color: var(--text-main);
+    font-size: 0.95rem;
+    outline: none;
+    resize: vertical;
+    transition: all 0.15s ease;
+  }
+  .char-count {
+    font-size: 0.78rem;
+    color: var(--text-muted);
+  }
+  .action-buttons-row {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.6rem;
+    padding: 0.8rem 1.75rem;
+    border-radius: 10px;
+    font-weight: 700;
+    font-size: 0.95rem;
+    cursor: pointer;
+    border: none;
+    transition: all 0.15s ease;
+  }
+  .btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+  .btn-send-wa {
+    background: #25d366;
+    color: #ffffff;
+    flex: 1;
+    min-width: 220px;
+  }
+  .btn-send-wa:hover:not(:disabled) {
+    background: #128c7e;
+  }
+  .btn-secondary {
+    background: #f8fafc;
+    border: 1px solid #cbd5e1;
+    color: #1e293b;
+  }
+  .btn-secondary:hover:not(:disabled) {
+    background: #f1f5f9;
+  }
+  .recent-chats-card {
+    background: #ffffff;
+    border: 1px solid var(--border-subtle);
+    border-radius: 16px;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+  }
+  .recent-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.85rem;
+  }
+  .recent-title {
+    font-size: 0.92rem;
+    font-weight: 700;
+    color: var(--text-main);
+  }
+  .btn-clear-history {
+    background: none;
+    border: none;
+    color: #ef4444;
+    font-size: 0.78rem;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  .recent-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  :global(.recent-chip) {
+    background: #f8fafc;
+    border: 1px solid #cbd5e1;
+    color: #0f172a;
+    padding: 0.35rem 0.75rem;
+    border-radius: 6px;
+    font-size: 0.82rem;
+    cursor: pointer;
+    transition: all 0.15s ease;
+  }
+  :global(.recent-chip:hover) {
+    background: #eff6ff;
+    border-color: #2563eb;
+    color: #2563eb;
+  }
+  .guide-section {
+    background: #ffffff;
+    border: 1px solid var(--border-subtle);
+    border-radius: 16px;
+    padding: 2rem;
+  }
+  .guide-title {
+    font-size: 1.4rem;
+    color: var(--text-main);
+    margin-bottom: 1.5rem;
+    text-align: center;
+  }
+  .guide-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+  }
+  @media (max-width: 768px) {
+    .guide-grid { grid-template-columns: 1fr; }
+  }
+  .guide-card {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 1.25rem;
+  }
+  .guide-h3 {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--text-main);
+    margin-bottom: 0.4rem;
+  }
+  .guide-p {
+    font-size: 0.86rem;
+    color: var(--text-muted);
+    line-height: 1.45;
+  }
+</style>

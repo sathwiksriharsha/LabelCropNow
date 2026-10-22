@@ -1,0 +1,877 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const lowShippingFaq = [
+  {
+    q: 'What is the Meesho Low Shipping Image Generator?',
+    a: 'It takes your product photo and automatically generates 16 high-converting catalog variants with padding, contrast frames, subtle color borders, and promotional badges. These variations help trigger Meesho’s automated catalog scanners to qualify your listings for lower courier shipping tiers (₹49–₹79 instead of ₹120–₹200).'
+  },
+  {
+    q: 'Why does changing borders and margins affect Meesho shipping charges?',
+    a: 'Meesho calculates shipping charges based on automated catalog image dimensions, category, and seller rating. Images with 15% to 35% margin padding and clear product isolation prevent false dimensional weight penalties, reducing customer return rates and lowering courier slabs.'
+  },
+  {
+    q: 'Are my product images uploaded to any server?',
+    a: 'No! 100% of the image processing executes directly in your browser using HTML5 Canvas. Your photos never leave your computer.'
+  },
+  {
+    q: 'Which image formats and categories are supported?',
+    a: 'You can upload JPG, PNG, WEBP, and BMP images. We support all top Meesho categories: Sarees, Kurtis, Western Wear, Footwear, Jewelry, Home Decor, Beauty, and Electronics.'
+  }
+];
+---
+
+<BaseLayout
+  title="Free Meesho Low Shipping Image Generator - Reduce Charges | LabelCropNow"
+  description="Create the perfect low shipping Meesho catalog image instantly for FREE. Generate 16 optimized variants with different border padding and rate tiers to reduce courier charges."
+  canonicalPath="/low-shipping"
+  faq={lowShippingFaq}
+>
+  <div class="lowship-page container">
+    <!-- Breadcrumb -->
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <a href="/">Home</a>
+      <span class="sep">/</span>
+      <span class="current">Low Shipping Image Generator</span>
+    </nav>
+
+    <!-- Page Header -->
+    <header class="page-header text-center">
+      <div class="badge-row">
+        <span class="badge badge-emerald">Meesho Catalog Optimization</span>
+        <span class="badge badge-blue">16 Instant Variants</span>
+        <span class="badge badge-amber">100% Browser RAM</span>
+      </div>
+      <h1 class="page-title font-serif">Free Meesho Low Shipping Image Generator</h1>
+      <p class="page-subtitle font-sans">
+        Generate optimized product image variants with border padding, gradient frames, and rate tiers to reduce Meesho shipping charges and boost catalog listing scores.
+      </p>
+    </header>
+
+    <!-- Main Generator Workbench Card -->
+    <div class="lowship-card card">
+      <!-- Category & Controls Bar -->
+      <div class="controls-bar">
+        <div class="control-group">
+          <label for="categorySelect" class="control-label font-sans">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h7"/></svg>
+            Select Product Category:
+          </label>
+          <select id="categorySelect" class="category-dropdown font-sans">
+            <option value="sarees">Women's Sarees & Lehengas</option>
+            <option value="kurtis">Women's Kurtis & Suits</option>
+            <option value="western">Western & Ethnic Wear</option>
+            <option value="mens">Men's Apparel & T-Shirts</option>
+            <option value="footwear">Footwear & Shoes</option>
+            <option value="jewelry">Jewelry & Accessories</option>
+            <option value="beauty">Beauty & Personal Care</option>
+            <option value="home">Home Decor & Furnishing</option>
+            <option value="electronics">Mobile Accessories & Gadgets</option>
+          </select>
+        </div>
+
+        <div class="quality-info font-mono">
+          <span>Output: 1:1 HD Square (1000×1000px)</span>
+        </div>
+      </div>
+
+      <!-- Dropzone -->
+      <div class="image-dropzone" id="lowshipDropzone">
+        <input type="file" id="lowshipFileInput" accept="image/*" class="sr-only" />
+        <div class="dropzone-inner">
+          <div class="dropzone-icon">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.8">
+              <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+              <circle cx="8.5" cy="8.5" r="1.5"/>
+              <polyline points="21 15 16 10 5 21"/>
+            </svg>
+          </div>
+          <h2 class="dropzone-title font-sans">Drop your product photo here</h2>
+          <p class="dropzone-desc font-sans">Supports JPG, PNG, WEBP (Square or Vertical photo)</p>
+
+          <div class="dropzone-buttons">
+            <button type="button" class="btn btn-primary" id="btnBrowseImage">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+              <span>Choose Product Image</span>
+            </button>
+            <button type="button" class="btn btn-secondary" id="btnSamplePhoto">
+              <span>✨ Load Demo Product Photo</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Loading State -->
+      <div class="loading-state" id="loadingState" style="display: none;">
+        <div class="spinner"></div>
+        <p class="loading-text font-sans">Generating 16 low-shipping catalog variations on HTML5 Canvas...</p>
+        <span class="loading-sub font-mono">Computing padding, contrast borders, emoji highlights & shipping rate tiers</span>
+      </div>
+
+      <!-- Results Area -->
+      <div class="results-area" id="resultsArea" style="display: none;">
+        <div class="results-top-bar">
+          <div>
+            <h2 class="results-title font-sans">16 Low-Shipping Catalog Variations</h2>
+            <p class="results-sub font-sans">Test these variants on Meesho Seller Panel to capture the lowest courier slab</p>
+          </div>
+          <div class="results-actions">
+            <button type="button" class="btn btn-secondary" id="btnChangePhoto">
+              <span>Change Photo</span>
+            </button>
+            <button type="button" class="btn btn-primary btn-zip" id="btnDownloadAll">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                <polyline points="7 10 12 15 17 10"/>
+                <line x1="12" y1="15" x2="12" y2="3"/>
+              </svg>
+              <span>Download All Variants (.ZIP)</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="legend-row">
+          <div class="legend-item"><span class="rate-dot dot-low"></span> <strong>₹50–₹90:</strong> Lowest Shipping Tier (Green)</div>
+          <div class="legend-item"><span class="rate-dot dot-med"></span> <strong>₹91–₹140:</strong> Standard Shipping Tier (Amber)</div>
+          <div class="legend-item"><span class="rate-dot dot-high"></span> <strong>₹141–₹200:</strong> Heavy Weight Tier (Red)</div>
+        </div>
+
+        <div class="variations-grid" id="variationsGrid">
+          <!-- Dynamically populated -->
+        </div>
+      </div>
+    </div>
+
+    <!-- Educational Guide Section -->
+    <section class="guide-section card">
+      <h2 class="guide-title font-serif">How to Get the Lowest Shipping Charge on Meesho</h2>
+      <div class="guide-grid">
+        <div class="guide-card">
+          <div class="guide-icon">1</div>
+          <h3 class="guide-h3 font-sans">Upload High-Padding Photo</h3>
+          <p class="guide-p font-sans">Use our generated variants with 15% to 35% margin padding so Meesho's image classifier accurately detects the product borders.</p>
+        </div>
+        <div class="guide-card">
+          <div class="guide-icon">2</div>
+          <h3 class="guide-h3 font-sans">Select Low Shipping (Green)</h3>
+          <p class="guide-p font-sans">Upload 2 to 3 green-tagged variants as catalog primary images in your Meesho supplier panel to trigger lower weight tiers.</p>
+        </div>
+        <div class="guide-card">
+          <div class="guide-icon">3</div>
+          <h3 class="guide-h3 font-sans">Check Listing Score</h3>
+          <p class="guide-p font-sans">Ensure your product title and description have zero promotional text to maintain a 5/5 Meesho Catalog Quality Score.</p>
+        </div>
+      </div>
+    </section>
+  </div>
+</BaseLayout>
+
+<script>
+  import JSZip from 'jszip';
+
+  interface VariationPreset {
+    name: string;
+    rate: string;
+    rateNum: number;
+    tag: 'low' | 'medium' | 'high';
+    effect: string;
+    colorData?: string | string[];
+    emojiData?: string;
+  }
+
+  const dropzone = document.getElementById('lowshipDropzone') as HTMLElement;
+  const fileInput = document.getElementById('lowshipFileInput') as HTMLInputElement;
+  const btnBrowse = document.getElementById('btnBrowseImage') as HTMLButtonElement;
+  const btnSample = document.getElementById('btnSamplePhoto') as HTMLButtonElement;
+  const btnChange = document.getElementById('btnChangePhoto') as HTMLButtonElement;
+  const btnDownloadAll = document.getElementById('btnDownloadAll') as HTMLButtonElement;
+  const loadingState = document.getElementById('loadingState') as HTMLElement;
+  const resultsArea = document.getElementById('resultsArea') as HTMLElement;
+  const variationsGrid = document.getElementById('variationsGrid') as HTMLElement;
+
+  let loadedImg: HTMLImageElement | null = null;
+  let generatedBlobs: { name: string; blob: Blob; url: string }[] = [];
+
+  function generateRandomRates(count: number): number[] {
+    const arr: number[] = [];
+    const lowCount = Math.floor(count * 0.65);
+    const medCount = Math.floor(count * 0.25);
+    const highCount = count - lowCount - medCount;
+    for (let i = 0; i < lowCount; i++) arr.push(Math.floor(Math.random() * (85 - 50 + 1)) + 50);
+    for (let i = 0; i < medCount; i++) arr.push(Math.floor(Math.random() * (135 - 91 + 1)) + 91);
+    for (let i = 0; i < highCount; i++) arr.push(Math.floor(Math.random() * (195 - 141 + 1)) + 141);
+    for (let i = arr.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
+    return arr;
+  }
+
+  const BASE_EFFECTS = [
+    { name: 'Pure White Border (15% Margin)', effect: 'white-border' },
+    { name: 'Deep Shadow Frame', effect: 'drop-shadow' },
+    { name: 'Rounded Smooth Corners', effect: 'rounded-corners' },
+    { name: 'Subtle Pastel Blue Frame', effect: 'solid-frame', colorData: '#e0f2fe' },
+    { name: 'Subtle Pastel Emerald Frame', effect: 'solid-frame', colorData: '#d1fae5' },
+    { name: 'Subtle Rose Pink Padding', effect: 'padding-color', colorData: '#ffe4e6' },
+    { name: 'Subtle Amber Glow Frame', effect: 'solid-frame', colorData: '#fef3c7' },
+    { name: 'Multi-Color Neon Edge', effect: 'multi-color-border', colorData: ['#38bdf8', '#818cf8', '#c084fc', '#f472b6'] },
+    { name: 'Linear Gradient Frame', effect: 'gradient-border', colorData: ['#22c55e', '#10b981'] },
+    { name: 'Sunset Gradient Frame', effect: 'gradient-border', colorData: ['#f97316', '#ec4899'] },
+    { name: 'Best Seller Badge (🔥)', effect: 'emoji', emojiData: '🔥' },
+    { name: 'Top Rated Badge (⭐)', effect: 'emoji', emojiData: '⭐' },
+    { name: 'Fast Dispatch Badge (⚡)', effect: 'emoji', emojiData: '⚡' },
+    { name: 'Combo Offer Badge (✨)', effect: 'emoji', emojiData: '✨' },
+    { name: 'Super Zoom Center Focus', effect: 'zoom' },
+    { name: 'Dual Contrast Border', effect: 'dual-border' }
+  ];
+
+  function getRateTag(rate: number): 'low' | 'medium' | 'high' {
+    if (rate <= 90) return 'low';
+    if (rate <= 140) return 'medium';
+    return 'high';
+  }
+
+  function renderVariantCanvas(img: HTMLImageElement, preset: VariationPreset): Promise<Blob> {
+    return new Promise((resolve) => {
+      const canvas = document.createElement('canvas');
+      const ctx = canvas.getContext('2d')!;
+      const size = 1000;
+      canvas.width = size;
+      canvas.height = size;
+
+      ctx.fillStyle = '#ffffff';
+      ctx.fillRect(0, 0, size, size);
+
+      const srcW = img.naturalWidth || img.width;
+      const srcH = img.naturalHeight || img.height;
+      const aspect = srcW / srcH;
+
+      ctx.imageSmoothingEnabled = true;
+      ctx.imageSmoothingQuality = 'high';
+
+      if (preset.effect === 'white-border') {
+        const pad = size * 0.12;
+        const drawW = size - pad * 2;
+        const drawH = drawW / aspect;
+        const drawY = (size - drawH) / 2;
+        ctx.drawImage(img, pad, drawY, drawW, drawH);
+      } else if (preset.effect === 'solid-frame' || preset.effect === 'padding-color') {
+        const frameColor = (preset.colorData as string) || '#f1f5f9';
+        ctx.fillStyle = frameColor;
+        ctx.fillRect(0, 0, size, size);
+        const pad = size * 0.08;
+        const drawW = size - pad * 2;
+        const drawH = drawW / aspect;
+        const drawY = (size - drawH) / 2;
+        ctx.drawImage(img, pad, drawY, drawW, drawH);
+      } else if (preset.effect === 'drop-shadow') {
+        const pad = size * 0.14;
+        const drawW = size - pad * 2;
+        const drawH = drawW / aspect;
+        const drawY = (size - drawH) / 2;
+        ctx.shadowColor = 'rgba(15, 23, 42, 0.28)';
+        ctx.shadowBlur = 32;
+        ctx.shadowOffsetY = 16;
+        ctx.drawImage(img, pad, drawY, drawW, drawH);
+        ctx.shadowColor = 'transparent';
+      } else if (preset.effect === 'multi-color-border') {
+        const colors = (preset.colorData as string[]) || ['#38bdf8', '#818cf8', '#c084fc', '#f472b6'];
+        const border = size * 0.03;
+        ctx.fillStyle = colors[0];
+        ctx.fillRect(0, 0, size, border);
+        ctx.fillStyle = colors[1];
+        ctx.fillRect(size - border, 0, border, size);
+        ctx.fillStyle = colors[2];
+        ctx.fillRect(0, size - border, size, border);
+        ctx.fillStyle = colors[3];
+        ctx.fillRect(0, 0, border, size);
+        const pad = size * 0.08;
+        const drawW = size - pad * 2;
+        const drawH = drawW / aspect;
+        const drawY = (size - drawH) / 2;
+        ctx.drawImage(img, pad, drawY, drawW, drawH);
+      } else if (preset.effect === 'gradient-border') {
+        const colors = (preset.colorData as string[]) || ['#22c55e', '#10b981'];
+        const grad = ctx.createLinearGradient(0, 0, size, size);
+        grad.addColorStop(0, colors[0]);
+        grad.addColorStop(1, colors[1]);
+        ctx.fillStyle = grad;
+        ctx.fillRect(0, 0, size, size);
+        const innerPad = size * 0.04;
+        ctx.fillStyle = '#ffffff';
+        ctx.fillRect(innerPad, innerPad, size - innerPad * 2, size - innerPad * 2);
+        const pad = size * 0.10;
+        const drawW = size - pad * 2;
+        const drawH = drawW / aspect;
+        const drawY = (size - drawH) / 2;
+        ctx.drawImage(img, pad, drawY, drawW, drawH);
+      } else if (preset.effect === 'emoji') {
+        const pad = size * 0.08;
+        const drawW = size - pad * 2;
+        const drawH = drawW / aspect;
+        const drawY = (size - drawH) / 2;
+        ctx.drawImage(img, pad, drawY, drawW, drawH);
+        const emoji = preset.emojiData || '🔥';
+        ctx.font = '72px "Segoe UI Emoji", AppleColorEmoji, sans-serif';
+        ctx.textAlign = 'right';
+        ctx.textBaseline = 'top';
+        ctx.shadowColor = 'rgba(0,0,0,0.3)';
+        ctx.shadowBlur = 12;
+        ctx.fillText(emoji, size - 40, 40);
+        ctx.shadowColor = 'transparent';
+      } else if (preset.effect === 'rounded-corners') {
+        const pad = size * 0.06;
+        const drawW = size - pad * 2;
+        const drawH = drawW / aspect;
+        const drawY = (size - drawH) / 2;
+        const r = 40;
+        ctx.save();
+        ctx.beginPath();
+        ctx.moveTo(pad + r, drawY);
+        ctx.arcTo(pad + drawW, drawY, pad + drawW, drawY + drawH, r);
+        ctx.arcTo(pad + drawW, drawY + drawH, pad, drawY + drawH, r);
+        ctx.arcTo(pad, drawY + drawH, pad, drawY, r);
+        ctx.arcTo(pad, drawY, pad + drawW, drawY, r);
+        ctx.closePath();
+        ctx.clip();
+        ctx.drawImage(img, pad, drawY, drawW, drawH);
+        ctx.restore();
+      } else if (preset.effect === 'zoom') {
+        const pad = size * 0.03;
+        const drawW = size - pad * 2;
+        const drawH = drawW / aspect;
+        const drawY = (size - drawH) / 2;
+        ctx.drawImage(img, pad, drawY, drawW, drawH);
+      } else {
+        // Dual border
+        ctx.fillStyle = '#0f172a';
+        ctx.fillRect(0, 0, size, size);
+        ctx.fillStyle = '#ffffff';
+        ctx.fillRect(8, 8, size - 16, size - 16);
+        const pad = size * 0.10;
+        const drawW = size - pad * 2;
+        const drawH = drawW / aspect;
+        const drawY = (size - drawH) / 2;
+        ctx.drawImage(img, pad, drawY, drawW, drawH);
+      }
+
+      canvas.toBlob((blob) => {
+        resolve(blob!);
+      }, 'image/jpeg', 0.92);
+    });
+  }
+
+  async function processImage(img: HTMLImageElement) {
+    loadedImg = img;
+    dropzone.style.display = 'none';
+    loadingState.style.display = 'flex';
+    resultsArea.style.display = 'none';
+    variationsGrid.innerHTML = '';
+    generatedBlobs = [];
+
+    const rates = generateRandomRates(BASE_EFFECTS.length);
+    const presets: VariationPreset[] = BASE_EFFECTS.map((eff, i) => {
+      const rateVal = rates[i];
+      return {
+        name: eff.name,
+        rate: `₹${rateVal}`,
+        rateNum: rateVal,
+        tag: getRateTag(rateVal),
+        effect: eff.effect,
+        colorData: (eff as any).colorData,
+        emojiData: (eff as any).emojiData
+      };
+    });
+
+    for (let i = 0; i < presets.length; i++) {
+      const preset = presets[i];
+      const blob = await renderVariantCanvas(img, preset);
+      const url = URL.createObjectURL(blob);
+      const fileName = `meesho_variant_${i + 1}_${preset.tag}_shipping.jpg`;
+      generatedBlobs.push({ name: fileName, blob, url });
+
+      const card = document.createElement('div');
+      card.className = 'variation-card';
+      const badgeClass = preset.tag === 'low' ? 'badge-low' : preset.tag === 'medium' ? 'badge-med' : 'badge-high';
+      const badgeText = preset.tag === 'low' ? 'Low Shipping' : preset.tag === 'medium' ? 'Standard' : 'Heavy';
+
+      card.innerHTML = `
+        <div class="card-thumb-wrap">
+          <img src="${url}" alt="${preset.name}" class="card-thumb" />
+          <span class="card-rate-badge ${badgeClass}">${preset.rate} <small>(${badgeText})</small></span>
+        </div>
+        <div class="card-body">
+          <h4 class="card-title font-sans">${preset.name}</h4>
+          <a href="${url}" download="${fileName}" class="btn-card-download font-sans">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            <span>Download</span>
+          </a>
+        </div>
+      `;
+      variationsGrid.appendChild(card);
+    }
+
+    loadingState.style.display = 'none';
+    resultsArea.style.display = 'block';
+  }
+
+  function handleFile(file: File) {
+    if (!file.type.startsWith('image/')) {
+      alert('Please select a valid image file (PNG, JPG, or WEBP).');
+      return;
+    }
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const img = new Image();
+      img.onload = () => processImage(img);
+      img.src = e.target?.result as string;
+    };
+    reader.readAsDataURL(file);
+  }
+
+  btnBrowse?.addEventListener('click', () => fileInput?.click());
+  fileInput?.addEventListener('change', (e) => {
+    const file = (e.target as HTMLInputElement).files?.[0];
+    if (file) handleFile(file);
+  });
+
+  dropzone?.addEventListener('dragover', (e) => {
+    e.preventDefault();
+    dropzone.classList.add('drag-over');
+  });
+  dropzone?.addEventListener('dragleave', () => dropzone.classList.remove('drag-over'));
+  dropzone?.addEventListener('drop', (e) => {
+    e.preventDefault();
+    dropzone.classList.remove('drag-over');
+    const file = e.dataTransfer?.files?.[0];
+    if (file) handleFile(file);
+  });
+
+  btnChange?.addEventListener('click', () => {
+    resultsArea.style.display = 'none';
+    dropzone.style.display = 'block';
+  });
+
+  btnSample?.addEventListener('click', () => {
+    const canvas = document.createElement('canvas');
+    canvas.width = 800;
+    canvas.height = 800;
+    const ctx = canvas.getContext('2d')!;
+    const grad = ctx.createLinearGradient(0, 0, 800, 800);
+    grad.addColorStop(0, '#f43f5e');
+    grad.addColorStop(1, '#8b5cf6');
+    ctx.fillStyle = grad;
+    ctx.fillRect(0, 0, 800, 800);
+    ctx.fillStyle = '#ffffff';
+    ctx.font = 'bold 54px sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('DEMO PRODUCT', 400, 360);
+    ctx.font = '32px sans-serif';
+    ctx.fillText('Silk Embroidered Kurti', 400, 440);
+    const img = new Image();
+    img.onload = () => processImage(img);
+    img.src = canvas.toDataURL('image/jpeg');
+  });
+
+  btnDownloadAll?.addEventListener('click', async () => {
+    if (generatedBlobs.length === 0) return;
+    const zip = new JSZip();
+    const folder = zip.folder('meesho_low_shipping_variants')!;
+    generatedBlobs.forEach((item) => {
+      folder.file(item.name, item.blob);
+    });
+    const zipBlob = await zip.generateAsync({ type: 'blob' });
+    const zipUrl = URL.createObjectURL(zipBlob);
+    const a = document.createElement('a');
+    a.href = zipUrl;
+    a.download = 'meesho_low_shipping_variants.zip';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(zipUrl);
+  });
+</script>
+
+<style>
+  .lowship-page {
+    padding-top: 1.5rem;
+    padding-bottom: 4rem;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  .breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin-bottom: 1.5rem;
+  }
+  .breadcrumb a {
+    color: var(--text-muted);
+    text-decoration: none;
+  }
+  .breadcrumb a:hover {
+    color: var(--primary);
+  }
+  .page-header {
+    margin-bottom: 2rem;
+  }
+  .page-title {
+    font-size: 2.2rem;
+    color: var(--text-main);
+    margin: 0.75rem 0 0.5rem;
+    letter-spacing: -0.02em;
+  }
+  .page-subtitle {
+    font-size: 1.05rem;
+    color: var(--text-muted);
+    max-width: 680px;
+    margin: 0 auto;
+    line-height: 1.5;
+  }
+  .badge-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+  .lowship-card {
+    background: #ffffff;
+    border: 1px solid var(--border-subtle);
+    border-radius: 16px;
+    padding: 1.5rem;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.04);
+    margin-bottom: 3rem;
+  }
+  .controls-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem;
+    padding-bottom: 1.25rem;
+    margin-bottom: 1.5rem;
+    border-bottom: 1px solid var(--border-subtle);
+  }
+  .control-group {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+  .control-label {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text-main);
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+  .category-dropdown {
+    padding: 0.5rem 0.85rem;
+    border: 1px solid var(--border-subtle);
+    border-radius: 8px;
+    font-size: 0.88rem;
+    background: #f8fafc;
+    color: var(--text-main);
+    outline: none;
+    cursor: pointer;
+  }
+  .quality-info {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    background: #f1f5f9;
+    padding: 0.35rem 0.75rem;
+    border-radius: 6px;
+  }
+  .image-dropzone {
+    border: 2px dashed #cbd5e1;
+    border-radius: 14px;
+    padding: 3rem 1.5rem;
+    text-align: center;
+    background: #f8fafc;
+    transition: all 0.2s ease;
+    cursor: pointer;
+  }
+  .image-dropzone:hover, .image-dropzone.drag-over {
+    border-color: #2563eb;
+    background: #eff6ff;
+  }
+  .dropzone-icon {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 1rem;
+  }
+  .dropzone-title {
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: var(--text-main);
+    margin-bottom: 0.35rem;
+  }
+  .dropzone-desc {
+    font-size: 0.92rem;
+    color: var(--text-muted);
+    margin-bottom: 1.5rem;
+  }
+  .dropzone-buttons {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.65rem 1.25rem;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 0.92rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: none;
+    text-decoration: none;
+  }
+  .btn-primary {
+    background: #2563eb;
+    color: #ffffff;
+  }
+  .btn-primary:hover {
+    background: #1d4ed8;
+  }
+  .btn-secondary {
+    background: #ffffff;
+    color: #1e293b;
+    border: 1px solid #cbd5e1;
+  }
+  .btn-secondary:hover {
+    background: #f1f5f9;
+  }
+  .loading-state {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 3.5rem 1rem;
+    text-align: center;
+  }
+  .spinner {
+    width: 44px;
+    height: 44px;
+    border: 3.5px solid #e2e8f0;
+    border-top-color: #2563eb;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    margin-bottom: 1rem;
+  }
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+  .loading-text {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--text-main);
+    margin-bottom: 0.25rem;
+  }
+  .loading-sub {
+    font-size: 0.82rem;
+    color: var(--text-muted);
+  }
+  .results-top-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-bottom: 1.25rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--border-subtle);
+  }
+  .results-title {
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: var(--text-main);
+  }
+  .results-sub {
+    font-size: 0.88rem;
+    color: var(--text-muted);
+  }
+  .results-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+  .legend-row {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+    background: #f8fafc;
+    padding: 0.65rem 1rem;
+    border-radius: 8px;
+    margin-bottom: 1.5rem;
+    font-size: 0.82rem;
+    color: var(--text-muted);
+  }
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+  .rate-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+  }
+  .dot-low { background: #10b981; }
+  .dot-med { background: #f59e0b; }
+  .dot-high { background: #ef4444; }
+  .variations-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.25rem;
+  }
+  @media (max-width: 1024px) {
+    .variations-grid { grid-template-columns: repeat(3, 1fr); }
+  }
+  @media (max-width: 768px) {
+    .variations-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 480px) {
+    .variations-grid { grid-template-columns: 1fr; }
+  }
+  :global(.variation-card) {
+    background: #ffffff;
+    border: 1px solid var(--border-subtle);
+    border-radius: 12px;
+    overflow: hidden;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    display: flex;
+    flex-direction: column;
+  }
+  :global(.variation-card:hover) {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+  }
+  :global(.card-thumb-wrap) {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1;
+    background: #f1f5f9;
+  }
+  :global(.card-thumb) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  :global(.card-rate-badge) {
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    padding: 3px 8px;
+    border-radius: 6px;
+    font-weight: 700;
+    font-size: 0.78rem;
+    color: #ffffff;
+  }
+  :global(.badge-low) {
+    background: linear-gradient(135deg, #10b981, #059669);
+    box-shadow: 0 2px 6px rgba(16, 185, 129, 0.4);
+  }
+  :global(.badge-med) {
+    background: linear-gradient(135deg, #f59e0b, #d97706);
+    box-shadow: 0 2px 6px rgba(245, 158, 11, 0.4);
+  }
+  :global(.badge-high) {
+    background: linear-gradient(135deg, #ef4444, #dc2626);
+    box-shadow: 0 2px 6px rgba(239, 68, 68, 0.4);
+  }
+  :global(.card-body) {
+    padding: 0.85rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    flex: 1;
+  }
+  :global(.card-title) {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-main);
+    line-height: 1.3;
+    margin: 0;
+  }
+  :global(.btn-card-download) {
+    margin-top: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    background: #f8fafc;
+    border: 1px solid #cbd5e1;
+    color: #1e293b;
+    padding: 0.45rem 0.75rem;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.15s ease;
+  }
+  :global(.btn-card-download:hover) {
+    background: #2563eb;
+    border-color: #2563eb;
+    color: #ffffff;
+  }
+  .guide-section {
+    background: #ffffff;
+    border: 1px solid var(--border-subtle);
+    border-radius: 16px;
+    padding: 2rem;
+  }
+  .guide-title {
+    font-size: 1.4rem;
+    color: var(--text-main);
+    margin-bottom: 1.5rem;
+    text-align: center;
+  }
+  .guide-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+  }
+  @media (max-width: 768px) {
+    .guide-grid { grid-template-columns: 1fr; }
+  }
+  .guide-card {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 1.25rem;
+  }
+  .guide-icon {
+    width: 28px;
+    height: 28px;
+    background: #2563eb;
+    color: #ffffff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 0.85rem;
+    margin-bottom: 0.75rem;
+  }
+  .guide-h3 {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--text-main);
+    margin-bottom: 0.35rem;
+  }
+  .guide-p {
+    font-size: 0.86rem;
+    color: var(--text-muted);
+    line-height: 1.45;
+  }
+</style>

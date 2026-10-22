@@ -1,0 +1,112 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="About LabelCropNow — 100% Client-Side Privacy Architecture"
+  description="Learn why LabelCropNow was built with 100% browser RAM processing. Zero server uploads, zero data storage, ₹0 cost for sellers."
+  canonicalPath="/about"
+>
+  <div class="container static-page">
+    <header class="page-header">
+      <span class="badge badge-emerald">Engineered For Sellers</span>
+      <h1 class="page-title">About LabelCropNow</h1>
+      <p class="page-lead">A fast, privacy-first, zero-infrastructure shipping label utility engineered for independent e-commerce sellers worldwide.</p>
+    </header>
+
+    <div class="content-body card">
+      <h2>The Problem with Traditional Label Croppers</h2>
+      <p>
+        Online marketplace sellers on Meesho, Flipkart, Amazon, and Etsy download thousands of dispatch PDFs every week. These files contain sensitive customer data: full names, physical home addresses, personal phone numbers, order values, and GST identification numbers.
+      </p>
+      <p>
+        Most online PDF crop tools require sellers to upload these documents to unknown third-party cloud servers. This exposes customer privacy, violates data protection laws, and often subjects sellers to subscription paywalls, watermarks, or per-page limits. Even worse, many converters rasterize PDFs into compressed JPEG images, resulting in blurry barcodes that fail scanner checks at courier pickup hubs.
+      </p>
+
+      <h2>Our Solution: 100% Client-Side Execution</h2>
+      <p>
+        LabelCropNow was engineered with a strict architectural principle: <strong>Zero server-side file transmission</strong>.
+      </p>
+      <ul>
+        <li><strong>Local Browser RAM:</strong> Every vector crop, page split, and sorting algorithm runs in your local browser tab using WebAssembly and high-performance JavaScript engines.</li>
+        <li><strong>Pure Vector Fidelity:</strong> We directly modify PDF CropBox and MediaBox coordinates, preserving 100% vector sharpness so 1D and 2D barcodes scan instantly on Rollo, Zebra, TVS, and TSC thermal printers.</li>
+        <li><strong>Batch Automation:</strong> Features like automatic courier partner grouping (Valmo, Delhivery, Ekart) and SKU sorting eliminate hours of manual warehouse labor every day.</li>
+        <li><strong>Always Free:</strong> Deployed statically on Cloudflare Pages with zero backend server costs.</li>
+      </ul>
+
+      <h2>Supported Marketplaces & Ecosystem</h2>
+      <p>
+        LabelCropNow supports over 40 Indian and international e-commerce channels, including Meesho, Flipkart, Amazon India, Myntra, Ajio, GlowRoad, Shiprocket, Amazon FBA, USPS, UPS, FedEx, eBay, Poshmark, Etsy, and Shopify.
+      </p>
+
+      <h2>Brand Assets & Trademark Disclaimers</h2>
+      <p>
+        All brand names, trademarks, and registered logos displayed on LabelCropNow belong to their respective owners and are used strictly for compatibility identification and search navigation. LabelCropNow is an independent utility and is not affiliated with, sponsored by, or endorsed by any marketplace, courier, or printer manufacturer.
+      </p>
+      <p>
+        <strong>Creative Commons Attribution:</strong> Myntra SVG logo by AgarwalYuvraj (<a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener">CC BY-SA 4.0</a>); Snapdeal PNG logo by AwH108 (<a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener">CC BY-SA 4.0</a>); Simple Icons marks under <a href="https://github.com/simple-icons/simple-icons" target="_blank" rel="noopener">CC0-1.0</a>.
+      </p>
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  .static-page {
+    padding: 3.5rem 1.25rem 5rem;
+    max-width: 850px;
+    background: #ffffff;
+  }
+
+  .page-header {
+    text-align: center;
+    margin-bottom: 2.5rem;
+  }
+
+  .page-title {
+    font-family: var(--font-serif);
+    font-size: 2.8rem;
+    font-weight: 500;
+    color: var(--text-main);
+    margin: 0.75rem 0 0.5rem;
+    letter-spacing: -0.025em;
+  }
+
+  .page-lead {
+    font-size: 1.1rem;
+    color: var(--text-muted);
+    line-height: 1.6;
+  }
+
+  .content-body {
+    padding: 2.5rem;
+    color: #334155;
+    line-height: 1.8;
+  }
+
+  .content-body h2 {
+    font-size: 1.45rem;
+    color: var(--text-main);
+    margin: 2rem 0 0.75rem;
+    font-weight: 700;
+  }
+
+  .content-body h2:first-of-type {
+    margin-top: 0;
+  }
+
+  .content-body p {
+    margin-bottom: 1.25rem;
+  }
+
+  .content-body ul {
+    margin: 1rem 0 1.5rem 1.5rem;
+  }
+
+  .content-body li {
+    margin-bottom: 0.5rem;
+  }
+
+  .content-body strong {
+    color: var(--text-main);
+  }
+</style>

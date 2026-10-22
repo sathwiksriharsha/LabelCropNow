@@ -1,0 +1,93 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="Contact & Marketplace Request — LabelCropNow"
+  description="Contact the LabelCropNow engineering team, report courier layout updates, or request support for new marketplace formats."
+  canonicalPath="/contact"
+>
+  <div class="container static-page">
+    <header class="page-header">
+      <span class="badge badge-amber">Feedback & Support</span>
+      <h1 class="page-title">Contact & Marketplace Requests</h1>
+      <p class="page-lead">Have a suggestion or need support for a new courier or marketplace format? We would love to hear from you.</p>
+    </header>
+
+    <div class="content-body card">
+      <h2>Request a New Courier or Marketplace Preset</h2>
+      <p>
+        Did your marketplace recently change its PDF dispatch slip layout, or do you need custom crop margins for a regional carrier not currently listed in our directory?
+      </p>
+      <p>
+        LabelCropNow is actively maintained. You can reach out directly via:
+      </p>
+      <ul>
+        <li><strong>Email:</strong> <a href="mailto:support@labelcropnow.pages.dev">support@labelcropnow.pages.dev</a></li>
+        <li><strong>Community & Source:</strong> <a href="https://github.com/labelcropnow" target="_blank" rel="noopener">github.com/labelcropnow</a></li>
+      </ul>
+
+      <h2>Reporting Scanner Issues</h2>
+      <p>
+        If an optical barcode scanner at your courier hub has trouble reading a cropped thermal label, please let us know the printer model (e.g. Rollo, Zebra ZD420) and carrier name so we can fine-tune vector boundary offsets.
+      </p>
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  .static-page {
+    padding: 3.5rem 1.25rem 5rem;
+    max-width: 850px;
+    background: #ffffff;
+  }
+
+  .page-header {
+    text-align: center;
+    margin-bottom: 2.5rem;
+  }
+
+  .page-title {
+    font-family: var(--font-serif);
+    font-size: 2.8rem;
+    font-weight: 500;
+    color: var(--text-main);
+    margin: 0.75rem 0 0.5rem;
+    letter-spacing: -0.025em;
+  }
+
+  .page-lead {
+    font-size: 1.1rem;
+    color: var(--text-muted);
+    line-height: 1.6;
+  }
+
+  .content-body {
+    padding: 2.5rem;
+    color: #334155;
+    line-height: 1.8;
+  }
+
+  .content-body h2 {
+    font-size: 1.45rem;
+    color: var(--text-main);
+    margin: 2rem 0 0.75rem;
+    font-weight: 700;
+  }
+
+  .content-body h2:first-of-type {
+    margin-top: 0;
+  }
+
+  .content-body p {
+    margin-bottom: 1.25rem;
+  }
+
+  .content-body ul {
+    margin: 1rem 0 1.5rem 1.5rem;
+  }
+
+  .content-body li {
+    margin-bottom: 0.5rem;
+  }
+</style>

@@ -1,0 +1,321 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import LabelWorkbench from '../../components/LabelWorkbench.astro';
+import { INDIAN_MARKETPLACE_TOOLS, type ToolPreset } from '../../config/site.js';
+
+export function getStaticPaths() {
+  return INDIAN_MARKETPLACE_TOOLS.map((preset) => ({
+    params: { slug: preset.slug },
+    props: { preset },
+  }));
+}
+
+export interface Props {
+  preset: ToolPreset;
+}
+
+const { preset } = Astro.props;
+---
+
+<BaseLayout
+  title={preset.metaTitle}
+  description={preset.metaDescription}
+  canonicalPath={`/crop/${preset.slug}`}
+  faq={preset.faq}
+>
+  <div class="tool-page container">
+    <!-- Breadcrumb -->
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <a href="/">Home</a>
+      <span class="sep">/</span>
+      <a href="/supported-marketplaces#india">India Croppers</a>
+      <span class="sep">/</span>
+      <span class="current">{preset.shortName}</span>
+    </nav>
+
+    <!-- Page Header -->
+    <header class="tool-header">
+      <div class="badge-row">
+        <span class="badge badge-emerald">🇮🇳 Indian Marketplace</span>
+        <span class="badge badge-cyan">{preset.couriers.join(', ')}</span>
+        <span class="badge badge-amber">100% Vector Lossless</span>
+      </div>
+      <h1 class="tool-h1">{preset.h1}</h1>
+      <p class="tool-tagline">{preset.tagline}</p>
+    </header>
+
+    <!-- Interactive Workbench Configured for this Preset -->
+    <LabelWorkbench preset={preset} />
+
+    <!-- Paper Saver Guide Box -->
+    <section class="guide-box card">
+      <div class="guide-header">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#059669" stroke-width="2">
+          <circle cx="12" cy="12" r="10"/>
+          <line x1="12" y1="16" x2="12" y2="12"/>
+          <line x1="12" y1="8" x2="12.01" y2="8"/>
+        </svg>
+        <h2 class="guide-title">Seller Paper-Saving & Printing Tip for {preset.shortName}</h2>
+      </div>
+      <p class="guide-text">{preset.paperSaverTip}</p>
+    </section>
+
+    <!-- Features Grid -->
+    <section class="features-section">
+      <h2 class="section-title">Key Capabilities for {preset.shortName} Dispatch Slip Management</h2>
+      <div class="grid-2">
+        {preset.features.map((feat) => (
+          <div class="feature-item card">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#059669" stroke-width="2">
+              <polyline points="20 6 9 17 4 12"/>
+            </svg>
+            <span>{feat}</span>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- Step-by-Step Instructions -->
+    <section class="steps-section card">
+      <h2 class="section-title" style="margin-bottom: 1.5rem;">How to Crop & Sort {preset.shortName} Labels in 4 Easy Steps</h2>
+      <div class="steps-grid">
+        <div class="step-card">
+          <div class="step-num">1</div>
+          <h3 class="step-title">Upload Dispatch PDF</h3>
+          <p class="step-desc">Download your Ready-to-Ship dispatch slip PDF from the {preset.shortName} seller portal and drag it into ShipLabelKit.</p>
+        </div>
+        <div class="step-card">
+          <div class="step-num">2</div>
+          <h3 class="step-title">Select Print Format</h3>
+          <p class="step-desc">Choose standard 4×6" thermal roll stickers or 4-Up A4 grid (2×2 labels per sheet for inkjet/laser printers).</p>
+        </div>
+        <div class="step-card">
+          <div class="step-num">3</div>
+          <h3 class="step-title">Auto-Sort & Multi-Qty Alert</h3>
+          <p class="step-desc">Organize labels alphabetically by SKU or grouped by courier partner (Valmo, Delhivery, etc.) to streamline packing.</p>
+        </div>
+        <div class="step-card">
+          <div class="step-num">4</div>
+          <h3 class="step-title">Instant Download</h3>
+          <p class="step-desc">Download your processed PDF in 1 click. Zero server wait times, 100% vector barcode sharpness guaranteed.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ Accordion -->
+    {preset.faq && preset.faq.length > 0 && (
+      <section class="faq-section">
+        <h2 class="section-title" style="text-align: center; margin-bottom: 2rem;">Frequently Asked Questions: {preset.shortName} Label Cropping</h2>
+        <div class="faq-list">
+          {preset.faq.map((item) => (
+            <div class="faq-item card">
+              <h3 class="faq-q">{item.q}</h3>
+              <p class="faq-a">{item.a}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+    )}
+  </div>
+</BaseLayout>
+
+<style>
+  .tool-page {
+    padding: 2.5rem 1.25rem 5rem;
+    background: #ffffff;
+  }
+
+  .breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.85rem;
+    color: var(--text-dim);
+    margin-bottom: 1.75rem;
+  }
+
+  .breadcrumb a {
+    color: var(--text-muted);
+    text-decoration: none;
+  }
+
+  .breadcrumb a:hover {
+    color: var(--accent-emerald);
+  }
+
+  .breadcrumb .sep {
+    color: var(--border-subtle);
+  }
+
+  .breadcrumb .current {
+    color: var(--text-main);
+    font-weight: 600;
+  }
+
+  .tool-header {
+    text-align: center;
+    max-width: 850px;
+    margin: 0 auto 2.5rem;
+  }
+
+  .badge-row {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 0.65rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .tool-h1 {
+    font-family: var(--font-serif);
+    font-size: 2.8rem;
+    font-weight: 500;
+    line-height: 1.15;
+    color: var(--text-main);
+    letter-spacing: -0.025em;
+    margin-bottom: 1rem;
+  }
+
+  .tool-tagline {
+    font-size: 1.1rem;
+    color: var(--text-muted);
+    line-height: 1.6;
+  }
+
+  /* Guide Box */
+  .guide-box {
+    background: #f0fdf4;
+    border: 1px solid #bbf7d0;
+    padding: 1.5rem;
+    margin-bottom: 3rem;
+  }
+
+  .guide-header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .guide-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #15803d;
+  }
+
+  .guide-text {
+    font-size: 0.95rem;
+    color: #166534;
+    line-height: 1.6;
+  }
+
+  /* Features */
+  .features-section {
+    margin-bottom: 3.5rem;
+  }
+
+  .section-title {
+    font-size: 1.6rem;
+    font-weight: 800;
+    color: var(--text-main);
+    margin-bottom: 1.5rem;
+    letter-spacing: -0.02em;
+  }
+
+  .feature-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 1rem 1.25rem;
+    font-size: 0.92rem;
+    color: var(--text-main);
+  }
+
+  .feature-item svg {
+    flex-shrink: 0;
+  }
+
+  /* Steps */
+  .steps-section {
+    padding: 2rem;
+    margin-bottom: 3.5rem;
+  }
+
+  .steps-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.5rem;
+  }
+
+  .step-card {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .step-num {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    background: #eff6ff;
+    border: 1px solid #bfdbfe;
+    color: #1e40af;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 0.9rem;
+  }
+
+  .step-title {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--text-main);
+  }
+
+  .step-desc {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    line-height: 1.5;
+  }
+
+  /* FAQ */
+  .faq-section {
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  .faq-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .faq-item {
+    padding: 1.25rem 1.5rem;
+  }
+
+  .faq-q {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--text-main);
+    margin-bottom: 0.5rem;
+  }
+
+  .faq-a {
+    font-size: 0.92rem;
+    color: var(--text-muted);
+    line-height: 1.6;
+  }
+
+  @media (max-width: 900px) {
+    .tool-h1 {
+      font-size: 1.85rem;
+    }
+
+    .steps-grid {
+      grid-template-columns: 1fr;
+      gap: 1.25rem;
+    }
+  }
+</style>

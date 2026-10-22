@@ -1,0 +1,2 @@
+# Clean canonical redirects if any
+https://shiplabelkit.com/* https://shiplabelkit.pages.dev/:splat 301!

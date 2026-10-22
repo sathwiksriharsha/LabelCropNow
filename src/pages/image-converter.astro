@@ -1,0 +1,680 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const converterFaq = [
+  {
+    q: 'How do I convert an image online for free?',
+    a: 'Upload your image file, choose your desired output format (JPG, PNG, or WEBP), adjust the quality slider if needed, and click Convert Image. Your converted file is generated in your browser and ready for download immediately.'
+  },
+  {
+    q: 'Are my photos safe and private?',
+    a: 'Yes, 100%! All file conversion happens inside your web browser using HTML5 Canvas. Your photos never leave your device or touch any remote server.'
+  },
+  {
+    q: 'What image formats can I convert?',
+    a: 'You can upload JPG, JPEG, PNG, WEBP, BMP, and GIF files and convert them seamlessly to high-resolution JPG, transparent PNG, or modern compact WEBP.'
+  },
+  {
+    q: 'Why should I convert images to WebP for eCommerce?',
+    a: 'WebP provides superior lossless and lossy compression compared to traditional PNG and JPEG. WebP images are typically 25% to 35% smaller than comparable JPEGs at identical quality, speeding up store loading times.'
+  }
+];
+---
+
+<BaseLayout
+  title="Free Image Converter - Convert JPG, PNG, WEBP High Quality | LabelCropNow"
+  description="Convert images online for free. Support for JPG, PNG, WEBP, GIF, BMP to JPG, PNG, WEBP. High quality, 100% secure, offline processing in your browser."
+  canonicalPath="/image-converter"
+  faq={converterFaq}
+>
+  <div class="converter-page container">
+    <!-- Breadcrumb -->
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <a href="/">Home</a>
+      <span class="sep">/</span>
+      <span class="current">Image Converter</span>
+    </nav>
+
+    <!-- Header -->
+    <header class="page-header text-center">
+      <div class="badge-row">
+        <span class="badge badge-emerald">Offline Browser Canvas</span>
+        <span class="badge badge-blue">JPG • PNG • WEBP</span>
+        <span class="badge badge-amber">100% Free & Unlimited</span>
+      </div>
+      <h1 class="page-title font-serif">Free Online Image Converter</h1>
+      <p class="page-subtitle font-sans">
+        Convert between JPG, PNG, WEBP, BMP, and GIF instantly in your browser without uploading to any server or sacrificing image resolution.
+      </p>
+    </header>
+
+    <!-- Main Card -->
+    <div class="card converter-card">
+      <!-- Dropzone -->
+      <div class="dropzone" id="convDropzone">
+        <input type="file" id="convFileInput" accept="image/*" class="sr-only" />
+        <div class="dropzone-icon">
+          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.8"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
+        </div>
+        <h2 class="dropzone-title font-sans">Select or drop an image to convert</h2>
+        <p class="dropzone-desc font-sans">JPG, PNG, WEBP, BMP, or GIF (Up to 30 MB)</p>
+        <button type="button" class="btn btn-primary" id="btnBrowseConv">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+          <span>Choose Image File</span>
+        </button>
+      </div>
+
+      <!-- Workbench -->
+      <div class="conv-workbench" id="convWorkbench" style="display: none;">
+        <div class="file-preview-strip">
+          <div class="file-thumb-wrap">
+            <img id="convThumb" class="file-thumb" src="" alt="Thumbnail" />
+          </div>
+          <div class="file-info">
+            <h3 class="file-name font-sans" id="convFileName">photo.png</h3>
+            <div class="file-meta font-mono">
+              <span id="convOrigSize">1.8 MB</span> • <span id="convDimensions">1080 × 1080 px</span> • Current: <span id="convFormat">PNG</span>
+            </div>
+          </div>
+          <button type="button" class="btn-clear font-sans" id="btnClearConv" title="Remove image">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            <span>Change File</span>
+          </button>
+        </div>
+
+        <!-- Target Format Selection -->
+        <div class="format-selection-box">
+          <label class="section-label font-sans">1. Select Target Output Format:</label>
+          <div class="format-cards-grid">
+            <label class="format-card active" data-fmt="image/jpeg">
+              <input type="radio" name="targetFmt" value="image/jpeg" checked class="sr-only" />
+              <div class="format-icon font-mono">JPG</div>
+              <div class="format-title font-sans">JPG / JPEG</div>
+              <div class="format-desc font-sans">Universal compatibility across all eCommerce portals</div>
+            </label>
+
+            <label class="format-card" data-fmt="image/png">
+              <input type="radio" name="targetFmt" value="image/png" class="sr-only" />
+              <div class="format-icon font-mono">PNG</div>
+              <div class="format-title font-sans">PNG</div>
+              <div class="format-desc font-sans">Lossless clarity with transparent alpha background</div>
+            </label>
+
+            <label class="format-card" data-fmt="image/webp">
+              <input type="radio" name="targetFmt" value="image/webp" class="sr-only" />
+              <div class="format-icon font-mono">WEBP</div>
+              <div class="format-title font-sans">WEBP</div>
+              <div class="format-desc font-sans">Next-gen compact web format (30% smaller)</div>
+            </label>
+          </div>
+        </div>
+
+        <!-- Quality Control -->
+        <div class="quality-box">
+          <div class="quality-header">
+            <label for="convQuality" class="quality-label font-sans">
+              <span>2. Output Quality Level:</span>
+              <span class="quality-badge font-mono" id="convQualityVal">100% (Maximum Quality)</span>
+            </label>
+          </div>
+          <input type="range" id="convQuality" class="conv-range" min="10" max="100" value="100" />
+          <p class="quality-hint font-sans">100% maintains original sharp resolution. Reduce to 80-90% for reduced file size.</p>
+        </div>
+
+        <!-- Convert Action Button -->
+        <div class="action-bar text-center">
+          <button type="button" class="btn btn-primary btn-convert" id="btnConvert">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+            <span>Convert Image</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Results Card -->
+      <div class="results-card" id="convResultsCard" style="display: none;">
+        <div class="results-header">
+          <div class="success-badge font-sans">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+            <span>Conversion Complete!</span>
+          </div>
+          <div class="size-comparison font-mono">
+            <span class="old-size" id="convOldSize">1.8 MB</span>
+            <span class="arrow">→</span>
+            <span class="new-size" id="convNewSize">420 KB</span>
+            <span class="ext-badge" id="convNewExt">.JPG</span>
+          </div>
+        </div>
+
+        <div class="download-bar">
+          <button type="button" class="btn btn-primary btn-download" id="btnDownloadConv">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            <span>Download Converted Image</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Educational Section -->
+    <section class="guide-section card">
+      <h2 class="guide-title font-serif">Choosing the Best Image Format for E-Commerce</h2>
+      <div class="guide-grid">
+        <div class="guide-card">
+          <h3 class="guide-h3 font-sans">JPG (Best for Catalogs)</h3>
+          <p class="guide-p font-sans">Accepted by 100% of marketplace systems including Meesho, Amazon, Flipkart, and eBay. Best for lifestyle photos, apparel, and complex textures.</p>
+        </div>
+        <div class="guide-card">
+          <h3 class="guide-h3 font-sans">PNG (Best for Logos & Cutouts)</h3>
+          <p class="guide-p font-sans">Supports true transparency. Best for isolated product cutouts, white-background packaging, brand logos, and graphic watermarks.</p>
+        </div>
+        <div class="guide-card">
+          <h3 class="guide-h3 font-sans">WEBP (Best for Shopify & D2C)</h3>
+          <p class="guide-p font-sans">Modern format created by Google. Decreases page load times on Shopify storefronts, helping mobile shoppers browse catalogs smoothly.</p>
+        </div>
+      </div>
+    </section>
+  </div>
+</BaseLayout>
+
+<script>
+  const fileInput = document.getElementById('convFileInput') as HTMLInputElement;
+  const btnBrowse = document.getElementById('btnBrowseConv') as HTMLButtonElement;
+  const dropzone = document.getElementById('convDropzone') as HTMLElement;
+  const workbench = document.getElementById('convWorkbench') as HTMLElement;
+  const thumb = document.getElementById('convThumb') as HTMLImageElement;
+  const fileNameEl = document.getElementById('convFileName') as HTMLElement;
+  const origSizeEl = document.getElementById('convOrigSize') as HTMLElement;
+  const dimensionsEl = document.getElementById('convDimensions') as HTMLElement;
+  const formatEl = document.getElementById('convFormat') as HTMLElement;
+  const btnClear = document.getElementById('btnClearConv') as HTMLButtonElement;
+  const slider = document.getElementById('convQuality') as HTMLInputElement;
+  const qualityValEl = document.getElementById('convQualityVal') as HTMLElement;
+  const btnConvert = document.getElementById('btnConvert') as HTMLButtonElement;
+  const resultsCard = document.getElementById('convResultsCard') as HTMLElement;
+  const convOldSize = document.getElementById('convOldSize') as HTMLElement;
+  const convNewSize = document.getElementById('convNewSize') as HTMLElement;
+  const convNewExt = document.getElementById('convNewExt') as HTMLElement;
+  const btnDownload = document.getElementById('btnDownloadConv') as HTMLButtonElement;
+
+  let currentFile: File | null = null;
+  let loadedImg: HTMLImageElement | null = null;
+  let convertedBlob: Blob | null = null;
+  let convertedUrl: string | null = null;
+  let convertedFileName = '';
+
+  function formatBytes(bytes: number): string {
+    if (bytes === 0) return '0 Bytes';
+    const k = 1024;
+    const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+  }
+
+  function handleFile(file: File) {
+    if (!file.type.startsWith('image/')) {
+      alert('Please select a valid image file (JPG, PNG, WEBP, BMP, GIF).');
+      return;
+    }
+    currentFile = file;
+    resultsCard.style.display = 'none';
+
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const img = new Image();
+      img.onload = () => {
+        loadedImg = img;
+        thumb.src = e.target?.result as string;
+        fileNameEl.innerText = file.name;
+        origSizeEl.innerText = formatBytes(file.size);
+        dimensionsEl.innerText = `${img.naturalWidth} × ${img.naturalHeight} px`;
+        formatEl.innerText = file.type.split('/')[1]?.toUpperCase() || 'IMAGE';
+
+        dropzone.style.display = 'none';
+        workbench.style.display = 'block';
+      };
+      img.src = e.target?.result as string;
+    };
+    reader.readAsDataURL(file);
+  }
+
+  btnBrowse?.addEventListener('click', () => fileInput?.click());
+  fileInput?.addEventListener('change', (e) => {
+    const file = (e.target as HTMLInputElement).files?.[0];
+    if (file) handleFile(file);
+  });
+
+  dropzone?.addEventListener('dragover', (e) => {
+    e.preventDefault();
+    dropzone.classList.add('drag-over');
+  });
+  dropzone?.addEventListener('dragleave', () => dropzone.classList.remove('drag-over'));
+  dropzone?.addEventListener('drop', (e) => {
+    e.preventDefault();
+    dropzone.classList.remove('drag-over');
+    const file = e.dataTransfer?.files?.[0];
+    if (file) handleFile(file);
+  });
+
+  btnClear?.addEventListener('click', () => {
+    currentFile = null;
+    loadedImg = null;
+    fileInput.value = '';
+    workbench.style.display = 'none';
+    resultsCard.style.display = 'none';
+    dropzone.style.display = 'block';
+  });
+
+  // Target Format Card Selection
+  const formatCards = document.querySelectorAll('.format-card');
+  formatCards.forEach((card) => {
+    card.addEventListener('click', () => {
+      formatCards.forEach((c) => c.classList.remove('active'));
+      card.classList.add('active');
+      const radio = card.querySelector('input[type="radio"]') as HTMLInputElement;
+      if (radio) radio.checked = true;
+    });
+  });
+
+  slider?.addEventListener('input', () => {
+    qualityValEl.innerText = `${slider.value}% Quality`;
+  });
+
+  btnConvert?.addEventListener('click', () => {
+    if (!loadedImg || !currentFile) return;
+
+    const checkedRadio = document.querySelector('input[name="targetFmt"]:checked') as HTMLInputElement;
+    const targetMime = checkedRadio?.value || 'image/jpeg';
+
+    btnConvert.innerHTML = `
+      <svg class="spinner-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="2" x2="12" y2="6"/><line x1="12" y1="18" x2="12" y2="22"/><line x1="4.93" y1="4.93" x2="7.76" y2="7.76"/><line x1="16.24" y1="16.24" x2="19.07" y2="19.07"/><line x1="2" y1="12" x2="6" y2="12"/><line x1="18" y1="12" x2="22" y2="12"/><line x1="4.93" y1="19.07" x2="7.76" y2="16.24"/><line x1="16.24" y1="7.76" x2="19.07" y2="4.93"/></svg>
+      <span>Converting...</span>
+    `;
+    btnConvert.disabled = true;
+
+    setTimeout(() => {
+      try {
+        const canvas = document.createElement('canvas');
+        canvas.width = loadedImg.naturalWidth;
+        canvas.height = loadedImg.naturalHeight;
+        const ctx = canvas.getContext('2d')!;
+
+        // Fill white background for JPG conversion to prevent transparent areas turning black
+        if (targetMime === 'image/jpeg') {
+          ctx.fillStyle = '#ffffff';
+          ctx.fillRect(0, 0, canvas.width, canvas.height);
+        }
+        ctx.drawImage(loadedImg, 0, 0);
+
+        const quality = parseInt(slider.value) / 100;
+        canvas.toBlob((blob) => {
+          if (!blob) {
+            alert('Conversion failed. Please try a different target format.');
+            btnConvert.disabled = false;
+            btnConvert.innerText = 'Convert Image';
+            return;
+          }
+
+          convertedBlob = blob;
+          if (convertedUrl) URL.revokeObjectURL(convertedUrl);
+          convertedUrl = URL.createObjectURL(blob);
+
+          const ext = targetMime === 'image/jpeg' ? 'jpg' : targetMime === 'image/png' ? 'png' : 'webp';
+          const nameWithoutExt = currentFile.name.replace(/\.[^/.]+$/, '');
+          convertedFileName = `${nameWithoutExt}.${ext}`;
+
+          convOldSize.innerText = formatBytes(currentFile.size);
+          convNewSize.innerText = formatBytes(blob.size);
+          convNewExt.innerText = `.${ext.toUpperCase()}`;
+
+          resultsCard.style.display = 'block';
+          btnConvert.disabled = false;
+          btnConvert.innerText = 'Convert Image';
+        }, targetMime, quality);
+      } catch (err) {
+        console.error(err);
+        alert('An error occurred during image conversion.');
+        btnConvert.disabled = false;
+        btnConvert.innerText = 'Convert Image';
+      }
+    }, 200);
+  });
+
+  btnDownload?.addEventListener('click', () => {
+    if (!convertedUrl) return;
+    const a = document.createElement('a');
+    a.href = convertedUrl;
+    a.download = convertedFileName;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+  });
+</script>
+
+<style>
+  .converter-page {
+    padding-top: 1.5rem;
+    padding-bottom: 4rem;
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+  .breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin-bottom: 1.5rem;
+  }
+  .breadcrumb a {
+    color: var(--text-muted);
+    text-decoration: none;
+  }
+  .breadcrumb a:hover {
+    color: var(--primary);
+  }
+  .page-header {
+    margin-bottom: 2.5rem;
+  }
+  .page-title {
+    font-size: 2.2rem;
+    color: var(--text-main);
+    margin: 0.75rem 0 0.5rem;
+  }
+  .page-subtitle {
+    font-size: 1.05rem;
+    color: var(--text-muted);
+    max-width: 680px;
+    margin: 0 auto;
+    line-height: 1.5;
+  }
+  .converter-card {
+    background: #ffffff;
+    border: 1px solid var(--border-subtle);
+    border-radius: 16px;
+    padding: 2rem;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.04);
+    margin-bottom: 3rem;
+  }
+  .dropzone {
+    border: 2px dashed #cbd5e1;
+    border-radius: 14px;
+    padding: 3.5rem 1.5rem;
+    text-align: center;
+    background: #f8fafc;
+    transition: all 0.2s ease;
+    cursor: pointer;
+  }
+  .dropzone:hover, .dropzone.drag-over {
+    border-color: #2563eb;
+    background: #eff6ff;
+  }
+  .dropzone-icon {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 1rem;
+  }
+  .dropzone-title {
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: var(--text-main);
+    margin-bottom: 0.35rem;
+  }
+  .dropzone-desc {
+    font-size: 0.92rem;
+    color: var(--text-muted);
+    margin-bottom: 1.5rem;
+  }
+  .file-preview-strip {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    background: #f8fafc;
+    border: 1px solid var(--border-subtle);
+    border-radius: 12px;
+    padding: 1rem 1.25rem;
+    margin-bottom: 2rem;
+  }
+  .file-thumb-wrap {
+    width: 64px;
+    height: 64px;
+    border-radius: 8px;
+    overflow: hidden;
+    background: #e2e8f0;
+    flex-shrink: 0;
+  }
+  .file-thumb {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .file-info {
+    flex: 1;
+    min-width: 0;
+  }
+  .file-name {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--text-main);
+    margin-bottom: 0.25rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .file-meta {
+    font-size: 0.82rem;
+    color: var(--text-muted);
+  }
+  .btn-clear {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    background: #ffffff;
+    border: 1px solid #cbd5e1;
+    color: #475569;
+    padding: 0.45rem 0.85rem;
+    border-radius: 8px;
+    font-size: 0.82rem;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  .btn-clear:hover {
+    background: #f1f5f9;
+    color: #0f172a;
+  }
+  .format-selection-box {
+    margin-bottom: 2rem;
+  }
+  .section-label {
+    display: block;
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--text-main);
+    margin-bottom: 0.85rem;
+  }
+  .format-cards-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+  }
+  @media (max-width: 650px) {
+    .format-cards-grid { grid-template-columns: 1fr; }
+  }
+  .format-card {
+    border: 2px solid var(--border-subtle);
+    border-radius: 12px;
+    padding: 1.25rem;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    background: #f8fafc;
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+  }
+  .format-card:hover {
+    border-color: #93c5fd;
+    background: #ffffff;
+  }
+  .format-card.active {
+    border-color: #2563eb;
+    background: #eff6ff;
+  }
+  .format-icon {
+    font-size: 1.2rem;
+    font-weight: 800;
+    color: #2563eb;
+  }
+  .format-title {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--text-main);
+  }
+  .format-desc {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    line-height: 1.35;
+  }
+  .quality-box {
+    background: #ffffff;
+    border: 1px solid var(--border-subtle);
+    border-radius: 12px;
+    padding: 1.25rem;
+    margin-bottom: 2rem;
+  }
+  .quality-header {
+    margin-bottom: 0.75rem;
+  }
+  .quality-label {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.92rem;
+    font-weight: 700;
+    color: var(--text-main);
+  }
+  .quality-badge {
+    background: #eff6ff;
+    color: #2563eb;
+    padding: 0.2rem 0.6rem;
+    border-radius: 6px;
+    font-size: 0.82rem;
+  }
+  .conv-range {
+    width: 100%;
+    accent-color: #2563eb;
+    cursor: pointer;
+    margin-bottom: 0.5rem;
+  }
+  .quality-hint {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+  }
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.75rem;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    cursor: pointer;
+    border: none;
+    transition: all 0.15s ease;
+  }
+  .btn-primary {
+    background: #2563eb;
+    color: #ffffff;
+  }
+  .btn-primary:hover {
+    background: #1d4ed8;
+  }
+  .btn-convert {
+    min-width: 240px;
+  }
+  .results-card {
+    background: #eff6ff;
+    border: 1.5px solid #93c5fd;
+    border-radius: 14px;
+    padding: 1.5rem;
+    margin-top: 2rem;
+    text-align: center;
+  }
+  .results-header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
+    flex-wrap: wrap;
+    margin-bottom: 1.25rem;
+  }
+  .success-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    background: #2563eb;
+    color: #ffffff;
+    padding: 0.45rem 1rem;
+    border-radius: 50px;
+    font-size: 0.95rem;
+    font-weight: 600;
+  }
+  .size-comparison {
+    font-size: 1.15rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .old-size {
+    color: #94a3b8;
+  }
+  .arrow {
+    color: #2563eb;
+  }
+  .new-size {
+    color: #1d4ed8;
+  }
+  .ext-badge {
+    background: #1e293b;
+    color: #ffffff;
+    font-size: 0.75rem;
+    padding: 0.2rem 0.5rem;
+    border-radius: 4px;
+  }
+  .guide-section {
+    background: #ffffff;
+    border: 1px solid var(--border-subtle);
+    border-radius: 16px;
+    padding: 2rem;
+  }
+  .guide-title {
+    font-size: 1.4rem;
+    color: var(--text-main);
+    margin-bottom: 1.5rem;
+    text-align: center;
+  }
+  .guide-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+  }
+  @media (max-width: 768px) {
+    .guide-grid { grid-template-columns: 1fr; }
+  }
+  .guide-card {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 1.25rem;
+  }
+  .guide-h3 {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--text-main);
+    margin-bottom: 0.4rem;
+  }
+  .guide-p {
+    font-size: 0.86rem;
+    color: var(--text-muted);
+    line-height: 1.45;
+  }
+</style>

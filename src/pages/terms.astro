@@ -1,0 +1,83 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="Terms of Service — LabelCropNow"
+  description="Terms of service and software usage policy for the LabelCropNow client-side shipping label suite."
+  canonicalPath="/terms"
+>
+  <div class="container static-page">
+    <header class="page-header">
+      <span class="badge badge-cyan">Usage Policy</span>
+      <h1 class="page-title">Terms of Service</h1>
+      <p class="page-lead">Standard terms governing the use of the LabelCropNow software utility.</p>
+    </header>
+
+    <div class="content-body card">
+      <h2>1. Permitted Use</h2>
+      <p>
+        LabelCropNow is provided free of charge for commercial and personal use by e-commerce marketplace sellers, warehouse logistics operators, and independent shippers. You are free to crop, sort, and print shipping labels without usage quotas or subscriptions.
+      </p>
+
+      <h2>2. Software Warranty & Disclaimer</h2>
+      <p>
+        The software is provided "as is", without warranty of any kind, express or implied, including but not limited to the warranties of merchantability, fitness for a particular purpose, and non-infringement. Sellers remain responsible for ensuring printed barcodes comply with carrier optical scanning specifications before parcel dispatch.
+      </p>
+
+      <h2>3. Trademarks & Brand Acknowledgement</h2>
+      <p>
+        Meesho, Flipkart, Ekart, Amazon, Valmo, Delhivery, Shadowfax, XpressBees, BlueDart, DTDC, USPS, UPS, FedEx, eBay, Poshmark, Etsy, Shopify, Rollo, Zebra, Dymo, and Brother are registered trademarks of their respective owners. LabelCropNow is an independent utility and is not officially affiliated with or endorsed by these companies.
+      </p>
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  .static-page {
+    padding: 3.5rem 1.25rem 5rem;
+    max-width: 850px;
+    background: #ffffff;
+  }
+
+  .page-header {
+    text-align: center;
+    margin-bottom: 2.5rem;
+  }
+
+  .page-title {
+    font-family: var(--font-serif);
+    font-size: 2.8rem;
+    font-weight: 500;
+    color: var(--text-main);
+    margin: 0.75rem 0 0.5rem;
+    letter-spacing: -0.025em;
+  }
+
+  .page-lead {
+    font-size: 1.1rem;
+    color: var(--text-muted);
+    line-height: 1.6;
+  }
+
+  .content-body {
+    padding: 2.5rem;
+    color: #334155;
+    line-height: 1.8;
+  }
+
+  .content-body h2 {
+    font-size: 1.45rem;
+    color: var(--text-main);
+    margin: 2rem 0 0.75rem;
+    font-weight: 700;
+  }
+
+  .content-body h2:first-of-type {
+    margin-top: 0;
+  }
+
+  .content-body p {
+    margin-bottom: 1.25rem;
+  }
+</style>

@@ -1,0 +1,25 @@
+{
+  "name": "shiplabelkit",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "100% Client-Side E-Commerce Shipping Label Cropper, SKU Sorter & ZPL Converter Suite",
+  "scripts": {
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@astrojs/sitemap": "^3.7.4",
+    "astro": "^5.4.2",
+    "jszip": "^3.10.2",
+    "pdf-lib": "^1.17.1",
+    "pdfjs-dist": "^4.10.38"
+  },
+  "devDependencies": {
+    "@types/node": "^22.13.0",
+    "typescript": "^5.7.3",
+    "vitest": "^3.0.7"
+  }
+}

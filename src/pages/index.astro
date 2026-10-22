@@ -1,0 +1,2597 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import LabelWorkbench from '../components/LabelWorkbench.astro';
+import ZplWorkbench from '../components/ZplWorkbench.astro';
+import BrandLogo from '../components/BrandLogo.astro';
+import { siteConfig } from '../config/site.js';
+
+const homeFaq = [
+  {
+    q: 'How does ShipLabelKit protect seller privacy and customer data?',
+    a: 'ShipLabelKit is engineered with a 100% client-side architecture. When you drop a PDF into the tool, all parsing, vector cropping, SKU sorting, and page re-arrangements happen directly inside your web browser’s memory (RAM). No files, customer names, addresses, phone numbers, or GSTINs are ever transmitted to any server.'
+  },
+  {
+    q: 'Why do my thermal barcodes stay sharp with ShipLabelKit while other online tools make them blurry?',
+    a: 'Most free online converters convert your PDF pages into low-resolution raster images (JPG or PNG) and re-pack them into a new PDF. This blurs delicate 1D/2D barcodes and causes scanner rejection at courier hubs. ShipLabelKit directly mutates vector CropBoxes and MediaBoxes using WebAssembly, ensuring 100% lossless line-art clarity for high-speed optical scanning.'
+  },
+  {
+    q: 'Can I print 4 Meesho or Flipkart labels on a single A4 sheet to save paper?',
+    a: 'Yes! Select the "A4 4-Up Grid" mode. ShipLabelKit crops out the bottom tax invoice from each order and arranges 4 shipping labels onto a single A4 page in a 2x2 grid with cutting lines, saving up to 75% paper on standard inkjet or laser printers.'
+  },
+  {
+    q: 'How does the automatic SKU and Courier sorting work?',
+    a: 'Before cropping, our client-side text extractor analyzes each dispatch slip for Courier Partners (Valmo, Delhivery, Shadowfax, Ekart, ATS, etc.), product SKU codes, and quantities. You can re-order hundreds of labels alphabetically by SKU or grouped by courier partner in one click.'
+  },
+  {
+    q: 'Does ShipLabelKit work offline?',
+    a: 'Yes! Once loaded in your browser, ShipLabelKit can process PDF files and ZPL code completely offline without an active internet connection.'
+  },
+  {
+    q: 'Which printers are supported?',
+    a: 'All standard 4×6" thermal label printers (Zebra, Rollo, TSC, Brother, MUNBYN, Xprinter, TVS) and standard A4/Letter laser or inkjet printers (HP, Canon, Epson, Brother) are 100% supported.'
+  }
+];
+
+// Curated Marketplace Presets with Real Official SVG Logos (Matching User Image 2)
+const PRESET_HIGHLIGHTS = [
+  { name: 'Meesho Seller Panel', sub: 'Valmo, Delhivery, Shadowfax', slug: 'crop/meesho', brandKey: 'meesho', cat: 'india' },
+  { name: 'Flipkart Ekart Logistics', sub: 'Ekart, Smart Fulfillment', slug: 'crop/flipkart', brandKey: 'flipkart', cat: 'india' },
+  { name: 'Amazon India Easy Ship', sub: 'ATS, Delhivery Surface', slug: 'crop/amazon-india', brandKey: 'amazon', cat: 'india' },
+  { name: 'Amazon FBA US (8.5×11")', sub: 'FNSKU, Pallet & Box Labels', slug: 'us/amazon-fba-8-5x11-to-4x6', brandKey: 'amazon', cat: 'us' },
+  { name: 'USPS Priority & Ground', sub: 'Click-N-Ship, Certified 4×6', slug: 'us/usps-click-n-ship-4x6-cropper', brandKey: 'usps', cat: 'us' },
+  { name: 'UPS Ground & WorldShip', sub: 'UPS 4×6 Thermal Roll', slug: 'us/ups-shipping-label-cropper', brandKey: 'ups', cat: 'us' },
+  { name: 'FedEx Ship Manager', sub: 'FedEx Express & Ground', slug: 'us/fedex-shipping-label-cropper', brandKey: 'fedex', cat: 'us' },
+  { name: 'eBay Shipping Manager', sub: 'Standard Envelope & 4×6', slug: 'us/ebay-shipping-label-to-4x6', brandKey: 'ebay', cat: 'us' },
+  { name: 'Myntra Omnichannel', sub: 'Ecom Express, Delhivery', slug: 'crop/myntra', brandKey: 'myntra', cat: 'india' },
+  { name: 'Ajio Business Dispatch', sub: 'Reliance Logistics, Bluedart', slug: 'crop/ajio', brandKey: 'ajio', cat: 'india' },
+  { name: 'Shopify Shipping', sub: 'Multi-courier roll labels', slug: 'us/shopify-shipping-label-cropper', brandKey: 'shopify', cat: 'us' },
+  { name: 'Shiprocket Multi-Carrier', sub: 'Aggregator 4×6 Batch', slug: 'crop/shiprocket', brandKey: 'shiprocket', cat: 'india' },
+  { name: 'GlowRoad Reseller', sub: 'Valmo, Shadowfax Surface', slug: 'crop/glowroad', brandKey: 'glowroad', cat: 'india' },
+  { name: 'Poshmark US Prepaid', sub: 'USPS 4×6 label converter', slug: 'us/poshmark-label-to-4x6', brandKey: 'poshmark', cat: 'us' },
+  { name: 'Walmart WFS Inbound', sub: 'WFS Box & Item Barcodes', slug: 'us/walmart-seller-wfs-label-cropper', brandKey: 'walmart', cat: 'us' },
+  { name: 'TikTok Shop US & UK', sub: 'Prepaid Logistics 4×6', slug: 'us/tiktok-shop-label-cropper', brandKey: 'tiktok', cat: 'us' }
+];
+---
+
+<BaseLayout
+  title="LabelCropNow — Free Shipping Label Cropper, SKU Sorter & ZPL Studio"
+  description="100% client-side shipping label cropper, SKU batch sorter, A4 4-up grid generator, and offline ZPL thermal engine for Meesho, Flipkart, Amazon, and USPS sellers."
+  faq={homeFaq}
+>
+  <!-- Hero Section -->
+  <section class="hero-section">
+    <div class="container hero-container">
+      <div class="hero-grid">
+        <!-- Hero Left Column: Editorial Headlines, Actions, Value Badges -->
+        <div class="hero-left">
+          <div class="hero-badge-pill">
+            <span class="pulse-dot"></span>
+            <span class="font-mono text-xs">100% IN-BROWSER RAM • ZERO SERVER UPLOADS</span>
+          </div>
+
+          <h1 class="hero-title font-serif">
+            Shipping label croppers & batch sorters<br />
+            that <span class="highlight-text">just work.</span>
+          </h1>
+
+          <p class="hero-subtitle font-sans">
+            Convert, crop, and sort multi-order PDF invoices from Meesho, Flipkart, Amazon, and USPS into clean 4×6" thermal roll stickers and A4 4-up grids — instantly in your browser. Fast, private, and free.
+          </p>
+
+          <!-- Primary Actions -->
+          <div class="hero-action-buttons">
+            <a href="#workbench" class="btn btn-primary btn-hero">
+              <span>Crop Labels Now</span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <line x1="5" y1="12" x2="19" y2="12"/>
+                <polyline points="12 5 19 12 12 19"/>
+              </svg>
+            </a>
+            <a href="#features" class="btn btn-secondary btn-hero">
+              <span>Explore Features</span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M6 9l6 6 6-6"/>
+              </svg>
+            </a>
+          </div>
+
+          <!-- Marketplaces Platform Trust Row with Real Verified Brand Assets -->
+          <div class="platform-trust-row">
+            <span class="trust-label font-mono">SUPPORTED CHANNELS:</span>
+            <div class="trust-tags">
+              <span class="trust-tag"><BrandLogo brand="meesho" size={16} /> Meesho</span>
+              <span class="trust-tag"><BrandLogo brand="flipkart" size={16} /> Flipkart</span>
+              <span class="trust-tag"><BrandLogo brand="amazon" size={16} /> Amazon</span>
+              <span class="trust-tag"><BrandLogo brand="ekart" size={16} /> Ekart</span>
+              <span class="trust-tag"><BrandLogo brand="shadowfax" size={16} /> Shadowfax</span>
+              <span class="trust-tag"><BrandLogo brand="fedex" size={16} /> FedEx</span>
+              <span class="trust-tag"><BrandLogo brand="usps" size={14} fallbackText="USPS" /> USPS</span>
+              <span class="trust-tag"><BrandLogo brand="ups" size={14} fallbackText="UPS" /> UPS</span>
+            </div>
+          </div>
+
+          <!-- 3 Value Props -->
+          <div class="value-props-row">
+            <div class="value-prop">
+              <div class="value-prop-icon">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#059669" stroke-width="2">
+                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                  <polyline points="9 12 11 14 15 10"/>
+                </svg>
+              </div>
+              <div class="value-prop-text">
+                <strong>100% Private</strong>
+                <span>Zero server uploads</span>
+              </div>
+            </div>
+
+            <div class="value-prop">
+              <div class="value-prop-icon">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2">
+                  <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+                </svg>
+              </div>
+              <div class="value-prop-text">
+                <strong>Instant Speed</strong>
+                <span>500+ pages in 2s</span>
+              </div>
+            </div>
+
+            <div class="value-prop">
+              <div class="value-prop-icon">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#7c3aed" stroke-width="2">
+                  <path d="M18.178 8c5.096 0 5.096 8 0 8-5.095 0-7.133-8-12.739-8-4.585 0-4.585 8 0 8 5.606 0 7.644-8 12.74-8z"/>
+                </svg>
+              </div>
+              <div class="value-prop-text">
+                <strong>Free Forever</strong>
+                <span>No limits or paywalls</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Hero Right Column: 3D Isometric SaaS Mockup -->
+        <div class="hero-right">
+          <div class="dashboard-mockup-wrapper">
+            <div class="mockup-glass-tag">
+              <span class="status-live-dot"></span>
+              <span>100% Client-Side Engine</span>
+            </div>
+            <img
+              src="/images/seller_dashboard_preview.jpg"
+              alt="ShipLabelKit shipping label cropper and SKU sorter dashboard preview"
+              class="dashboard-mockup-img"
+              width="680"
+              height="382"
+              loading="eager"
+            />
+            <div class="mockup-floating-badge">
+              <div class="badge-num font-mono">3.8M+</div>
+              <div class="badge-label font-sans">Labels Sorted & Cropped</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Main Live Workbench Component (Mounted right in Hero) -->
+      <div id="workbench">
+        <LabelWorkbench />
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 01: "In Three Steps" Visual Setup Workflow (SellerBox Inspired) -->
+  <section class="section-block steps-section" id="how-it-works">
+    <div class="container">
+      <div class="section-center-heading">
+        <div class="section-badge-pill">
+          <span class="badge-dot bg-blue"></span>
+          <span>From Multi-Page Invoices to Packing Clarity, in Three Steps</span>
+        </div>
+        <h2 class="section-title-large font-serif">
+          Simple 3-step setup. Powerful warehouse results.
+        </h2>
+        <p class="section-desc-large font-sans">
+          Transform your raw marketplace PDF exports into a streamlined packaging assembly line in seconds.
+        </p>
+      </div>
+
+      <div class="steps-grid">
+        <!-- Step 1 Card -->
+        <div class="step-card">
+          <div class="step-card-visual">
+            <div class="step-visual-box step-box-1">
+              <div class="mockup-file-icon">
+                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.8">
+                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                  <polyline points="14 2 14 8 20 8"/>
+                  <line x1="16" y1="13" x2="8" y2="13"/>
+                  <line x1="16" y1="17" x2="8" y2="17"/>
+                  <polyline points="10 9 9 9 8 9"/>
+                </svg>
+                <div class="file-badges">
+                  <span class="f-badge meesho">Meesho</span>
+                  <span class="f-badge flipkart">Flipkart</span>
+                  <span class="f-badge amazon">Amazon</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="step-card-content">
+            <div class="step-pill">Step 1</div>
+            <h3 class="step-title font-sans">Upload your marketplace PDF</h3>
+            <p class="step-text font-sans">
+              Drag and drop raw A4 invoice PDFs downloaded from Meesho Supplier Panel, Flipkart Seller Hub, or Amazon ATS. Processes 1 to 500+ pages instantly in browser RAM.
+            </p>
+            <div class="step-tags">
+              <span class="badge badge-slate font-mono">Zero Upload Lag</span>
+              <span class="badge badge-emerald font-mono">100% Private</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 2 Card -->
+        <div class="step-card">
+          <div class="step-card-visual">
+            <img
+              src="/images/label_crop_workflow.jpg"
+              alt="Automatic shipping label cropping, invoice stripping, and SKU sorting workflow"
+              class="step-img"
+              width="400"
+              height="300"
+              loading="lazy"
+            />
+          </div>
+          <div class="step-card-content">
+            <div class="step-pill">Step 2</div>
+            <h3 class="step-title font-sans">Auto-crop, strip invoice & sort by SKU</h3>
+            <p class="step-text font-sans">
+              Our vector engine strips bottom tax invoices, isolates courier barcodes (Valmo, Delhivery, Ekart), and groups labels alphabetically by SKU for high-speed batch packing.
+            </p>
+            <div class="step-tags">
+              <span class="badge badge-blue font-mono">Vector CropBox</span>
+              <span class="badge badge-amber font-mono">SKU Batching</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 3 Card -->
+        <div class="step-card">
+          <div class="step-card-visual">
+            <img
+              src="/images/thermal_grid_preview.jpg"
+              alt="4x6 thermal roll stickers and A4 4-up paper saver grid printing"
+              class="step-img"
+              width="400"
+              height="300"
+              loading="lazy"
+            />
+          </div>
+          <div class="step-card-content">
+            <div class="step-pill">Step 3</div>
+            <h3 class="step-title font-sans">Print 4×6" roll or A4 4-up grid</h3>
+            <p class="step-text font-sans">
+              Download razor-sharp vector PDFs for Zebra, Rollo, and TSC thermal roll printers, or generate an A4 4-Up grid sheet to save 75% paper on standard inkjet and laser printers.
+            </p>
+            <div class="step-tags">
+              <span class="badge badge-purple font-mono">4×6 Thermal Roll</span>
+              <span class="badge badge-emerald font-mono">75% Paper Saved</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 02: Real Seller Usage & Statistics (SellerBox Metric Grid) -->
+  <section class="section-block stats-section">
+    <div class="container">
+      <div class="stats-header-row">
+        <div>
+          <div class="section-badge-pill">
+            <span class="badge-dot bg-blue"></span>
+            <span>Real SellerBox & Marketplace Usage</span>
+          </div>
+          <h2 class="stats-heading font-serif">
+            Built for sellers who want faster dispatch and zero paper waste.
+          </h2>
+        </div>
+        <p class="stats-subtext font-sans">
+          Trusted daily by marketplace suppliers across India and the US to crop labels, sort SKUs, and eliminate packaging bottlenecks.
+        </p>
+      </div>
+
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-card-top">
+            <div class="stat-info">
+              <p class="stat-title font-sans">Trusted Sellers</p>
+              <p class="stat-value font-mono">10,000+</p>
+            </div>
+            <div class="stat-icon-pill bg-blue">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2.2">
+                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                <circle cx="9" cy="7" r="4"/>
+                <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+                <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+              </svg>
+            </div>
+          </div>
+          <p class="stat-desc font-sans">
+            Sellers use ShipLabelKit daily to prepare shipping labels without manual software or costly subscriptions.
+          </p>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-card-top">
+            <div class="stat-info">
+              <p class="stat-title font-sans">Labels Processed</p>
+              <p class="stat-value font-mono">3.8M+</p>
+            </div>
+            <div class="stat-icon-pill bg-emerald">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#059669" stroke-width="2.2">
+                <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/>
+                <line x1="7" y1="7" x2="7.01" y2="7"/>
+              </svg>
+            </div>
+          </div>
+          <p class="stat-desc font-sans">
+            Shipping labels cropped and sorted for 100% optical scanning accuracy across Valmo, Delhivery, Ekart, and ATS.
+          </p>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-card-top">
+            <div class="stat-info">
+              <p class="stat-title font-sans">Average Paper Saved</p>
+              <p class="stat-value font-mono">68%</p>
+            </div>
+            <div class="stat-icon-pill bg-purple">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#7c3aed" stroke-width="2.2">
+                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+                <line x1="3" y1="12" x2="21" y2="12"/>
+                <line x1="12" y1="3" x2="12" y2="21"/>
+              </svg>
+            </div>
+          </div>
+          <p class="stat-desc font-sans">
+            Cut down paper sheet expenses by up to 75% with our automated A4 4-Up grid formatting for laser and inkjet printers.
+          </p>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-card-top">
+            <div class="stat-info">
+              <p class="stat-title font-sans">Server Uploads</p>
+              <p class="stat-value font-mono">0 Bytes</p>
+            </div>
+            <div class="stat-icon-pill bg-amber">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#d97706" stroke-width="2.2">
+                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+              </svg>
+            </div>
+          </div>
+          <p class="stat-desc font-sans">
+            100% client-side WebAssembly execution. Customer addresses, contact numbers, and GSTINs never leave your browser.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 03: All-In-One Dispatch Command Center (SellerBox Interactive Feature Tabs) -->
+  <section class="section-block command-section" id="command-center">
+    <div class="container">
+      <div class="section-heading-row">
+        <div>
+          <div class="section-badge-pill">
+            <span class="badge-dot bg-blue"></span>
+            <span>All-In-One Dispatch Command Center</span>
+          </div>
+          <h2 class="section-heading font-serif">
+            Everything you need to speed up warehouse fulfillment.
+          </h2>
+        </div>
+        <div class="section-sub-link">
+          <span>Engineered for zero delays, zero server reliance, and 100% barcode clarity.</span>
+        </div>
+      </div>
+
+      <div class="command-grid">
+        <!-- Interactive Tabs Navigation -->
+        <div class="command-tabs-list" id="commandTabs">
+          <div class="command-tab active" data-tab="cropper">
+            <div class="tab-indicator"></div>
+            <div class="tab-header">
+              <h3 class="tab-title font-sans">Intelligent 4×6 Label Cropping</h3>
+              <p class="tab-summary font-sans">
+                Automatically crop Meesho, Flipkart, and Amazon A4 invoices into 4×6" thermal roll stickers without losing barcodes.
+              </p>
+            </div>
+          </div>
+
+          <div class="command-tab" data-tab="sorter">
+            <div class="tab-indicator"></div>
+            <div class="tab-header">
+              <h3 class="tab-title font-sans">SKU & Courier Batch Sorter</h3>
+              <p class="tab-summary font-sans">
+                Extract product codes and courier routes to organize 500+ dispatch slips alphabetically for continuous assembly-line packing.
+              </p>
+            </div>
+          </div>
+
+          <div class="command-tab" data-tab="grid">
+            <div class="tab-indicator"></div>
+            <div class="tab-header">
+              <h3 class="tab-title font-sans">A4 4-Up Grid Paper Saver</h3>
+              <p class="tab-summary font-sans">
+                Arrange 4 shipping labels in a clean 2×2 grid with cutting guides, saving 75% paper on office laser or inkjet printers.
+              </p>
+            </div>
+          </div>
+
+          <div class="command-tab" data-tab="zpl">
+            <div class="tab-indicator"></div>
+            <div class="tab-header">
+              <h3 class="tab-title font-sans">Offline Zebra ZPL II Studio</h3>
+              <p class="tab-summary font-sans">
+                Preview raw Zebra programming language code directly in browser Canvas and export to 203 DPI / 300 DPI PDF stickers.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Dynamic Feature Showcase Display -->
+        <div class="command-preview-panel">
+          <!-- Cropper Showcase -->
+          <div class="showcase-content active" id="showcase-cropper">
+            <div class="showcase-card">
+              <div class="showcase-header">
+                <span class="badge badge-emerald font-mono">100% Vector Lossless</span>
+                <span class="font-mono text-xs text-slate-400">CropBox Engine</span>
+              </div>
+              <h4 class="showcase-heading font-serif">Instant A4 to 4×6" Thermal Cropper</h4>
+              <p class="showcase-desc font-sans">
+                Unlike online tools that turn PDFs into blurry pixel images, ShipLabelKit modifies vector coordinates directly. Barcodes scan with 100% optical accuracy at sorting hubs.
+              </p>
+              <div class="showcase-bullets">
+                <div class="bullet-item">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                  <span>Strips bottom tax invoice half automatically</span>
+                </div>
+                <div class="bullet-item">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                  <span>Pre-configured crop dimensions for Meesho, Flipkart & Amazon</span>
+                </div>
+                <div class="bullet-item">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                  <span>Export clean single-page thermal roll PDF in seconds</span>
+                </div>
+              </div>
+              <div class="showcase-action">
+                <a href="#workbench" class="btn btn-primary">Open Cropper Workbench →</a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Sorter Showcase -->
+          <div class="showcase-content" id="showcase-sorter">
+            <div class="showcase-card">
+              <div class="showcase-header">
+                <span class="badge badge-amber font-mono">Assembly Line Ready</span>
+                <span class="font-mono text-xs text-slate-400">Smart Text Extractor</span>
+              </div>
+              <h4 class="showcase-heading font-serif">SKU & Courier Batch Sorting</h4>
+              <p class="showcase-desc font-sans">
+                Eliminate wrong-item dispatch mistakes by sorting labels by product SKU. Your warehouse packing team can pack all units of a single product SKU in one continuous batch.
+              </p>
+              <div class="showcase-bullets">
+                <div class="bullet-item">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                  <span>Group by Courier: Valmo, Ekart, Delhivery, ATS, Shadowfax</span>
+                </div>
+                <div class="bullet-item">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                  <span>Sort alphabetically by SKU code or Item Title</span>
+                </div>
+                <div class="bullet-item">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                  <span>Multi-quantity order badge alerts prevent missing pieces</span>
+                </div>
+              </div>
+              <div class="showcase-action">
+                <a href="/sort-shipping-labels-by-sku" class="btn btn-primary">Launch SKU Sorter →</a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Grid Showcase -->
+          <div class="showcase-content" id="showcase-grid">
+            <div class="showcase-card">
+              <div class="showcase-header">
+                <span class="badge badge-purple font-mono">Eco-Friendly Savings</span>
+                <span class="font-mono text-xs text-slate-400">2×2 Matrix</span>
+              </div>
+              <h4 class="showcase-heading font-serif">A4 4-Up Grid Paper Saver</h4>
+              <p class="showcase-desc font-sans">
+                Don't own a thermal printer yet? ShipLabelKit packs 4 shipping labels onto a single A4 page with clean dotted cutting borders, slashing your paper costs by up to 75%.
+              </p>
+              <div class="showcase-bullets">
+                <div class="bullet-item">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                  <span>4 orders per sheet for HP, Canon, Epson laser and inkjet printers</span>
+                </div>
+                <div class="bullet-item">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                  <span>Integrated scissor cutting lines for effortless separation</span>
+                </div>
+                <div class="bullet-item">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                  <span>Strips useless tax invoices before gridding</span>
+                </div>
+              </div>
+              <div class="showcase-action">
+                <a href="/a4-4-labels-per-page-converter" class="btn btn-primary">Open 4-Up Grid Tool →</a>
+              </div>
+            </div>
+          </div>
+
+          <!-- ZPL Showcase -->
+          <div class="showcase-content" id="showcase-zpl">
+            <div class="showcase-card">
+              <div class="showcase-header">
+                <span class="badge badge-blue font-mono">HTML5 Canvas Engine</span>
+                <span class="font-mono text-xs text-slate-400">ZPL II Emulator</span>
+              </div>
+              <h4 class="showcase-heading font-serif">Offline Zebra ZPL II Studio</h4>
+              <p class="showcase-desc font-sans">
+                Directly render raw Zebra Programming Language code (^XA ... ^XZ) without downloading Zebra Designer, installing Java, or relying on remote API calls.
+              </p>
+              <div class="showcase-bullets">
+                <div class="bullet-item">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                  <span>Dual DPI selection: 203 DPI (8 dpmm) and 300 DPI (12 dpmm)</span>
+                </div>
+                <div class="bullet-item">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                  <span>Export high-resolution PDF and transparent PNG</span>
+                </div>
+                <div class="bullet-item">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                  <span>100% offline functionality in your browser</span>
+                </div>
+              </div>
+              <div class="showcase-action">
+                <a href="/zpl-to-pdf-converter" class="btn btn-primary">Open ZPL Studio →</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 04: Features for E-commerce Sellers -->
+  <section class="section-block features-showcase-section" id="features">
+    <div class="container">
+      <div class="features-header text-center">
+        <h2 class="features-main-title font-sans">
+          AI Features for E-commerce Sellers
+        </h2>
+        <div class="features-title-underline"></div>
+        <p class="features-subtitle font-sans">
+          Explore our suite of smart e-commerce seller tools to crop shipping labels, calculate profits, compress images, and grow your store.
+        </p>
+
+        <!-- Category Filter Pills with Icons (Matching User Image 1) -->
+        <div class="smart-filter-pills" id="smartFilterPills">
+          <button type="button" class="smart-pill active" data-smart-filter="all">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+            <span>All Tools</span>
+          </button>
+          <button type="button" class="smart-pill" data-smart-filter="cropper">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line></svg>
+            <span>Shipping Label Cropper</span>
+          </button>
+          <button type="button" class="smart-pill" data-smart-filter="pdf">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
+            <span>PDF Tools</span>
+          </button>
+          <button type="button" class="smart-pill" data-smart-filter="image">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="3" y="3" width="18" height="18" rx="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
+            <span>Image Tools</span>
+          </button>
+          <button type="button" class="smart-pill" data-smart-filter="calc">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="4" y="2" width="16" height="20" rx="2"></rect><line x1="8" y1="6" x2="16" y2="6"></line><line x1="16" y1="14" x2="16" y2="18"></line><path d="M16 10h.01"></path><path d="M12 10h.01"></path><path d="M8 10h.01"></path><path d="M12 14h.01"></path><path d="M8 14h.01"></path><path d="M12 18h.01"></path><path d="M8 18h.01"></path></svg>
+            <span>Calculator</span>
+          </button>
+          <button type="button" class="smart-pill" data-smart-filter="gen">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect></svg>
+            <span>Generator</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Feature Cards with Real Brand Logos and Badges (Matching User Image 1) -->
+      <div class="smart-features-grid" id="smartFeaturesGrid">
+        <!-- Card 1: Flipkart -->
+        <a href="/crop/flipkart" class="smart-feature-card" data-smart-cat="cropper pdf">
+          <div class="smart-card-top">
+            <BrandLogo brand="flipkart" size={44} />
+            <span class="smart-badge badge-popular">POPULAR</span>
+          </div>
+          <h3 class="smart-card-title font-sans">Flipkart Label Cropper</h3>
+          <p class="smart-card-desc font-sans">
+            Extract Flipkart shipping labels automatically from PDFs for 4×6 thermal rolls with Ekart barcode preservation.
+          </p>
+        </a>
+
+        <!-- Card 2: Meesho -->
+        <a href="/crop/meesho" class="smart-feature-card" data-smart-cat="cropper pdf">
+          <div class="smart-card-top">
+            <BrandLogo brand="meesho" size={44} />
+            <span class="smart-badge badge-popular">POPULAR</span>
+          </div>
+          <h3 class="smart-card-title font-sans">Meesho Label Cropper</h3>
+          <p class="smart-card-desc font-sans">
+            Intelligently separates Meesho shipping labels from tax invoices in one click without any manual cutting.
+          </p>
+        </a>
+
+        <!-- Card 3: Amazon -->
+        <a href="/crop/amazon-india" class="smart-feature-card" data-smart-cat="cropper pdf">
+          <div class="smart-card-top">
+            <BrandLogo brand="amazon" size={44} />
+            <span class="smart-badge badge-sku">SKU PRINT</span>
+          </div>
+          <h3 class="smart-card-title font-sans">Amazon Label Cropper</h3>
+          <p class="smart-card-desc font-sans">
+            Extract Amazon shipping labels cleanly with product SKU overlay and courier routing for ATS dispatch.
+          </p>
+        </a>
+
+        <!-- Card 4: Snapdeal -->
+        <a href="/crop/snapdeal" class="smart-feature-card" data-smart-cat="cropper pdf">
+          <div class="smart-card-top">
+            <BrandLogo brand="snapdeal" size={44} />
+            <span class="smart-badge badge-fast">FAST CROP</span>
+          </div>
+          <h3 class="smart-card-title font-sans">Snapdeal Label Cropper</h3>
+          <p class="smart-card-desc font-sans">
+            Accurately crops shipping labels from Snapdeal PDFs for thermal roll printing with automated border trimming.
+          </p>
+        </a>
+
+        <!-- Card 5: Shiprocket -->
+        <a href="/crop/shiprocket" class="smart-feature-card" data-smart-cat="cropper pdf">
+          <div class="smart-card-top">
+            <BrandLogo brand="shiprocket" size={44} fallbackText="Shiprocket" />
+            <span class="smart-badge badge-aggregator">AGGREGATOR</span>
+          </div>
+          <h3 class="smart-card-title font-sans">Shiprocket Multi-Carrier</h3>
+          <p class="smart-card-desc font-sans">
+            Batch crop multi-courier labels (Delhivery, Bluedart, Shadowfax) from Shiprocket manifests to 4×6 roll.
+          </p>
+        </a>
+
+        <!-- Card 6: USPS -->
+        <a href="/us/usps-click-n-ship-4x6-cropper" class="smart-feature-card" data-smart-cat="cropper pdf">
+          <div class="smart-card-top">
+            <BrandLogo brand="usps" size={44} fallbackText="USPS" />
+            <span class="smart-badge badge-global">US & GLOBAL</span>
+          </div>
+          <h3 class="smart-card-title font-sans">USPS Click-N-Ship</h3>
+          <p class="smart-card-desc font-sans">
+            Convert 8.5×11" Priority Mail and Ground Advantage PDF labels into individual 4×6" thermal roll stickers.
+          </p>
+        </a>
+
+        <!-- Card 7: Shopify Calculator (Real Calculator Tool) -->
+        <a href="/shopify-calculator" class="smart-feature-card" data-smart-cat="calc">
+          <div class="smart-card-top">
+            <BrandLogo brand="shopify" size={44} />
+            <span class="smart-badge badge-popular">PROFIT & ROAS</span>
+          </div>
+          <h3 class="smart-card-title font-sans">Shopify Profit Calculator</h3>
+          <p class="smart-card-desc font-sans">
+            Calculate real net profit per order, profit margin %, Ad CAC ceiling, RTO loss, and Break-Even ROAS for D2C.
+          </p>
+        </a>
+
+        <!-- Card 8: Low Shipping Image Generator (Image + Generator Tool) -->
+        <a href="/low-shipping" class="smart-feature-card" data-smart-cat="image gen">
+          <div class="smart-card-top">
+            <BrandLogo brand="meesho" size={44} />
+            <span class="smart-badge badge-fast">LOW COURIER SLAB</span>
+          </div>
+          <h3 class="smart-card-title font-sans">Meesho Low-Shipping Tool</h3>
+          <p class="smart-card-desc font-sans">
+            Generate 16 optimized product catalog variants with borders and rate tiers to qualify for ₹49–₹79 low shipping.
+          </p>
+        </a>
+
+        <!-- Card 9: Barcode Generator (Generator Tool) -->
+        <a href="/barcode-generator" class="smart-feature-card" data-smart-cat="gen">
+          <div class="smart-card-top">
+            <div class="smart-custom-icon bg-blue">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2.2"><path d="M4 6h16M4 12h16M4 18h7"/></svg>
+            </div>
+            <span class="smart-badge badge-sku">PRICE TAG & AWB</span>
+          </div>
+          <h3 class="smart-card-title font-sans">Free Barcode Generator</h3>
+          <p class="smart-card-desc font-sans">
+            Generate Code 128, EAN-13, and UPC barcodes with retail MRP prices, SKU codes, and printable sticker sheets.
+          </p>
+        </a>
+
+        <!-- Card 10: Image Compressor (Image Tool) -->
+        <a href="/image-compressor" class="smart-feature-card" data-smart-cat="image">
+          <div class="smart-card-top">
+            <div class="smart-custom-icon bg-emerald">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#059669" stroke-width="2.2"><polyline points="4 14 10 14 10 20"/><polyline points="20 10 14 10 14 4"/><line x1="14" y1="10" x2="21" y2="3"/><line x1="3" y1="21" x2="10" y2="14"/></svg>
+            </div>
+            <span class="smart-badge badge-eco">UP TO 90% SMALLER</span>
+          </div>
+          <h3 class="smart-card-title font-sans">Image Compressor</h3>
+          <p class="smart-card-desc font-sans">
+            Reduce JPG, PNG, and WebP product image size up to 90% without quality loss in 100% private browser RAM.
+          </p>
+        </a>
+
+        <!-- Card 11: Image Converter (Image Tool) -->
+        <a href="/image-converter" class="smart-feature-card" data-smart-cat="image">
+          <div class="smart-card-top">
+            <div class="smart-custom-icon bg-purple">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#7c3aed" stroke-width="2.2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
+            </div>
+            <span class="smart-badge badge-zpl">JPG • PNG • WEBP</span>
+          </div>
+          <h3 class="smart-card-title font-sans">Image Converter</h3>
+          <p class="smart-card-desc font-sans">
+            Convert catalog photos between JPG, transparent PNG, and WebP instantly offline with zero resolution loss.
+          </p>
+        </a>
+
+        <!-- Card 12: WhatsApp Direct (Generator Tool) -->
+        <a href="/whatsapp" class="smart-feature-card" data-smart-cat="gen">
+          <div class="smart-card-top">
+            <div class="smart-custom-icon bg-emerald">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="#25d366"><path d="M17.472 14.382c-.301-.15-1.78-.878-2.056-.979-.276-.1-.477-.15-.678.15-.2.301-.778.979-.954 1.18-.176.201-.352.226-.653.075-1.745-.873-2.887-1.558-4.041-3.535-.306-.525.306-.487.876-1.626.096-.2.048-.376-.025-.526-.073-.15-.677-1.632-.927-2.235-.244-.588-.492-.508-.677-.518l-.578-.01c-.2 0-.526.075-.802.376-.276.301-1.053 1.03-1.053 2.511 0 1.482 1.079 2.912 1.23 3.113.15.201 2.124 3.243 5.147 4.549 2.138.924 2.973.992 4.044.834.653-.097 2.055-.84 2.345-1.654.291-.814.291-1.512.203-1.654-.087-.142-.288-.228-.589-.379zM12 21.688c-1.895 0-3.692-.533-5.239-1.455l-.376-.223-3.885 1.018 1.037-3.788-.245-.39A9.637 9.637 0 0 1 2.313 12c0-5.342 4.345-9.688 9.687-9.688 5.343 0 9.688 4.346 9.688 9.688 0 5.342-4.345 9.688-9.688 9.688zm0-17.688c-4.411 0-8 3.589-8 8 0 1.545.441 2.99 1.207 4.218l.189.304-.707 2.584 2.645-.693.293.174A7.95 7.95 0 0 0 12 19.688c4.411 0 8-3.589 8-8 0-4.411-3.589-8-8-8z"/></svg>
+            </div>
+            <span class="smart-badge badge-sku">DIRECT CHAT</span>
+          </div>
+          <h3 class="smart-card-title font-sans">WhatsApp Direct Message</h3>
+          <p class="smart-card-desc font-sans">
+            Send tracking links, COD confirmations, and address checks to customers directly without saving contacts.
+          </p>
+        </a>
+
+        <!-- Card 13: A4 4-Up Grid -->
+        <a href="/a4-4-labels-per-page-converter" class="smart-feature-card" data-smart-cat="pdf gen">
+          <div class="smart-card-top">
+            <div class="smart-custom-icon bg-purple">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#7c3aed" stroke-width="2.2"><rect x="3" y="3" width="8" height="8" rx="1"/><rect x="13" y="3" width="8" height="8" rx="1"/><rect x="3" y="13" width="8" height="8" rx="1"/><rect x="13" y="13" width="8" height="8" rx="1"/></svg>
+            </div>
+            <span class="smart-badge badge-eco">75% SAVED</span>
+          </div>
+          <h3 class="smart-card-title font-sans">A4 4-Up Grid Builder</h3>
+          <p class="smart-card-desc font-sans">
+            Arrange 4 cropped shipping labels 2×2 on standard A4 paper with scissor cutting lines for laser/inkjet printers.
+          </p>
+        </a>
+
+        <!-- Card 14: Zebra ZPL Studio -->
+        <a href="/zpl-to-pdf-converter" class="smart-feature-card" data-smart-cat="gen">
+          <div class="smart-card-top">
+            <div class="smart-custom-icon bg-emerald">
+              <BrandLogo brand="zebra" size={32} />
+            </div>
+            <span class="smart-badge badge-zpl">CANVAS ENGINE</span>
+          </div>
+          <h3 class="smart-card-title font-sans">Offline Zebra ZPL Studio</h3>
+          <p class="smart-card-desc font-sans">
+            Preview raw Zebra code (^XA...^XZ) and export 203 DPI / 300 DPI thermal labels as vector PDF and PNG.
+          </p>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 05: Organized Tool Directory & Presets Hub (Matching User Image 2 with Real Logos) -->
+  <section class="section-block tools-hub-section" id="tools-hub">
+    <div class="container">
+      <div class="section-heading-row">
+        <div>
+          <h2 class="section-heading font-serif">
+            <span class="num font-mono">01</span> Organized Tool Directory
+          </h2>
+          <div class="section-sub-link">
+            <span>Find the exact tool, preset, or format converter for your marketplace.</span>
+          </div>
+        </div>
+        <a href="/supported-marketplaces" class="section-view-all">View all 60+ channels →</a>
+      </div>
+
+      <!-- Search Box & Filter Pills -->
+      <div class="search-wrapper">
+        <div class="search-input-box">
+          <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+            <circle cx="11" cy="11" r="8"/>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+          </svg>
+          <input
+            type="text"
+            id="toolSearchInput"
+            class="search-input"
+            placeholder="Search tools & presets, e.g. 'Meesho 4x6', 'Ekart', 'Amazon FBA', '4-Up Grid', 'ZPL'..."
+            autocomplete="off"
+          />
+        </div>
+
+        <div class="filter-pills-row" id="filterPills">
+          <button type="button" class="filter-pill active" data-filter="all">All Tools (60+)</button>
+          <button type="button" class="filter-pill" data-filter="india">Indian Marketplaces</button>
+          <button type="button" class="filter-pill" data-filter="us">US & Global</button>
+          <button type="button" class="filter-pill" data-filter="grid">A4 4-Up Grid</button>
+          <button type="button" class="filter-pill" data-filter="zpl">ZPL Converters</button>
+          <button type="button" class="filter-pill" data-filter="sorter">SKU Sorters</button>
+        </div>
+      </div>
+
+      <!-- Core Popular Croppers -->
+      <div class="subsection-title font-sans">Popular Marketplace Croppers</div>
+      <div class="grid-4" id="popularToolsGrid">
+        <!-- Tool 1: Meesho -->
+        <a href="/crop/meesho" class="tool-card card group" data-category="india popular">
+          <div class="card-format-row">
+            <span class="badge badge-emerald">A4 PDF</span>
+            <span class="format-arrow">→</span>
+            <span class="badge badge-blue">4×6 Roll</span>
+          </div>
+          <h3 class="card-title font-sans">Meesho Label Cropper</h3>
+          <p class="card-desc">
+            Crop A4 dispatch slips into 4×6" thermal roll stickers. Strips tax invoice and auto-detects Valmo, Delhivery, and Shadowfax.
+          </p>
+          <div class="card-bottom">
+            <span class="btn-text">Open tool</span>
+            <span class="btn-circle-arrow">→</span>
+          </div>
+        </a>
+
+        <!-- Tool 2: Flipkart -->
+        <a href="/crop/flipkart" class="tool-card card group" data-category="india popular">
+          <div class="card-format-row">
+            <span class="badge badge-emerald">A4 PDF</span>
+            <span class="format-arrow">→</span>
+            <span class="badge badge-blue">4×6 Roll</span>
+          </div>
+          <h3 class="card-title font-sans">Flipkart Ekart Cropper</h3>
+          <p class="card-desc">
+            Crop Flipkart Smart Fulfillment PDFs. Preserves Ekart routing barcodes and stamps order quantity badges for safe packing.
+          </p>
+          <div class="card-bottom">
+            <span class="btn-text">Open tool</span>
+            <span class="btn-circle-arrow">→</span>
+          </div>
+        </a>
+
+        <!-- Tool 3: Amazon FBA -->
+        <a href="/us/amazon-fba-8-5x11-to-4x6" class="tool-card card group" data-category="us popular">
+          <div class="card-format-row">
+            <span class="badge badge-amber">8.5×11"</span>
+            <span class="format-arrow">→</span>
+            <span class="badge badge-blue">4×6 Roll</span>
+          </div>
+          <h3 class="card-title font-sans">Amazon FBA 8.5×11 to 4×6</h3>
+          <p class="card-desc">
+            Convert US Letter multi-page FBA box and pallet PDF labels into individual 4×6" thermal stickers for Rollo and Zebra printers.
+          </p>
+          <div class="card-bottom">
+            <span class="btn-text">Open tool</span>
+            <span class="btn-circle-arrow">→</span>
+          </div>
+        </a>
+
+        <!-- Tool 4: ZPL Converter -->
+        <a href="/zpl-to-pdf-converter" class="tool-card card group" data-category="zpl popular">
+          <div class="card-format-row">
+            <span class="badge badge-purple">ZPL II</span>
+            <span class="format-arrow">→</span>
+            <span class="badge badge-emerald">4×6 PDF</span>
+          </div>
+          <h3 class="card-title font-sans">ZPL to PDF Converter</h3>
+          <p class="card-desc">
+            Preview raw Zebra ZPL code (^XA...^XZ) and export 203 DPI / 300 DPI thermal labels as vector PDF and high-res PNG.
+          </p>
+          <div class="card-bottom">
+            <span class="btn-text">Open tool</span>
+            <span class="btn-circle-arrow">→</span>
+          </div>
+        </a>
+      </div>
+
+      <!-- Batch & Grid Tools -->
+      <div class="subsection-title font-sans" style="margin-top: 2.5rem;">Batch Packing & Eco Paper Savers</div>
+      <div class="grid-4" id="batchToolsGrid">
+        <!-- Card 1: A4 4-Up Grid -->
+        <a href="/a4-4-labels-per-page-converter" class="tool-card card group" data-category="grid">
+          <div class="feature-icon-box bg-purple">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#7c3aed" stroke-width="2">
+              <rect x="3" y="3" width="8" height="8" rx="1"/>
+              <rect x="13" y="3" width="8" height="8" rx="1"/>
+              <rect x="3" y="13" width="8" height="8" rx="1"/>
+              <rect x="13" y="13" width="8" height="8" rx="1"/>
+            </svg>
+          </div>
+          <h3 class="card-title font-sans">A4 4-Up Grid Builder</h3>
+          <p class="card-desc">
+            Arrange 4 cropped shipping labels 2×2 on standard A4 paper. Cuts paper costs by 75% for laser and inkjet office printers.
+          </p>
+          <div class="card-bottom">
+            <span class="btn-text">Open tool</span>
+            <span class="btn-circle-arrow">→</span>
+          </div>
+        </a>
+
+        <!-- Card 2: SKU & Courier Sorter -->
+        <a href="/sort-shipping-labels-by-sku" class="tool-card card group" data-category="sorter">
+          <div class="feature-icon-box bg-amber">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#d97706" stroke-width="2">
+              <line x1="18" y1="6" x2="6" y2="18"/>
+              <line x1="6" y1="6" x2="18" y2="18"/>
+            </svg>
+          </div>
+          <h3 class="card-title font-sans">Sort Labels by SKU & Courier</h3>
+          <p class="card-desc">
+            Extract text from 500+ label batches and re-group them alphabetically by SKU or by Courier Partner (Valmo, Ekart, Delhivery).
+          </p>
+          <div class="card-bottom">
+            <span class="btn-text">Open tool</span>
+            <span class="btn-circle-arrow">→</span>
+          </div>
+        </a>
+
+        <!-- Card 3: Remove Tax Invoices -->
+        <a href="/remove-invoice-from-shipping-label" class="tool-card card group" data-category="india">
+          <div class="feature-icon-box bg-rose">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#e11d48" stroke-width="2">
+              <circle cx="6" cy="6" r="3"/>
+              <circle cx="6" cy="18" r="3"/>
+              <line x1="20" y1="4" x2="8.12" y2="15.88"/>
+              <line x1="14.47" y1="14.48" x2="20" y2="20"/>
+              <line x1="8.12" y1="8.12" x2="12" y2="12"/>
+            </svg>
+          </div>
+          <h3 class="card-title font-sans">Remove Invoices from PDF</h3>
+          <p class="card-desc">
+            Instantly separate and strip tax invoice pages or bottom-half invoice sections to save thermal roll paper.
+          </p>
+          <div class="card-bottom">
+            <span class="btn-text">Open tool</span>
+            <span class="btn-circle-arrow">→</span>
+          </div>
+        </a>
+
+        <!-- Card 4: Manifest Generator -->
+        <a href="/manifest-generator" class="tool-card card group" data-category="india us">
+          <div class="feature-icon-box bg-emerald">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#059669" stroke-width="2">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+              <polyline points="14 2 14 8 20 8"/>
+              <line x1="16" y1="13" x2="8" y2="13"/>
+              <line x1="16" y1="17" x2="8" y2="17"/>
+              <polyline points="10 9 9 9 8 9"/>
+            </svg>
+          </div>
+          <h3 class="card-title font-sans">Courier Handover Manifest</h3>
+          <p class="card-desc">
+            Generate printable pickup summary manifest sheets with order counts, AWBs, and courier handover sign-off blocks.
+          </p>
+          <div class="card-bottom">
+            <span class="btn-text">Open tool</span>
+            <span class="btn-circle-arrow">→</span>
+          </div>
+        </a>
+      </div>
+
+      <!-- Marketplace & Courier Presets Grid (Exact match of User Image 2 with REAL BRAND LOGOS) -->
+      <div class="subsection-title font-sans" style="margin-top: 2.5rem;" id="marketplace-presets">Marketplace & Courier Channel Presets</div>
+      <div class="grid-4" id="presetsGrid">
+        {PRESET_HIGHLIGHTS.map((item) => (
+          <a href={`/${item.slug}`} class="preset-card card group" data-category={item.cat} data-name={item.name.toLowerCase()} data-sub={item.sub.toLowerCase()}>
+            <div class="preset-logo-wrapper">
+              <BrandLogo brand={item.brandKey} size={28} />
+            </div>
+            <div class="preset-info">
+              <div class="preset-name font-sans">{item.name}</div>
+              <div class="preset-meta font-mono">{item.sub}</div>
+            </div>
+            <div class="btn-circle-arrow">→</div>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 06: Offline Zebra ZPL II Studio -->
+  <section class="section-block" id="zpl-studio">
+    <div class="container">
+      <div class="section-heading-row">
+        <h2 class="section-heading font-serif">
+          <span class="num font-mono">02</span> Offline Zebra ZPL II Studio
+        </h2>
+        <div class="section-sub-link">
+          <span>Direct HTML5 Canvas render • Zero API limits • 100% private</span>
+          <a href="/zpl-to-pdf-converter" class="section-view-all">Full workbench →</a>
+        </div>
+      </div>
+
+      <ZplWorkbench />
+    </div>
+  </section>
+
+  <!-- Section 07: Benefits Grid (SellerBox 6-Card Grid) -->
+  <section class="section-block benefits-section">
+    <div class="container">
+      <div class="section-center-heading">
+        <div class="section-badge-pill">
+          <span class="badge-dot bg-blue"></span>
+          <span>Seller Benefits</span>
+        </div>
+        <h2 class="section-title-large font-serif">
+          Everything an e-commerce seller needs to fulfill faster.
+        </h2>
+        <p class="section-desc-large font-sans">
+          Built for high-velocity marketplace sellers who want error-free dispatch and maximum cost savings.
+        </p>
+      </div>
+
+      <div class="grid-3">
+        <!-- Benefit 1 -->
+        <div class="benefit-card card">
+          <div class="benefit-icon bg-blue">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2.2">
+              <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+              <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+            </svg>
+          </div>
+          <h3 class="benefit-title font-sans">100% In-Browser Privacy</h3>
+          <p class="benefit-desc font-sans">
+            Customer shipping addresses, mobile numbers, and GSTINs are confidential trade secrets. ShipLabelKit executes completely in your browser RAM with zero server storage.
+          </p>
+        </div>
+
+        <!-- Benefit 2 -->
+        <div class="benefit-card card">
+          <div class="benefit-icon bg-emerald">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#059669" stroke-width="2.2">
+              <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+            </svg>
+          </div>
+          <h3 class="benefit-title font-sans">Lossless Vector Barcodes</h3>
+          <p class="benefit-desc font-sans">
+            Thermal barcode scanners at Ekart, Valmo, and ATS require razor-sharp lines. We adjust native PDF crop boundaries rather than converting pages into fuzzy raster images.
+          </p>
+        </div>
+
+        <!-- Benefit 3 -->
+        <div class="benefit-card card">
+          <div class="benefit-icon bg-amber">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#d97706" stroke-width="2.2">
+              <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+            </svg>
+          </div>
+          <h3 class="benefit-title font-sans">Batch SKU Packing Line</h3>
+          <p class="benefit-desc font-sans">
+            Sort 500+ label batches by product SKU in seconds so your warehouse staff can pack identical items in a continuous assembly line, reducing packing errors by up to 90%.
+          </p>
+        </div>
+
+        <!-- Benefit 4 -->
+        <div class="benefit-card card">
+          <div class="benefit-icon bg-purple">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#7c3aed" stroke-width="2.2">
+              <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+              <line x1="3" y1="12" x2="21" y2="12"/>
+              <line x1="12" y1="3" x2="12" y2="21"/>
+            </svg>
+          </div>
+          <h3 class="benefit-title font-sans">75% Paper Cost Reduction</h3>
+          <p class="benefit-desc font-sans">
+            Print 4 orders per A4 sheet on standard laser or inkjet printers using our 4-up grid generator with clean cutting guides, saving hundreds of reams of paper annually.
+          </p>
+        </div>
+
+        <!-- Benefit 5 -->
+        <div class="benefit-card card">
+          <div class="benefit-icon bg-rose">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#e11d48" stroke-width="2.2">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+              <polyline points="14 2 14 8 20 8"/>
+              <line x1="16" y1="13" x2="8" y2="13"/>
+              <line x1="16" y1="17" x2="8" y2="17"/>
+            </svg>
+          </div>
+          <h3 class="benefit-title font-sans">Offline Zebra ZPL Engine</h3>
+          <p class="benefit-desc font-sans">
+            Preview and convert Zebra ZPL II raw label streams directly to PDF and PNG without downloading ZebraDesigner, installing Java, or depending on cloud API servers.
+          </p>
+        </div>
+
+        <!-- Benefit 6 -->
+        <div class="benefit-card card">
+          <div class="benefit-icon bg-cyan">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0284c7" stroke-width="2.2">
+              <circle cx="12" cy="12" r="10"/>
+              <line x1="2" y1="12" x2="22" y2="12"/>
+              <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+            </svg>
+          </div>
+          <h3 class="benefit-title font-sans">Universal Multi-Channel Support</h3>
+          <p class="benefit-desc font-sans">
+            Ready-to-use presets for Meesho, Flipkart, Amazon India, Amazon US FBA, USPS, UPS, FedEx, Myntra, Ajio, Shopify, and Shiprocket all in one unified workspace.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 08: Frequently Asked Questions (ailabelcrop Interactive Accordion) -->
+  <section class="section-block faq-section" id="faq">
+    <div class="container">
+      <div class="section-center-heading">
+        <div class="section-badge-pill">
+          <span class="badge-dot bg-blue"></span>
+          <span>Frequently Asked Questions</span>
+        </div>
+        <h2 class="section-title-large font-serif">
+          Got questions? We've got answers.
+        </h2>
+        <p class="section-desc-large font-sans">
+          Everything you need to know about thermal printing, client-side privacy, and batch label processing.
+        </p>
+      </div>
+
+      <div class="faq-accordion" id="faqAccordion">
+        {homeFaq.map((item, index) => (
+          <div class={`faq-item card ${index === 0 ? 'active' : ''}`}>
+            <button type="button" class="faq-question-btn" aria-expanded={index === 0 ? 'true' : 'false'}>
+              <span class="faq-question-text font-sans">{item.q}</span>
+              <span class="faq-chevron">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                  <polyline points="6 9 12 15 18 9"/>
+                </svg>
+              </span>
+            </button>
+            <div class="faq-answer-panel" style={index === 0 ? 'max-height: 500px;' : 'max-height: 0px;'}>
+              <p class="faq-answer-text font-sans">{item.a}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<!-- Client Script for Search, Pill Filtering, Command Center Tabs, Smart Features & FAQ Accordion -->
+<script>
+  // 1. Live Search & Pill Filtering
+  const searchInput = document.getElementById('toolSearchInput') as HTMLInputElement;
+  const filterPills = document.querySelectorAll('.filter-pill');
+  const allCards = document.querySelectorAll('#popularToolsGrid .tool-card, #batchToolsGrid .tool-card, #presetsGrid .preset-card');
+
+  function applyFilter(query: string, category: string) {
+    const q = query.toLowerCase().trim();
+
+    allCards.forEach((card) => {
+      const el = card as HTMLElement;
+      const text = el.innerText.toLowerCase();
+      const cat = el.getAttribute('data-category') || '';
+      const name = el.getAttribute('data-name') || '';
+      const sub = el.getAttribute('data-sub') || '';
+
+      const matchesQuery = !q || text.includes(q) || name.includes(q) || sub.includes(q);
+      const matchesCategory =
+        category === 'all' ||
+        cat.includes(category) ||
+        (category === 'india' && (cat.includes('india') || name.includes('meesho') || name.includes('flipkart'))) ||
+        (category === 'us' && (cat.includes('us') || name.includes('amazon') || name.includes('usps')));
+
+      if (matchesQuery && matchesCategory) {
+        el.style.display = '';
+      } else {
+        el.style.display = 'none';
+      }
+    });
+  }
+
+  searchInput?.addEventListener('input', () => {
+    const activePill = document.querySelector('.filter-pill.active');
+    const category = activePill?.getAttribute('data-filter') || 'all';
+    applyFilter(searchInput.value, category);
+  });
+
+  filterPills.forEach((pill) => {
+    pill.addEventListener('click', () => {
+      filterPills.forEach((p) => p.classList.remove('active'));
+      pill.classList.add('active');
+      const category = pill.getAttribute('data-filter') || 'all';
+      applyFilter(searchInput?.value || '', category);
+    });
+  });
+
+  // 2. Command Center Tabs Showcase
+  const commandTabs = document.querySelectorAll('.command-tab');
+  const showcases = document.querySelectorAll('.showcase-content');
+
+  commandTabs.forEach((tab) => {
+    tab.addEventListener('click', () => {
+      const target = tab.getAttribute('data-tab');
+      commandTabs.forEach((t) => t.classList.remove('active'));
+      tab.classList.add('active');
+
+      showcases.forEach((sc) => {
+        if (sc.id === `showcase-${target}`) {
+          sc.classList.add('active');
+        } else {
+          sc.classList.remove('active');
+        }
+      });
+    });
+  });
+
+  // 3. Smart Features Filter Pills (User Image 1)
+  const smartPills = document.querySelectorAll('.smart-pill');
+  const smartCards = document.querySelectorAll('.smart-feature-card');
+
+  smartPills.forEach((pill) => {
+    pill.addEventListener('click', () => {
+      smartPills.forEach((p) => p.classList.remove('active'));
+      pill.classList.add('active');
+      const filter = pill.getAttribute('data-smart-filter') || 'all';
+
+      smartCards.forEach((card) => {
+        const el = card as HTMLElement;
+        const cat = el.getAttribute('data-smart-cat') || '';
+        if (filter === 'all' || cat.includes(filter)) {
+          el.style.display = '';
+        } else {
+          el.style.display = 'none';
+        }
+      });
+    });
+  });
+
+  // 4. FAQ Accordion Click Handler
+  const faqButtons = document.querySelectorAll('.faq-question-btn');
+  faqButtons.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const item = btn.closest('.faq-item') as HTMLElement;
+      const panel = item?.querySelector('.faq-answer-panel') as HTMLElement;
+      const isCurrentlyActive = item?.classList.contains('active');
+
+      // Close all other items
+      document.querySelectorAll('.faq-item').forEach((otherItem) => {
+        if (otherItem !== item) {
+          otherItem.classList.remove('active');
+          const otherPanel = otherItem.querySelector('.faq-answer-panel') as HTMLElement;
+          if (otherPanel) otherPanel.style.maxHeight = '0px';
+          const otherBtn = otherItem.querySelector('.faq-question-btn');
+          otherBtn?.setAttribute('aria-expanded', 'false');
+        }
+      });
+
+      if (isCurrentlyActive) {
+        item.classList.remove('active');
+        if (panel) panel.style.maxHeight = '0px';
+        btn.setAttribute('aria-expanded', 'false');
+      } else {
+        item.classList.add('active');
+        if (panel) panel.style.maxHeight = panel.scrollHeight + 'px';
+        btn.setAttribute('aria-expanded', 'true');
+      }
+    });
+  });
+</script>
+
+<style>
+  /* -------------------------------------------------------------
+     HERO SECTION
+     ------------------------------------------------------------- */
+  .hero-section {
+    padding: 3.5rem 0 3rem;
+    background: #ffffff;
+  }
+
+  .hero-container {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .hero-grid {
+    display: grid;
+    grid-template-columns: 1.15fr 0.85fr;
+    gap: 3.5rem;
+    align-items: center;
+    margin-bottom: 3.5rem;
+  }
+
+  .hero-left {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .hero-badge-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: #eff6ff;
+    border: 1px solid #bfdbfe;
+    color: #1d4ed8;
+    padding: 0.35rem 0.85rem;
+    border-radius: 9999px;
+    width: fit-content;
+    margin-bottom: 1.25rem;
+  }
+
+  .pulse-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 9999px;
+    background: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.25);
+    animation: pulseGlow 2s infinite ease-in-out;
+  }
+
+  @keyframes pulseGlow {
+    0%, 100% { box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.25); }
+    50% { box-shadow: 0 0 0 6px rgba(37, 99, 235, 0.1); }
+  }
+
+  .hero-title {
+    font-size: 3.75rem;
+    font-weight: 500;
+    line-height: 1.06;
+    letter-spacing: -0.035em;
+    color: var(--text-main);
+    margin-bottom: 1.25rem;
+  }
+
+  .highlight-text {
+    color: #2563eb;
+  }
+
+  .hero-subtitle {
+    font-size: 1.08rem;
+    color: var(--text-muted);
+    line-height: 1.65;
+    max-width: 580px;
+    margin-bottom: 2rem;
+  }
+
+  .hero-action-buttons {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+  }
+
+  .btn-hero {
+    padding: 0.8rem 1.6rem;
+    font-size: 0.98rem;
+  }
+
+  .platform-trust-row {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+  }
+
+  .trust-label {
+    font-size: 0.72rem;
+    color: var(--text-dim);
+    letter-spacing: 0.05em;
+    font-weight: 600;
+  }
+
+  .trust-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.45rem;
+  }
+
+  .trust-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #334155;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    padding: 0.25rem 0.65rem;
+    border-radius: 8px;
+  }
+
+  .trust-icon {
+    width: 14px;
+    height: 14px;
+    object-fit: contain;
+  }
+
+  .value-props-row {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid #f1f5f9;
+    flex-wrap: wrap;
+  }
+
+  .value-prop {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+  }
+
+  .value-prop-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    border-radius: 8px;
+    background: #f8fafc;
+    border: 1px solid var(--border-subtle);
+  }
+
+  .value-prop-text {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.25;
+  }
+
+  .value-prop-text strong {
+    font-size: 0.85rem;
+    color: var(--text-main);
+    font-weight: 600;
+  }
+
+  .value-prop-text span {
+    font-size: 0.75rem;
+    color: var(--text-dim);
+  }
+
+  /* Hero Right: 3D Isometric Mockup */
+  .hero-right {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
+
+  .dashboard-mockup-wrapper {
+    position: relative;
+    border-radius: 20px;
+    background: #ffffff;
+    padding: 8px;
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 20px 45px -10px rgba(15, 23, 42, 0.12), 0 0 0 1px rgba(15, 23, 42, 0.04);
+    transform: perspective(1000px) rotateY(-4deg) rotateX(3deg);
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .dashboard-mockup-wrapper:hover {
+    transform: perspective(1000px) rotateY(0deg) rotateX(0deg);
+  }
+
+  .mockup-glass-tag {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    background: rgba(15, 23, 42, 0.85);
+    backdrop-filter: blur(8px);
+    color: #ffffff;
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 0.35rem 0.75rem;
+    border-radius: 9999px;
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+    z-index: 10;
+  }
+
+  .status-live-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #10b981;
+    box-shadow: 0 0 8px #10b981;
+  }
+
+  .dashboard-mockup-img {
+    width: 100%;
+    height: auto;
+    border-radius: 14px;
+    display: block;
+    object-fit: cover;
+  }
+
+  .mockup-floating-badge {
+    position: absolute;
+    bottom: -16px;
+    right: 20px;
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 0.65rem 1rem;
+    box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.15);
+    display: flex;
+    flex-direction: column;
+  }
+
+  .badge-num {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: #2563eb;
+    line-height: 1.1;
+  }
+
+  .badge-label {
+    font-size: 0.72rem;
+    color: #64748b;
+    font-weight: 500;
+  }
+
+  /* -------------------------------------------------------------
+     SECTION 01: IN THREE STEPS (SellerBox Inspired)
+     ------------------------------------------------------------- */
+  .section-block {
+    padding: 4.5rem 0;
+    border-top: 1px solid var(--border-subtle);
+  }
+
+  .section-center-heading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    max-width: 760px;
+    margin: 0 auto 3rem;
+  }
+
+  .section-badge-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 9999px;
+    padding: 0.35rem 0.95rem;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #0f172a;
+    box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04);
+    margin-bottom: 1rem;
+  }
+
+  .badge-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+  }
+
+  .section-title-large {
+    font-size: 2.85rem;
+    font-weight: 500;
+    color: var(--text-main);
+    letter-spacing: -0.025em;
+    line-height: 1.12;
+    margin-bottom: 0.85rem;
+  }
+
+  .section-desc-large {
+    font-size: 1.05rem;
+    color: var(--text-muted);
+    line-height: 1.65;
+  }
+
+  .steps-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+  }
+
+  .step-card {
+    display: flex;
+    flex-direction: column;
+    background: #ffffff;
+    border: 4px solid #f1f5f9;
+    border-radius: 24px;
+    padding: 0.75rem;
+    transition: all 0.25s ease;
+  }
+
+  .step-card:hover {
+    border-color: #e2e8f0;
+    transform: translateY(-3px);
+    box-shadow: 0 14px 30px rgba(15, 23, 42, 0.06);
+  }
+
+  .step-card-visual {
+    height: 220px;
+    border-radius: 16px;
+    overflow: hidden;
+    background: #f8fafc;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
+
+  .step-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .step-box-1 {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #f8fafc 0%, #eff6ff 100%);
+  }
+
+  .mockup-file-icon {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .file-badges {
+    display: flex;
+    gap: 0.4rem;
+  }
+
+  .f-badge {
+    font-size: 0.72rem;
+    font-weight: 700;
+    padding: 0.2rem 0.5rem;
+    border-radius: 6px;
+  }
+
+  .f-badge.meesho { background: #fdf2f8; color: #db2777; border: 1px solid #fbcfe8; }
+  .f-badge.flipkart { background: #eff6ff; color: #2563eb; border: 1px solid #bfdbfe; }
+  .f-badge.amazon { background: #fffbeb; color: #b45309; border: 1px solid #fde68a; }
+
+  .step-card-content {
+    padding: 1.5rem 1.25rem 1rem;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+  }
+
+  .step-pill {
+    display: inline-block;
+    background: #2563eb;
+    color: #ffffff;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 0.25rem 0.75rem;
+    border-radius: 8px;
+    width: fit-content;
+    margin-bottom: 0.85rem;
+  }
+
+  .step-title {
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: var(--text-main);
+    margin-bottom: 0.65rem;
+    letter-spacing: -0.015em;
+  }
+
+  .step-text {
+    font-size: 0.92rem;
+    color: var(--text-muted);
+    line-height: 1.6;
+    margin-bottom: 1.25rem;
+    flex: 1;
+  }
+
+  .step-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.45rem;
+  }
+
+  /* -------------------------------------------------------------
+     SECTION 02: REAL SELLER STATS (SellerBox Metric Grid)
+     ------------------------------------------------------------- */
+  .stats-header-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 2rem;
+    margin-bottom: 2.5rem;
+    flex-wrap: wrap;
+  }
+
+  .stats-heading {
+    font-size: 2.45rem;
+    font-weight: 500;
+    color: var(--text-main);
+    letter-spacing: -0.025em;
+    line-height: 1.15;
+    max-width: 680px;
+  }
+
+  .stats-subtext {
+    font-size: 1rem;
+    color: var(--text-muted);
+    max-width: 420px;
+    line-height: 1.6;
+  }
+
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.25rem;
+  }
+
+  .stat-card {
+    background: #ffffff;
+    border: 4px solid #f1f5f9;
+    border-radius: 20px;
+    padding: 1.5rem;
+    transition: all 0.25s ease;
+  }
+
+  .stat-card:hover {
+    border-color: #e2e8f0;
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(15, 23, 42, 0.05);
+  }
+
+  .stat-card-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 0.75rem;
+  }
+
+  .stat-title {
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: #64748b;
+    margin-bottom: 0.35rem;
+  }
+
+  .stat-value {
+    font-size: 2.25rem;
+    font-weight: 700;
+    color: var(--text-main);
+    line-height: 1;
+  }
+
+  .stat-icon-pill {
+    width: 42px;
+    height: 42px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .stat-desc {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    line-height: 1.5;
+  }
+
+  /* -------------------------------------------------------------
+     SECTION 03: COMMAND CENTER (SellerBox Interactive Tabs)
+     ------------------------------------------------------------- */
+  .command-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.2fr;
+    gap: 2rem;
+    align-items: stretch;
+  }
+
+  .command-tabs-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .command-tab {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    background: #f8fafc;
+    border: 3px solid #f1f5f9;
+    border-radius: 18px;
+    padding: 1.25rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .command-tab:hover {
+    background: #f1f5f9;
+  }
+
+  .command-tab.active {
+    background: #ffffff;
+    border-color: #2563eb;
+    box-shadow: 0 6px 20px rgba(37, 99, 235, 0.08);
+  }
+
+  .tab-indicator {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #cbd5e1;
+    margin-top: 5px;
+    flex-shrink: 0;
+    transition: background-color 0.2s ease;
+  }
+
+  .command-tab.active .tab-indicator {
+    background: #2563eb;
+    box-shadow: 0 0 8px rgba(37, 99, 235, 0.5);
+  }
+
+  .tab-header {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .tab-title {
+    font-size: 1.12rem;
+    font-weight: 700;
+    color: var(--text-main);
+    margin-bottom: 0.25rem;
+  }
+
+  .tab-summary {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    line-height: 1.5;
+  }
+
+  .command-preview-panel {
+    background: #ffffff;
+    border: 1px solid var(--border-subtle);
+    border-radius: 20px;
+    padding: 2.25rem;
+    box-shadow: 0 8px 30px rgba(15, 23, 42, 0.04);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .showcase-content {
+    display: none;
+  }
+
+  .showcase-content.active {
+    display: block;
+    animation: fadeIn 0.3s ease;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(6px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .showcase-card {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .showcase-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+  }
+
+  .showcase-heading {
+    font-size: 2rem;
+    font-weight: 500;
+    color: var(--text-main);
+    margin-bottom: 0.75rem;
+    letter-spacing: -0.02em;
+  }
+
+  .showcase-desc {
+    font-size: 0.98rem;
+    color: var(--text-muted);
+    line-height: 1.65;
+    margin-bottom: 1.5rem;
+  }
+
+  .showcase-bullets {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin-bottom: 2rem;
+  }
+
+  .bullet-item {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    font-size: 0.92rem;
+    color: var(--text-main);
+    font-weight: 500;
+  }
+
+  .showcase-action {
+    display: flex;
+  }
+
+  /* -------------------------------------------------------------
+     SECTION 04: FEATURES FOR E-COMMERCE SELLERS (User Image 1)
+     ------------------------------------------------------------- */
+  .features-showcase-section {
+    background: #ffffff;
+  }
+
+  .features-header {
+    margin-bottom: 3rem;
+  }
+
+  .text-center {
+    text-align: center;
+  }
+
+  .features-main-title {
+    font-size: 2.5rem;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    color: #1e3a8a;
+    background: linear-gradient(135deg, #1e40af 0%, #2563eb 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 0.5rem;
+  }
+
+  .features-title-underline {
+    width: 48px;
+    height: 4px;
+    background: #2563eb;
+    border-radius: 2px;
+    margin: 0.65rem auto 1.5rem auto;
+  }
+
+  .features-subtitle {
+    font-size: 1.05rem;
+    color: #64748b;
+    max-width: 680px;
+    margin: 0 auto 2.25rem auto;
+    line-height: 1.6;
+  }
+
+  .smart-filter-pills {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.65rem;
+    flex-wrap: wrap;
+  }
+
+  .smart-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: #ffffff;
+    border: 1.5px solid #e2e8f0;
+    color: #475569;
+    padding: 0.45rem 1.1rem;
+    border-radius: 9999px;
+    font-size: 0.88rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    font-family: var(--font-sans);
+  }
+
+  .smart-pill:hover {
+    border-color: #cbd5e1;
+    background: #f8fafc;
+    color: #0f172a;
+  }
+
+  .smart-pill.active {
+    background: #0f172a;
+    color: #ffffff;
+    border-color: #0f172a;
+    box-shadow: 0 2px 8px rgba(15, 23, 42, 0.15);
+  }
+
+  .smart-features-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.5rem;
+  }
+
+  .smart-feature-card {
+    background: #ffffff;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 20px;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    text-decoration: none !important;
+    box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04);
+    transition: all 0.22s ease;
+  }
+
+  .smart-feature-card:hover {
+    transform: translateY(-3px);
+    border-color: #93c5fd;
+    box-shadow: 0 12px 30px rgba(37, 99, 235, 0.08);
+  }
+
+  .smart-card-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.25rem;
+  }
+
+  .smart-brand-logo {
+    width: 46px;
+    height: 46px;
+    border-radius: 12px;
+    object-fit: contain;
+    flex-shrink: 0;
+    box-shadow: 0 2px 8px rgba(15, 23, 42, 0.06);
+  }
+
+  .smart-custom-icon {
+    width: 46px;
+    height: 46px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .smart-badge {
+    font-size: 0.68rem;
+    font-weight: 800;
+    padding: 0.25rem 0.65rem;
+    border-radius: 9999px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .badge-popular { background: #eff6ff; color: #2563eb; border: 1px solid #bfdbfe; }
+  .badge-sku { background: #fff1f2; color: #e11d48; border: 1px solid #fecdd3; }
+  .badge-fast { background: #ecfdf5; color: #059669; border: 1px solid #a7f3d0; }
+  .badge-aggregator { background: #faf5ff; color: #7c3aed; border: 1px solid #e9d5ff; }
+  .badge-global { background: #f0f9ff; color: #0284c7; border: 1px solid #bae6fd; }
+  .badge-eco { background: #ecfdf5; color: #047857; border: 1px solid #6ee7b7; }
+  .badge-zpl { background: #f8fafc; color: #334155; border: 1px solid #cbd5e1; }
+
+  .smart-card-title {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--text-main);
+    margin-bottom: 0.5rem;
+    letter-spacing: -0.015em;
+  }
+
+  .smart-card-desc {
+    font-size: 0.88rem;
+    color: var(--text-muted);
+    line-height: 1.55;
+  }
+
+  /* -------------------------------------------------------------
+     SECTION 05: TOOL DIRECTORY & PRESETS (User Image 2)
+     ------------------------------------------------------------- */
+  .search-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+    max-width: 680px;
+    margin-bottom: 2.5rem;
+  }
+
+  .search-input-box {
+    display: flex;
+    align-items: center;
+    background: #ffffff;
+    border: 1px solid var(--border-subtle);
+    border-radius: 9999px;
+    padding: 0.4rem 0.5rem 0.4rem 1.1rem;
+    box-shadow: 0 2px 8px rgba(15, 23, 42, 0.04);
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  }
+
+  .search-input-box:focus-within {
+    border-color: #2563eb;
+    box-shadow: 0 4px 16px rgba(37, 99, 235, 0.12);
+  }
+
+  .search-icon {
+    color: var(--text-dim);
+    margin-right: 0.75rem;
+    flex-shrink: 0;
+  }
+
+  .search-input {
+    width: 100%;
+    border: none;
+    outline: none;
+    font-size: 0.92rem;
+    color: var(--text-main);
+    background: transparent;
+    font-family: var(--font-sans);
+  }
+
+  .search-input::placeholder {
+    color: #94a3b8;
+  }
+
+  .filter-pills-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .filter-pill {
+    padding: 0.35rem 0.85rem;
+    border-radius: 9999px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    background: #ffffff;
+    border: 1px solid var(--border-subtle);
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: all 0.15s ease;
+    font-family: var(--font-sans);
+  }
+
+  .filter-pill:hover {
+    background: #f8fafc;
+    border-color: var(--border-medium);
+    color: var(--text-main);
+  }
+
+  .filter-pill.active {
+    background: #0f172a;
+    color: #ffffff;
+    border-color: #0f172a;
+  }
+
+  .subsection-title {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--text-main);
+    margin-bottom: 1.25rem;
+    letter-spacing: -0.01em;
+  }
+
+  .tool-card {
+    display: flex;
+    flex-direction: column;
+    text-decoration: none;
+    height: 100%;
+    transition: all 0.2s ease;
+  }
+
+  .tool-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 28px rgba(15, 23, 42, 0.08);
+    border-color: var(--border-medium);
+  }
+
+  .card-format-row {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+    margin-bottom: 1rem;
+  }
+
+  .format-arrow {
+    color: var(--text-dim);
+    font-size: 0.85rem;
+  }
+
+  .card-title {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--text-main);
+    margin-bottom: 0.5rem;
+    letter-spacing: -0.015em;
+  }
+
+  .card-desc {
+    font-size: 0.88rem;
+    color: var(--text-muted);
+    line-height: 1.55;
+    margin-bottom: 1.5rem;
+  }
+
+  .card-bottom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: auto;
+    padding-top: 0.75rem;
+  }
+
+  .btn-text {
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: var(--text-main);
+    transition: color 0.15s ease;
+  }
+
+  .tool-card:hover .btn-text {
+    color: #2563eb;
+  }
+
+  .feature-icon-box {
+    width: 38px;
+    height: 38px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1rem;
+  }
+
+  .bg-purple { background: #faf5ff; border: 1px solid #e9d5ff; }
+  .bg-amber { background: #fffbeb; border: 1px solid #fde68a; }
+  .bg-rose { background: #fff1f2; border: 1px solid #fecdd3; }
+  .bg-emerald { background: #ecfdf5; border: 1px solid #a7f3d0; }
+  .bg-blue { background: #eff6ff; border: 1px solid #bfdbfe; }
+  .bg-cyan { background: #f0f9ff; border: 1px solid #bae6fd; }
+
+  /* Marketplace Presets Grid (Exact Match of User Image 2 with Real Brand Logos) */
+  .preset-card {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    padding: 0.85rem 1.1rem;
+    text-decoration: none;
+    border-radius: 14px;
+    transition: all 0.2s ease;
+  }
+
+  .preset-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(15, 23, 42, 0.06);
+    border-color: var(--border-medium);
+  }
+
+  .preset-logo-wrapper {
+    width: 38px;
+    height: 38px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    padding: 2px;
+    flex-shrink: 0;
+    box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+    overflow: hidden;
+  }
+
+  .preset-brand-logo {
+    width: 100%;
+    height: 100%;
+    border-radius: 8px;
+    object-fit: contain;
+    display: block;
+  }
+
+  .preset-info {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    margin-right: auto;
+  }
+
+  .preset-name {
+    font-size: 0.92rem;
+    font-weight: 600;
+    color: var(--text-main);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .preset-meta {
+    font-size: 0.72rem;
+    color: var(--text-dim);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  /* -------------------------------------------------------------
+     SECTION 07: BENEFITS (SellerBox 6-Card Grid)
+     ------------------------------------------------------------- */
+  .benefit-card {
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+    border: 4px solid #f1f5f9;
+    border-radius: 20px;
+    padding: 1.75rem;
+    transition: all 0.25s ease;
+  }
+
+  .benefit-card:hover {
+    border-color: #e2e8f0;
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(15, 23, 42, 0.06);
+  }
+
+  .benefit-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .benefit-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--text-main);
+  }
+
+  .benefit-desc {
+    font-size: 0.92rem;
+    color: var(--text-muted);
+    line-height: 1.6;
+  }
+
+  /* -------------------------------------------------------------
+     SECTION 08: FAQ ACCORDION (ailabelcrop Inspired)
+     ------------------------------------------------------------- */
+  .faq-accordion {
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+    max-width: 880px;
+    margin: 0 auto;
+  }
+
+  .faq-item {
+    padding: 0;
+    overflow: hidden;
+    border: 2px solid #e2e8f0;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .faq-item.active {
+    border-color: #2563eb;
+    box-shadow: 0 4px 16px rgba(37, 99, 235, 0.08);
+  }
+
+  .faq-question-btn {
+    width: 100%;
+    padding: 1.25rem 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    text-align: left;
+    gap: 1rem;
+    transition: background-color 0.15s ease;
+  }
+
+  .faq-question-btn:hover {
+    background: #f8fafc;
+  }
+
+  .faq-question-text {
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: var(--text-main);
+  }
+
+  .faq-chevron {
+    color: #2563eb;
+    transition: transform 0.25s ease;
+    flex-shrink: 0;
+  }
+
+  .faq-item.active .faq-chevron {
+    transform: rotate(180deg);
+  }
+
+  .faq-answer-panel {
+    overflow: hidden;
+    transition: max-height 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .faq-answer-text {
+    padding: 0 1.5rem 1.25rem;
+    font-size: 0.95rem;
+    color: var(--text-muted);
+    line-height: 1.65;
+  }
+
+  /* -------------------------------------------------------------
+     RESPONSIVE BREAKPOINTS
+     ------------------------------------------------------------- */
+  @media (max-width: 1024px) {
+    .hero-grid {
+      grid-template-columns: 1fr;
+      gap: 2.5rem;
+    }
+
+    .hero-right {
+      order: -1;
+    }
+
+    .hero-title {
+      font-size: 2.85rem;
+    }
+
+    .steps-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .smart-features-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .stats-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .command-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .hero-title {
+      font-size: 2.25rem;
+    }
+
+    .smart-features-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .stats-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .section-title-large {
+      font-size: 2.1rem;
+    }
+
+    .features-main-title {
+      font-size: 2rem;
+    }
+
+    .value-props-row {
+      gap: 1rem;
+    }
+
+    .hero-section {
+      padding: 2rem 0 1rem;
+    }
+
+    .hero-title {
+      font-size: 2rem;
+      line-height: 1.2;
+    }
+
+    .hero-subtitle {
+      font-size: 0.95rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .hero-action-buttons {
+      flex-direction: column;
+      width: 100%;
+      gap: 0.65rem;
+    }
+
+    .hero-action-buttons .btn {
+      width: 100%;
+      text-align: center;
+    }
+
+    .platform-trust-row {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.5rem;
+    }
+
+    .trust-tags {
+      flex-wrap: wrap;
+      gap: 0.35rem;
+    }
+
+    .trust-tag {
+      font-size: 0.72rem;
+      padding: 0.25rem 0.55rem;
+    }
+
+    .smart-filter-pills,
+    .filter-pills-row {
+      overflow-x: auto;
+      flex-wrap: nowrap;
+      justify-content: flex-start;
+      padding-bottom: 0.5rem;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none !important;
+      -ms-overflow-style: none !important;
+      width: 100%;
+    }
+
+    .smart-filter-pills::-webkit-scrollbar,
+    .filter-pills-row::-webkit-scrollbar {
+      display: none !important;
+      width: 0 !important;
+      height: 0 !important;
+    }
+
+    .smart-pill,
+    .filter-pill {
+      white-space: nowrap;
+      flex-shrink: 0;
+      font-size: 0.78rem;
+      padding: 0.35rem 0.8rem;
+    }
+
+    .search-input-box {
+      padding: 0.35rem 0.5rem 0.35rem 0.85rem;
+    }
+
+    .search-input {
+      font-size: 0.84rem;
+    }
+
+    .stats-header-row {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.75rem;
+    }
+
+    .stats-heading {
+      font-size: 1.85rem;
+    }
+
+    .stats-card {
+      padding: 1.25rem 1rem;
+    }
+
+    .benefit-card {
+      padding: 1.25rem 1rem;
+      border-width: 2px;
+    }
+  }
+</style>

@@ -1,0 +1,96 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="Privacy Policy — LabelCropNow (100% Client-Side Privacy Guarantee)"
+  description="LabelCropNow privacy policy: No file uploads, no tracking of customer PII, no database storage, and 100% offline browser RAM execution."
+  canonicalPath="/privacy"
+>
+  <div class="container static-page">
+    <header class="page-header">
+      <span class="badge badge-emerald">Absolute Privacy Guarantee</span>
+      <h1 class="page-title">Privacy Policy</h1>
+      <p class="page-lead">We believe seller documents and customer personal details should never leave your device.</p>
+    </header>
+
+    <div class="content-body card">
+      <h2>1. The Zero-Upload Guarantee</h2>
+      <p>
+        LabelCropNow does not operate backend file-processing servers. When you drop or open a shipping label PDF, all parsing, vector bounding box cropping, SKU identification, and multi-label grid generation occur strictly in your device's local memory (RAM).
+      </p>
+      <p>
+        At no point are your PDF files, customer names, shipping addresses, telephone numbers, order values, tracking IDs, or GST identification numbers uploaded, stored, or transmitted to any server, cloud storage provider, or third party.
+      </p>
+
+      <h2>2. No Telemetry & No Tracking of Customer Data</h2>
+      <p>
+        We do not collect customer Personally Identifiable Information (PII) from the dispatch slips you process. There are no tracking scripts or third-party cookies analyzing the contents of your e-commerce shipments.
+      </p>
+
+      <h2>3. Offline Capabilities</h2>
+      <p>
+        Because LabelCropNow's core engines are 100% client-side, you can disconnect your internet connection after the page loads and continue cropping and sorting PDF labels with full functionality.
+      </p>
+
+      <h2>4. Hosting & Infrastructure</h2>
+      <p>
+        LabelCropNow is hosted as a collection of static assets on Cloudflare Pages. Cloudflare may log standard anonymous network requests (such as your IP address and user-agent string) solely for security, DDoS mitigation, and content delivery caching.
+      </p>
+
+      <h2>5. Contact Regarding Privacy</h2>
+      <p>
+        If you have questions about the technical implementation of our client-side architecture, you can reach out via our <a href="/contact">contact page</a>.
+      </p>
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  .static-page {
+    padding: 3.5rem 1.25rem 5rem;
+    max-width: 850px;
+    background: #ffffff;
+  }
+
+  .page-header {
+    text-align: center;
+    margin-bottom: 2.5rem;
+  }
+
+  .page-title {
+    font-family: var(--font-serif);
+    font-size: 2.8rem;
+    font-weight: 500;
+    color: var(--text-main);
+    margin: 0.75rem 0 0.5rem;
+    letter-spacing: -0.025em;
+  }
+
+  .page-lead {
+    font-size: 1.1rem;
+    color: var(--text-muted);
+    line-height: 1.6;
+  }
+
+  .content-body {
+    padding: 2.5rem;
+    color: #334155;
+    line-height: 1.8;
+  }
+
+  .content-body h2 {
+    font-size: 1.45rem;
+    color: var(--text-main);
+    margin: 2rem 0 0.75rem;
+    font-weight: 700;
+  }
+
+  .content-body h2:first-of-type {
+    margin-top: 0;
+  }
+
+  .content-body p {
+    margin-bottom: 1.25rem;
+  }
+</style>

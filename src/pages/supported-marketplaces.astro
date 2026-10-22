@@ -1,0 +1,269 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import BrandLogo from '../components/BrandLogo.astro';
+import { INDIAN_MARKETPLACE_TOOLS, US_MARKETPLACE_TOOLS } from '../config/site.js';
+
+const thermalPrinters = [
+  { name: 'Rollo Wireless & USB', brandKey: 'rollo', size: '4×6" (100×150mm)', dpi: '203 DPI', connection: 'USB / WiFi / Bluetooth', notes: 'Native 288×432 pt page geometry prevents label scaling issues.' },
+  { name: 'Zebra GK420d / ZD420 / ZP450', brandKey: 'zebra', size: '4×6"', dpi: '203 / 300 DPI', connection: 'USB / Ethernet', notes: 'Accurate margins stop Zebra printers from feeding extra blank stickers.' },
+  { name: 'Dymo LabelWriter 4XL', brandKey: 'dymo', size: '4×6" (Model 1744907)', dpi: '300 DPI', connection: 'USB', notes: 'Pre-set for Dymo Extra-Large shipping label dimensions.' },
+  { name: 'Brother QL-1100 / QL-1110NWB', brandKey: 'brother', size: '4×6" (DK-1241)', dpi: '300 DPI', connection: 'USB / WiFi / Bluetooth', notes: 'Matches Brother wide format die-cut shipping stickers.' },
+  { name: 'Munbyn, Jadens & Nelko', brandKey: 'munbyn', size: '4×6"', dpi: '203 DPI', connection: 'USB / Bluetooth', notes: 'Universal preset engineered for high-contrast thermal scanning.' },
+  { name: 'TVS Electronics & TSC TE244', brandKey: 'tvs', size: '4×6" & 4×4"', dpi: '203 DPI', connection: 'USB / Serial', notes: 'Popular among Indian marketplace sellers on Meesho and Flipkart.' },
+];
+---
+
+<BaseLayout
+  title="Supported Marketplaces, Couriers & Thermal Printers — LabelCropNow"
+  description="Directory of 40+ supported Indian and US e-commerce platforms, couriers, and thermal printer hardware compatible with LabelCropNow."
+  canonicalPath="/supported-marketplaces"
+>
+  <div class="container directory-page">
+    <header class="dir-header">
+      <span class="badge badge-emerald">Comprehensive Compatibility Directory</span>
+      <h1 class="dir-h1">Supported E-Commerce Marketplaces, Couriers & Printers</h1>
+      <p class="dir-subtitle">
+        LabelCropNow supports over 40 e-commerce marketplaces and all standard 4×6" direct thermal and A4 laser/inkjet printers.
+      </p>
+    </header>
+
+    <!-- Indian Marketplaces Section -->
+    <section class="dir-section" id="india">
+      <div class="dir-section-header">
+        <h2 class="dir-section-title">🇮🇳 Indian E-Commerce Marketplaces & Couriers</h2>
+        <p class="dir-section-desc">Tools tuned for Ready-to-Ship PDFs, tax invoice stripping, and courier partner sorting.</p>
+      </div>
+
+      <div class="grid-3">
+        {INDIAN_MARKETPLACE_TOOLS.map((tool) => (
+          <div class="dir-card card">
+            <div class="dir-card-top">
+              <div class="dir-title-with-logo">
+                <BrandLogo brand={tool.shortName || tool.name} size={28} />
+                <h3 class="dir-tool-name">{tool.name}</h3>
+              </div>
+              <span class="badge badge-emerald">{tool.couriers[0]}</span>
+            </div>
+            <p class="dir-tool-desc">{tool.tagline}</p>
+            <div class="dir-tool-meta">
+              <strong>Couriers:</strong> {tool.couriers.join(', ')}
+            </div>
+            <a href={`/crop/${tool.slug}`} class="btn btn-secondary dir-btn">Open {tool.shortName} Tool →</a>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- US & Global Marketplaces Section -->
+    <section class="dir-section" id="us">
+      <div class="dir-section-header">
+        <h2 class="dir-section-title">🇺🇸 US & Global Marketplaces & Postal Carriers</h2>
+        <p class="dir-section-desc">Convert 8.5×11" and A4 sheets to standard 4×6" thermal labels for Amazon FBA, USPS, UPS, and FedEx.</p>
+      </div>
+
+      <div class="grid-3">
+        {US_MARKETPLACE_TOOLS.map((tool) => (
+          <div class="dir-card card">
+            <div class="dir-card-top">
+              <div class="dir-title-with-logo">
+                <BrandLogo brand={tool.shortName || tool.name} size={28} />
+                <h3 class="dir-tool-name">{tool.name}</h3>
+              </div>
+              <span class="badge badge-blue">{tool.couriers[0]}</span>
+            </div>
+            <p class="dir-tool-desc">{tool.tagline}</p>
+            <div class="dir-tool-meta">
+              <strong>Couriers:</strong> {tool.couriers.join(', ')}
+            </div>
+            <a href={`/us/${tool.slug}`} class="btn btn-secondary dir-btn">Open {tool.shortName} Tool →</a>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- Supported Thermal Printers -->
+    <section class="dir-section" id="printers">
+      <div class="dir-section-header">
+        <h2 class="dir-section-title">🖨️ Supported Thermal Printer Hardware</h2>
+        <p class="dir-section-desc">Our vector cropping engine guarantees 100% optical readability across all popular thermal hardware.</p>
+      </div>
+
+      <div class="printers-table-card card">
+        <table class="printers-table">
+          <thead>
+            <tr>
+              <th>Printer Model</th>
+              <th>Standard Label Size</th>
+              <th>Resolution</th>
+              <th>Connectivity</th>
+              <th>LabelCropNow Advantage</th>
+            </tr>
+          </thead>
+          <tbody>
+            {thermalPrinters.map((p) => (
+              <tr>
+                <td>
+                  <div class="printer-cell">
+                    <BrandLogo brand={p.brandKey} size={20} fallbackText={p.brandKey} />
+                    <strong>{p.name}</strong>
+                  </div>
+                </td>
+                <td>{p.size}</td>
+                <td><span class="badge badge-cyan">{p.dpi}</span></td>
+                <td>{p.connection}</td>
+                <td>{p.notes}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </div>
+</BaseLayout>
+
+<style>
+  .directory-page {
+    padding: 3.5rem 1.25rem 5rem;
+    background: #ffffff;
+  }
+
+  .dir-header {
+    text-align: center;
+    max-width: 800px;
+    margin: 0 auto 3.5rem;
+  }
+
+  .dir-h1 {
+    font-family: var(--font-serif);
+    font-size: 2.8rem;
+    font-weight: 500;
+    color: var(--text-main);
+    letter-spacing: -0.025em;
+    margin: 1rem 0 0.75rem;
+  }
+
+  .dir-subtitle {
+    font-size: 1.1rem;
+    color: var(--text-muted);
+    line-height: 1.6;
+  }
+
+  .dir-section {
+    margin-bottom: 4.5rem;
+  }
+
+  .dir-section-header {
+    margin-bottom: 2rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--border-subtle);
+  }
+
+  .dir-section-title {
+    font-family: var(--font-serif);
+    font-size: 1.85rem;
+    font-weight: 500;
+    color: var(--text-main);
+    margin-bottom: 0.35rem;
+  }
+
+  .dir-section-desc {
+    color: var(--text-muted);
+    font-size: 0.95rem;
+  }
+
+  .dir-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .dir-card-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 0.5rem;
+    margin-bottom: 0.65rem;
+  }
+
+  .dir-title-with-logo {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+  }
+
+  .printer-cell {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+  }
+
+  .dir-tool-name {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--text-main);
+  }
+
+  .dir-tool-desc {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    line-height: 1.5;
+    margin-bottom: 1rem;
+  }
+
+  .dir-tool-meta {
+    font-size: 0.8rem;
+    color: var(--text-dim);
+    margin-bottom: 1.25rem;
+  }
+
+  .dir-tool-meta strong {
+    color: var(--text-muted);
+  }
+
+  .dir-btn {
+    width: 100%;
+    font-size: 0.85rem;
+    padding: 0.55rem;
+  }
+
+  /* Printers Table */
+  .printers-table-card {
+    overflow-x: auto;
+    padding: 0.5rem;
+  }
+
+  .printers-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+    text-align: left;
+  }
+
+  .printers-table th {
+    padding: 1rem;
+    color: var(--text-main);
+    font-weight: 700;
+    border-bottom: 1px solid var(--border-subtle);
+    background: #f8fafc;
+  }
+
+  .printers-table td {
+    padding: 1rem;
+    border-bottom: 1px solid var(--border-subtle);
+    color: var(--text-muted);
+  }
+
+  .printers-table tr:last-child td {
+    border-bottom: none;
+  }
+
+  .printers-table td strong {
+    color: var(--text-main);
+  }
+
+  @media (max-width: 900px) {
+    .dir-h1 {
+      font-size: 2rem;
+    }
+  }
+</style>

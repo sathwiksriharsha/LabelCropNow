@@ -1,0 +1,240 @@
+---
+import { SAMPLE_ZPL } from '../utils/zplEngine.js';
+---
+
+<div class="zpl-workbench card">
+  <div class="zpl-header">
+    <div class="header-left">
+      <span class="badge badge-emerald">Offline ZPL II Engine</span>
+      <h3 class="zpl-title">Zebra ZPL to 4×6" PDF / PNG Converter</h3>
+    </div>
+    <span class="badge badge-cyan">Zero Labelary API Limits</span>
+  </div>
+
+  <div class="zpl-grid">
+    <div class="zpl-editor-col">
+      <div class="editor-header">
+        <label for="zplInput" class="editor-label">Raw ZPL Code (^XA ... ^XZ)</label>
+        <button type="button" class="btn btn-sample" id="btnLoadSampleZpl">Reset to Sample ZPL</button>
+      </div>
+      <textarea id="zplInput" class="zpl-textarea font-mono" rows="14">{SAMPLE_ZPL}</textarea>
+
+      <div class="zpl-actions">
+        <button type="button" class="btn btn-primary" id="btnZplToPdf">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+            <polyline points="7 10 12 15 17 10"/>
+            <line x1="12" y1="15" x2="12" y2="3"/>
+          </svg>
+          Download 4×6" PDF
+        </button>
+
+        <button type="button" class="btn btn-secondary" id="btnZplToPng">
+          Download PNG
+        </button>
+      </div>
+    </div>
+
+    <div class="zpl-preview-col">
+      <div class="preview-header">
+        <span class="editor-label">High-DPI Label Preview</span>
+        <span class="badge badge-blue">203 DPI Thermal Simulation</span>
+      </div>
+      <div class="canvas-container">
+        <canvas id="zplCanvas" width="406" height="609" class="zpl-canvas"></canvas>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .zpl-workbench {
+    background: #ffffff;
+    border: 1px solid var(--border-subtle);
+    border-radius: 16px;
+    padding: 1.75rem;
+    box-shadow: 0 4px 20px rgba(15, 23, 42, 0.06);
+    margin-bottom: 3rem;
+  }
+
+  .zpl-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 1.25rem;
+    border-bottom: 1px solid var(--border-subtle);
+    margin-bottom: 1.5rem;
+  }
+
+  .header-left {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+  }
+
+  .zpl-title {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--text-main);
+  }
+
+  .zpl-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+  }
+
+  .editor-header, .preview-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 0.75rem;
+  }
+
+  .editor-label {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .zpl-textarea {
+    width: 100%;
+    background: #f8fafc;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    padding: 0.85rem;
+    color: #0f172a;
+    font-size: 0.85rem;
+    line-height: 1.4;
+    resize: vertical;
+    margin-bottom: 1.25rem;
+  }
+
+  .zpl-textarea:focus {
+    outline: none;
+    border-color: var(--accent-emerald);
+    background: #ffffff;
+  }
+
+  .zpl-actions {
+    display: flex;
+    gap: 0.85rem;
+  }
+
+  .canvas-container {
+    background: #f1f5f9;
+    border: 1px solid var(--border-subtle);
+    border-radius: 8px;
+    padding: 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .zpl-canvas {
+    max-width: 100%;
+    height: auto;
+    background: #ffffff;
+    border-radius: 4px;
+    box-shadow: 0 4px 16px rgba(15, 23, 42, 0.12);
+  }
+
+  @media (max-width: 860px) {
+    .zpl-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+
+<script>
+  import { parseZpl, zplToPdf, SAMPLE_ZPL } from '../utils/zplEngine.js';
+  import { encodeCode128B } from '../utils/barcodeUtils.js';
+
+  const zplInput = document.getElementById('zplInput') as HTMLTextAreaElement;
+  const zplCanvas = document.getElementById('zplCanvas') as HTMLCanvasElement;
+  const btnZplToPdf = document.getElementById('btnZplToPdf');
+  const btnZplToPng = document.getElementById('btnZplToPng');
+  const btnLoadSampleZpl = document.getElementById('btnLoadSampleZpl');
+
+  function renderZplToCanvas() {
+    if (!zplCanvas || !zplInput) return;
+    const ctx = zplCanvas.getContext('2d');
+    if (!ctx) return;
+
+    const parsed = parseZpl(zplInput.value);
+    const w = zplCanvas.width;
+    const h = zplCanvas.height;
+
+    ctx.fillStyle = '#ffffff';
+    ctx.fillRect(0, 0, w, h);
+
+    const scale = w / parsed.widthDots;
+
+    for (const cmd of parsed.commands) {
+      const px = cmd.x * scale;
+      const py = cmd.y * scale;
+
+      if (cmd.type === 'text' && cmd.content) {
+        ctx.fillStyle = '#0f172a';
+        ctx.font = `${cmd.bold ? 'bold ' : ''}${Math.max(10, (cmd.fontSize || 20) * scale)}px sans-serif`;
+        ctx.fillText(cmd.content, px, py + (cmd.fontSize || 20) * scale);
+      } else if (cmd.type === 'box') {
+        ctx.fillStyle = '#0f172a';
+        ctx.fillRect(px, py, (cmd.width || 10) * scale, (cmd.height || 2) * scale);
+      } else if (cmd.type === 'barcode128' && cmd.content) {
+        ctx.fillStyle = '#000000';
+        const bars = encodeCode128B(cmd.content);
+        const bHeight = (cmd.height || 80) * scale;
+        const bUnit = (cmd.width || 2) * scale * 0.7;
+        let curX = px;
+        for (const bar of bars) {
+          const bw = bar.widthUnits * bUnit;
+          if (bar.isBar) {
+            ctx.fillRect(curX, py, bw, bHeight);
+          }
+          curX += bw;
+        }
+        ctx.font = 'bold 11px monospace';
+        ctx.fillText(cmd.content, px, py + bHeight + 14);
+      }
+    }
+  }
+
+  zplInput?.addEventListener('input', renderZplToCanvas);
+  btnLoadSampleZpl?.addEventListener('click', () => {
+    zplInput.value = SAMPLE_ZPL;
+    renderZplToCanvas();
+  });
+
+  btnZplToPdf?.addEventListener('click', async () => {
+    try {
+      const pdfBytes = await zplToPdf(zplInput.value);
+      const blob = new Blob([pdfBytes], { type: 'application/pdf' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'label_4x6_from_zpl.pdf';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    } catch (err: any) {
+      alert('Error rendering ZPL to PDF: ' + err.message);
+    }
+  });
+
+  btnZplToPng?.addEventListener('click', () => {
+    const url = zplCanvas.toDataURL('image/png');
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'thermal_label_203dpi.png';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+  });
+
+  // Initial render
+  renderZplToCanvas();
+</script>

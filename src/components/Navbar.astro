@@ -1,0 +1,398 @@
+---
+---
+
+<header class="navbar" id="mainHeader">
+  <div class="container nav-content">
+    <!-- Brand Logo -->
+    <a href="/" class="brand" aria-label="ShipLabelKit Home">
+      <div class="brand-icon">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="4" width="18" height="16" rx="3" stroke="#0f172a" />
+          <line x1="7" y1="8" x2="7" y2="12" stroke="#2563eb" />
+          <line x1="10" y1="8" x2="10" y2="12" stroke="#0f172a" />
+          <line x1="13" y1="8" x2="13" y2="12" stroke="#0f172a" />
+          <line x1="17" y1="8" x2="17" y2="12" stroke="#2563eb" />
+          <line x1="7" y1="15" x2="17" y2="15" stroke="#64748b" />
+        </svg>
+      </div>
+      <div class="brand-text">
+        <span class="brand-title font-sans">LabelCrop<span class="brand-suffix">Now</span></span>
+        <span class="brand-tag font-mono">100% Client-Side</span>
+      </div>
+    </a>
+
+    <!-- Clean Single-Line Navigation Links -->
+    <nav class="nav-links font-sans" aria-label="Main Navigation">
+      <a href="/#workbench" class="nav-link">Label Cropper</a>
+      <a href="/#features" class="nav-link">Features</a>
+      <a href="/a4-4-labels-per-page-converter" class="nav-link">A4 Grid</a>
+      <a href="/sort-shipping-labels-by-sku" class="nav-link">SKU Sorter</a>
+      <a href="/zpl-to-pdf-converter" class="nav-link">ZPL Tools</a>
+      <a href="/supported-marketplaces" class="nav-link">Marketplaces</a>
+    </nav>
+
+    <!-- Right Actions: Direct CTA -->
+    <div class="nav-actions">
+      <a href="/#workbench" class="nav-cta-btn font-sans">
+        <span>Open Workbench</span>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <line x1="5" y1="12" x2="19" y2="12"></line>
+          <polyline points="12 5 19 12 12 19"></polyline>
+        </svg>
+      </a>
+
+      <!-- Mobile Hamburger Button -->
+      <button type="button" class="mobile-toggle" id="mobileMenuBtn" aria-label="Toggle navigation menu" aria-expanded="false">
+        <svg class="icon-hamburger" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="3" y1="6" x2="21" y2="6"></line>
+          <line x1="3" y1="12" x2="21" y2="12"></line>
+          <line x1="3" y1="18" x2="21" y2="18"></line>
+        </svg>
+        <svg class="icon-close" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display: none;">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- Mobile Drawer Menu (Slide-out menu with wordmark retained, zero clutter) -->
+  <div class="mobile-drawer" id="mobileDrawer" aria-hidden="true">
+    <div class="mobile-drawer-inner">
+      <div class="mobile-menu-section">
+        <span class="mobile-section-label font-mono">CORE TOOLS</span>
+        <a href="/#workbench" class="mobile-nav-link">Label Cropper</a>
+        <a href="/#features" class="mobile-nav-link">Features</a>
+        <a href="/a4-4-labels-per-page-converter" class="mobile-nav-link">A4 Grid</a>
+        <a href="/sort-shipping-labels-by-sku" class="mobile-nav-link">SKU Sorter</a>
+        <a href="/zpl-to-pdf-converter" class="mobile-nav-link">ZPL Tools</a>
+        <a href="/supported-marketplaces" class="mobile-nav-link">Marketplaces</a>
+      </div>
+
+      <div class="mobile-menu-section">
+        <span class="mobile-section-label font-mono">ECOMMERCE UTILITIES</span>
+        <a href="/shopify-calculator" class="mobile-nav-link">Shopify Profit Calculator</a>
+        <a href="/low-shipping" class="mobile-nav-link">Meesho Low Shipping Tool</a>
+        <a href="/barcode-generator" class="mobile-nav-link">Barcode Generator</a>
+        <a href="/image-compressor" class="mobile-nav-link">Image Compressor</a>
+        <a href="/image-converter" class="mobile-nav-link">Image Converter</a>
+        <a href="/whatsapp" class="mobile-nav-link">WhatsApp Direct Tool</a>
+      </div>
+
+      <div class="mobile-menu-section">
+        <span class="mobile-section-label font-mono">PRIMARY MARKETPLACES</span>
+        <a href="/crop/meesho" class="mobile-nav-link highlight">Meesho Label Cropper</a>
+        <a href="/crop/flipkart" class="mobile-nav-link highlight">Flipkart Ekart Cropper</a>
+        <a href="/crop/amazon-india" class="mobile-nav-link">Amazon India Easy Ship</a>
+        <a href="/us/amazon-fba-8-5x11-to-4x6" class="mobile-nav-link">Amazon FBA US</a>
+        <a href="/supported-marketplaces" class="mobile-nav-link">View all 40+ presets →</a>
+      </div>
+
+      <div class="mobile-cta-area">
+        <a href="/#workbench" class="mobile-cta-btn font-sans">Open Workbench Now →</a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<script>
+  const mobileBtn = document.getElementById('mobileMenuBtn');
+  const mobileDrawer = document.getElementById('mobileDrawer');
+  const iconHamburger = mobileBtn?.querySelector('.icon-hamburger') as HTMLElement | null;
+  const iconClose = mobileBtn?.querySelector('.icon-close') as HTMLElement | null;
+
+  function toggleMobileMenu() {
+    if (!mobileDrawer || !mobileBtn) return;
+    const isOpen = mobileDrawer.classList.toggle('is-open');
+    mobileBtn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+    mobileDrawer.setAttribute('aria-hidden', isOpen ? 'false' : 'true');
+    document.body.style.overflow = isOpen ? 'hidden' : '';
+
+    if (iconHamburger && iconClose) {
+      iconHamburger.style.display = isOpen ? 'none' : 'block';
+      iconClose.style.display = isOpen ? 'block' : 'none';
+    }
+  }
+
+  function closeMobileMenu() {
+    if (!mobileDrawer || !mobileBtn) return;
+    mobileDrawer.classList.remove('is-open');
+    mobileBtn.setAttribute('aria-expanded', 'false');
+    mobileDrawer.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+
+    if (iconHamburger && iconClose) {
+      iconHamburger.style.display = 'block';
+      iconClose.style.display = 'none';
+    }
+  }
+
+  mobileBtn?.addEventListener('click', toggleMobileMenu);
+
+  document.querySelectorAll('.mobile-nav-link, .mobile-cta-btn').forEach((link) => {
+    link.addEventListener('click', closeMobileMenu);
+  });
+</script>
+
+<style>
+  .navbar {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border-bottom: 1px solid #e2e8f0;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+  }
+
+  .nav-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 64px;
+    gap: 1.5rem;
+  }
+
+  /* Brand */
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    text-decoration: none;
+    color: #0f172a;
+    flex-shrink: 0;
+  }
+
+  .brand:hover {
+    text-decoration: none;
+  }
+
+  .brand-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04);
+  }
+
+  .brand-text {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.15;
+  }
+
+  .brand-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #0f172a;
+    letter-spacing: -0.03em;
+  }
+
+  .brand-suffix {
+    color: #2563eb;
+  }
+
+  .brand-tag {
+    font-size: 0.65rem;
+    color: #64748b;
+    letter-spacing: 0.04em;
+    font-weight: 600;
+  }
+
+  /* Center Clean Nav Links (Uncluttered, well spaced) */
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 1.75rem;
+  }
+
+  .nav-link {
+    color: #475569;
+    font-size: 0.92rem;
+    font-weight: 500;
+    text-decoration: none;
+    transition: color 0.15s ease;
+    padding: 0.35rem 0;
+    position: relative;
+  }
+
+  .nav-link:hover {
+    color: #0f172a;
+    text-decoration: none;
+  }
+
+  .nav-link:hover::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: #2563eb;
+    border-radius: 2px;
+  }
+
+  /* Right Actions */
+  .nav-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+  }
+
+  .nav-security-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    background: #f0fdf4;
+    border: 1px solid #bbf7d0;
+    color: #15803d;
+    padding: 0.3rem 0.75rem;
+    border-radius: 9999px;
+    font-size: 0.72rem;
+    font-weight: 600;
+  }
+
+  .secure-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #16a34a;
+    display: inline-block;
+  }
+
+  .nav-cta-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    padding: 0.55rem 1.15rem;
+    border-radius: 9999px;
+    background: #0f172a;
+    color: #ffffff !important;
+    font-size: 0.86rem;
+    font-weight: 600;
+    text-decoration: none !important;
+    transition: all 0.15s ease;
+    box-shadow: 0 1px 3px rgba(15, 23, 42, 0.12);
+  }
+
+  .nav-cta-btn:hover {
+    background: #1e293b;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(15, 23, 42, 0.18);
+  }
+
+  /* Mobile Toggle */
+  .mobile-toggle {
+    display: none;
+    background: none;
+    border: none;
+    padding: 0.4rem;
+    cursor: pointer;
+    color: #0f172a;
+    border-radius: 6px;
+  }
+
+  .mobile-toggle:focus {
+    outline: 2px solid #2563eb;
+  }
+
+  /* Mobile Drawer (Clean, modern overlay) */
+  .mobile-drawer {
+    display: none;
+    position: fixed;
+    top: 64px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: #ffffff;
+    z-index: 999;
+    padding: 1.5rem;
+    overflow-y: auto;
+    border-top: 1px solid #e2e8f0;
+  }
+
+  .mobile-drawer.is-open {
+    display: block;
+  }
+
+  .mobile-drawer-inner {
+    max-width: 500px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .mobile-menu-section {
+    display: flex;
+    flex-direction: column;
+    gap: 0.65rem;
+    padding-bottom: 1.25rem;
+    border-bottom: 1px solid #f1f5f9;
+  }
+
+  .mobile-section-label {
+    font-size: 0.72rem;
+    color: #94a3b8;
+    letter-spacing: 0.08em;
+    font-weight: 700;
+    margin-bottom: 0.25rem;
+  }
+
+  .mobile-nav-link {
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: #0f172a;
+    text-decoration: none;
+    padding: 0.4rem 0;
+    transition: color 0.15s ease;
+  }
+
+  .mobile-nav-link:hover {
+    color: #2563eb;
+    text-decoration: none;
+  }
+
+  .mobile-nav-link.highlight {
+    color: #2563eb;
+  }
+
+  .mobile-cta-area {
+    margin-top: 0.5rem;
+  }
+
+  .mobile-cta-btn {
+    display: block;
+    width: 100%;
+    text-align: center;
+    background: #0f172a;
+    color: #ffffff;
+    font-weight: 600;
+    font-size: 0.95rem;
+    padding: 0.75rem;
+    border-radius: 9999px;
+    text-decoration: none;
+  }
+
+  /* Responsive Rules */
+  @media (max-width: 960px) {
+    .nav-links,
+    .nav-security-tag {
+      display: none;
+    }
+
+    .mobile-toggle {
+      display: block;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .nav-cta-btn {
+      display: none;
+    }
+  }
+</style>

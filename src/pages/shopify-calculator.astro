@@ -1,0 +1,713 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import BrandLogo from '../components/BrandLogo.astro';
+
+const shopifyFaq = [
+  {
+    q: 'How is Net Profit calculated for a Shopify store?',
+    a: 'Net Profit per order = Selling Price − (Product Sourcing COGS + Forward Shipping + Packaging + Facebook/Google Ad CAC + Payment Gateway Fee + Expected RTO Loss + GST Tax Amount).'
+  },
+  {
+    q: 'What is Break-Even ROAS and why is it crucial?',
+    a: 'Break-Even ROAS is the minimum Return on Ad Spend required so you do not lose money on marketing. It is calculated as: Selling Price ÷ (Selling Price − All Non-Ad Expenses). If your ad campaign ROAS is below this number, your store is operating at a net loss.'
+  },
+  {
+    q: 'How does Return to Origin (RTO) impact Shopify profitability in India?',
+    a: 'For Cash on Delivery (COD) orders in India, average RTO rates range from 15% to 25%. Each returned parcel incurs forward courier charges, reverse courier charges, unrecovered packaging costs, and wasted marketing spend. Factoring RTO into unit economics prevents unexpected month-end losses.'
+  },
+  {
+    q: 'Is this calculator free and offline?',
+    a: 'Yes, 100% free with instant client-side calculation. None of your store financial data or revenue figures are ever logged or uploaded.'
+  }
+];
+---
+
+<BaseLayout
+  title="Shopify Profit Calculator - Calculate Selling Price, Margins & ROAS | LabelCropNow"
+  description="Free Shopify Profit & Margin Calculator for e-commerce sellers. Calculate net profit per order, profit margin %, Shopify fees, Ad CAC, RTO loss, and break-even ROAS."
+  canonicalPath="/shopify-calculator"
+  faq={shopifyFaq}
+>
+  <div class="calc-page container">
+    <!-- Breadcrumb -->
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <a href="/">Home</a>
+      <span class="sep">/</span>
+      <span class="current">Shopify Profit Calculator</span>
+    </nav>
+
+    <!-- Page Header -->
+    <header class="page-header text-center">
+      <div class="calc-logo-pill">
+        <BrandLogo brand="shopify" size={32} />
+        <span class="calc-tag font-mono">D2C & eCommerce Margin Studio</span>
+      </div>
+      <h1 class="page-title font-serif">Shopify Profit & Margin Calculator</h1>
+      <p class="page-subtitle font-sans">
+        Calculate your real Net Profit, Profit Margin %, Ad Spend (CAC), RTO losses, and Break-Even ROAS per order for your Shopify store.
+      </p>
+    </header>
+
+    <!-- Main Calculator Layout Grid -->
+    <div class="calc-layout-grid">
+      <!-- Left Column: Inputs Form -->
+      <div class="calc-card card">
+        <div class="card-header">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="16" y1="14" x2="16" y2="18"/><path d="M16 10h.01"/><path d="M12 10h.01"/><path d="M8 10h.01"/><path d="M12 14h.01"/><path d="M8 14h.01"/><path d="M12 18h.01"/><path d="M8 18h.01"/></svg>
+          <h2 class="card-title font-sans">Order Revenue & Cost Inputs</h2>
+        </div>
+
+        <div class="form-grid">
+          <!-- Selling Price -->
+          <div class="form-group">
+            <label for="sp" class="form-label font-sans">
+              <span>Selling Price / Order Value</span>
+              <span class="hint font-mono">(Customer Pays)</span>
+            </label>
+            <div class="input-wrap">
+              <span class="currency-prefix">₹</span>
+              <input type="number" id="sp" class="calc-input font-mono" value="999" min="0" step="any" />
+            </div>
+          </div>
+
+          <!-- COGS -->
+          <div class="form-group">
+            <label for="cogs" class="form-label font-sans">
+              <span>Product Sourcing / Manufacturing (COGS)</span>
+              <span class="hint font-mono">(Unit Cost)</span>
+            </label>
+            <div class="input-wrap">
+              <span class="currency-prefix">₹</span>
+              <input type="number" id="cogs" class="calc-input font-mono" value="250" min="0" step="any" />
+            </div>
+          </div>
+
+          <!-- Shipping Charges -->
+          <div class="form-group">
+            <label for="shipping" class="form-label font-sans">
+              <span>Forward Shipping Charges</span>
+              <span class="hint font-mono">(Courier Rate)</span>
+            </label>
+            <div class="input-wrap">
+              <span class="currency-prefix">₹</span>
+              <input type="number" id="shipping" class="calc-input font-mono" value="70" min="0" step="any" />
+            </div>
+          </div>
+
+          <!-- Packaging Charges -->
+          <div class="form-group">
+            <label for="packaging" class="form-label font-sans">
+              <span>Packaging & Label Materials</span>
+              <span class="hint font-mono">(Box/Flyer)</span>
+            </label>
+            <div class="input-wrap">
+              <span class="currency-prefix">₹</span>
+              <input type="number" id="packaging" class="calc-input font-mono" value="15" min="0" step="any" />
+            </div>
+          </div>
+
+          <!-- Marketing / Ad CAC -->
+          <div class="form-group">
+            <label for="adCac" class="form-label font-sans">
+              <span>Marketing Ad Cost Per Purchase (CAC)</span>
+              <span class="hint font-mono">(Meta/Google Ads)</span>
+            </label>
+            <div class="input-wrap">
+              <span class="currency-prefix">₹</span>
+              <input type="number" id="adCac" class="calc-input font-mono" value="250" min="0" step="any" />
+            </div>
+          </div>
+
+          <!-- Gateway Fee -->
+          <div class="form-group">
+            <label for="gatewayFee" class="form-label font-sans">
+              <span>Payment Gateway / Shopify Fee</span>
+            </label>
+            <select id="gatewayFee" class="calc-select font-sans">
+              <option value="2">2.0% (Razorpay / Cashfree)</option>
+              <option value="2.5">2.5% (Cards & Netbanking)</option>
+              <option value="3">3.0% (Shopify Basic + Gateway)</option>
+              <option value="0">0.0% (COD Cash on Delivery)</option>
+            </select>
+          </div>
+
+          <!-- RTO Rate & Reverse Fee -->
+          <div class="form-group full-width">
+            <label class="form-label font-sans">
+              <span>Expected RTO Rate & Reverse Courier Fee</span>
+              <span class="hint font-mono">(COD Returns)</span>
+            </label>
+            <div class="split-inputs">
+              <select id="rtoRate" class="calc-select font-sans">
+                <option value="0">0% (100% Prepaid Orders)</option>
+                <option value="10">10% Low RTO (High verification)</option>
+                <option value="15" selected>15% Average Industry RTO</option>
+                <option value="20">20% High RTO (Apparel/Fashion)</option>
+                <option value="25">25% Extreme COD RTO</option>
+              </select>
+              <div class="input-wrap">
+                <span class="currency-prefix">₹</span>
+                <input type="number" id="rtoCharge" class="calc-input font-mono" value="60" min="0" placeholder="Reverse Fee" title="Reverse courier charge per RTO" />
+              </div>
+            </div>
+          </div>
+
+          <!-- GST % -->
+          <div class="form-group">
+            <label for="gstPercent" class="form-label font-sans">
+              <span>GST Slab (%)</span>
+            </label>
+            <select id="gstPercent" class="calc-select font-sans">
+              <option value="18" selected>18% Standard Goods / Services</option>
+              <option value="12">12% Apparel & Processed Goods</option>
+              <option value="5">5% Essential & Footwear &lt;₹1000</option>
+              <option value="0">0% Exempt / Composite</option>
+              <option value="28">28% Luxury Goods</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <button type="button" class="btn btn-secondary" id="btnReset">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+            <span>Reset to Defaults</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Right Column: Live Profit Dashboard -->
+      <div class="calc-dashboard">
+        <!-- Big Net Profit Card -->
+        <div class="profit-highlight-card" id="profitHighlightCard">
+          <span class="profit-sub font-mono">NET PROFIT PER ORDER</span>
+          <div class="profit-big-val font-mono" id="netProfitVal">₹278.84</div>
+          <div class="profit-badge font-sans" id="profitBadge">
+            <span id="netMarginVal">27.91%</span> Profit Margin
+          </div>
+        </div>
+
+        <!-- Metrics Grid -->
+        <div class="metrics-grid">
+          <div class="metric-card">
+            <span class="metric-label font-sans">Break-Even ROAS</span>
+            <div class="metric-val font-mono" id="beRoasVal">2.14x</div>
+            <span class="metric-hint font-mono">Min target to not lose money</span>
+          </div>
+
+          <div class="metric-card">
+            <span class="metric-label font-sans">Current ROAS</span>
+            <div class="metric-val font-mono" id="currRoasVal">4.00x</div>
+            <span class="metric-hint font-mono">Based on current Ad CAC</span>
+          </div>
+
+          <div class="metric-card">
+            <span class="metric-label font-sans">Total Expenses</span>
+            <div class="metric-val font-mono" id="totalExpVal">₹720.16</div>
+            <span class="metric-hint font-mono">All costs per delivered unit</span>
+          </div>
+
+          <div class="metric-card">
+            <span class="metric-label font-sans">Max Allowed CAC</span>
+            <div class="metric-val font-mono" id="maxCacVal">₹528.84</div>
+            <span class="metric-hint font-mono">Ceiling before unprofitable</span>
+          </div>
+        </div>
+
+        <!-- Expense Breakdown List -->
+        <div class="breakdown-card card">
+          <h3 class="breakdown-title font-sans">Unit Economics Cost Breakdown</h3>
+          <ul class="breakdown-list font-sans">
+            <li class="breakdown-item">
+              <span class="item-name"><span class="dot dot-cogs"></span> Product Cost (COGS)</span>
+              <span class="item-val font-mono" id="bdCogs">₹250.00</span>
+            </li>
+            <li class="breakdown-item">
+              <span class="item-name"><span class="dot dot-shipping"></span> Shipping & Packaging</span>
+              <span class="item-val font-mono" id="bdShip">₹85.00</span>
+            </li>
+            <li class="breakdown-item">
+              <span class="item-name"><span class="dot dot-ad"></span> Marketing Ad Spend (CAC)</span>
+              <span class="item-val font-mono" id="bdAd">₹250.00</span>
+            </li>
+            <li class="breakdown-item">
+              <span class="item-name"><span class="dot dot-gateway"></span> Payment Gateway Fee</span>
+              <span class="item-val font-mono" id="bdGateway">₹19.98</span>
+            </li>
+            <li class="breakdown-item">
+              <span class="item-name"><span class="dot dot-rto"></span> Expected RTO Loss Allocation</span>
+              <span class="item-val font-mono" id="bdRto">₹38.25</span>
+            </li>
+            <li class="breakdown-item">
+              <span class="item-name"><span class="dot dot-gst"></span> Output GST Liability</span>
+              <span class="item-val font-mono" id="bdGst">₹152.39</span>
+            </li>
+          </ul>
+
+          <div class="breakdown-actions">
+            <button type="button" class="btn btn-secondary w-full" id="btnCopySummary">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+              <span>Copy Financial Breakdown</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Educational Section -->
+    <section class="guide-section card">
+      <h2 class="guide-title font-serif">Understanding Your D2C Unit Economics</h2>
+      <div class="guide-grid">
+        <div class="guide-card">
+          <h3 class="guide-h3 font-sans">1. Why RTO Loss is Crucial</h3>
+          <p class="guide-p font-sans">Many Shopify sellers calculate profit assuming 100% of shipments deliver. In India, COD orders average 15-20% RTO. Accounting for forward + reverse logistics and 50% burnt ad spend protects your working capital.</p>
+        </div>
+        <div class="guide-card">
+          <h3 class="guide-h3 font-sans">2. Scaling Beyond Break-Even ROAS</h3>
+          <p class="guide-p font-sans">When scaling Meta and Google campaigns, ad costs rise. Knowing your exact Break-Even ROAS allows media buyers to set target cost caps without gambling on profit margins.</p>
+        </div>
+        <div class="guide-card">
+          <h3 class="guide-h3 font-sans">3. GST Net Realization</h3>
+          <p class="guide-p font-sans">Selling price includes GST collected from customers. Subtracting the statutory tax liability reveals your true pocketed revenue before paying vendors.</p>
+        </div>
+      </div>
+    </section>
+  </div>
+</BaseLayout>
+
+<script>
+  function calculateShopify() {
+    const sp = parseFloat((document.getElementById('sp') as HTMLInputElement).value) || 0;
+    const cogs = parseFloat((document.getElementById('cogs') as HTMLInputElement).value) || 0;
+    const shipping = parseFloat((document.getElementById('shipping') as HTMLInputElement).value) || 0;
+    const packaging = parseFloat((document.getElementById('packaging') as HTMLInputElement).value) || 0;
+    const adCac = parseFloat((document.getElementById('adCac') as HTMLInputElement).value) || 0;
+    const gatewayPercent = parseFloat((document.getElementById('gatewayFee') as HTMLSelectElement).value) || 0;
+    const rtoPercent = parseFloat((document.getElementById('rtoRate') as HTMLSelectElement).value) || 0;
+    const rtoCharge = parseFloat((document.getElementById('rtoCharge') as HTMLInputElement).value) || 0;
+    const gstPercent = parseFloat((document.getElementById('gstPercent') as HTMLSelectElement).value) || 0;
+
+    const gatewayFee = (sp * gatewayPercent) / 100;
+    const totalShipPack = shipping + packaging;
+    const rtoLossPerOrder = (rtoPercent / 100) * (shipping + rtoCharge + (adCac * 0.5));
+    const gstAmount = (sp * gstPercent) / (100 + gstPercent);
+
+    const totalExpense = cogs + totalShipPack + adCac + gatewayFee + rtoLossPerOrder + gstAmount;
+    const netProfit = sp - totalExpense;
+    const netMargin = sp > 0 ? (netProfit / sp) * 100 : 0;
+    const currRoas = adCac > 0 ? (sp / adCac) : 0;
+
+    const nonAdExpense = cogs + totalShipPack + gatewayFee + rtoLossPerOrder + gstAmount;
+    const maxAdCostAllowed = sp - nonAdExpense;
+    const breakEvenRoas = maxAdCostAllowed > 0 ? (sp / maxAdCostAllowed) : 0;
+
+    // Update DOM
+    const netProfitEl = document.getElementById('netProfitVal')!;
+    netProfitEl.innerText = (netProfit >= 0 ? '₹' : '-₹') + Math.abs(netProfit).toFixed(2);
+
+    const profitCard = document.getElementById('profitHighlightCard')!;
+    const profitBadge = document.getElementById('profitBadge')!;
+    if (netProfit < 0) {
+      profitCard.classList.add('is-loss');
+      profitBadge.classList.add('badge-loss');
+    } else {
+      profitCard.classList.remove('is-loss');
+      profitBadge.classList.remove('badge-loss');
+    }
+
+    document.getElementById('netMarginVal')!.innerText = netMargin.toFixed(2) + '%';
+    document.getElementById('beRoasVal')!.innerText = breakEvenRoas > 0 ? breakEvenRoas.toFixed(2) + 'x' : 'N/A';
+    document.getElementById('currRoasVal')!.innerText = currRoas > 0 ? currRoas.toFixed(2) + 'x' : 'N/A';
+    document.getElementById('totalExpVal')!.innerText = '₹' + totalExpense.toFixed(2);
+    document.getElementById('maxCacVal')!.innerText = maxAdCostAllowed > 0 ? '₹' + maxAdCostAllowed.toFixed(2) : '₹0.00';
+
+    document.getElementById('bdCogs')!.innerText = '₹' + cogs.toFixed(2);
+    document.getElementById('bdShip')!.innerText = '₹' + totalShipPack.toFixed(2);
+    document.getElementById('bdAd')!.innerText = '₹' + adCac.toFixed(2);
+    document.getElementById('bdGateway')!.innerText = '₹' + gatewayFee.toFixed(2);
+    document.getElementById('bdRto')!.innerText = '₹' + rtoLossPerOrder.toFixed(2);
+    document.getElementById('bdGst')!.innerText = '₹' + gstAmount.toFixed(2);
+  }
+
+  function resetForm() {
+    (document.getElementById('sp') as HTMLInputElement).value = '999';
+    (document.getElementById('cogs') as HTMLInputElement).value = '250';
+    (document.getElementById('shipping') as HTMLInputElement).value = '70';
+    (document.getElementById('packaging') as HTMLInputElement).value = '15';
+    (document.getElementById('adCac') as HTMLInputElement).value = '250';
+    (document.getElementById('gatewayFee') as HTMLSelectElement).value = '2';
+    (document.getElementById('rtoRate') as HTMLSelectElement).value = '15';
+    (document.getElementById('rtoCharge') as HTMLInputElement).value = '60';
+    (document.getElementById('gstPercent') as HTMLSelectElement).value = '18';
+    calculateShopify();
+  }
+
+  const inputIds = ['sp', 'cogs', 'shipping', 'packaging', 'adCac', 'gatewayFee', 'rtoRate', 'rtoCharge', 'gstPercent'];
+  inputIds.forEach((id) => {
+    const el = document.getElementById(id);
+    el?.addEventListener('input', calculateShopify);
+    el?.addEventListener('change', calculateShopify);
+  });
+
+  document.getElementById('btnReset')?.addEventListener('click', resetForm);
+
+  document.getElementById('btnCopySummary')?.addEventListener('click', () => {
+    const sp = (document.getElementById('sp') as HTMLInputElement).value;
+    const profit = document.getElementById('netProfitVal')?.innerText;
+    const margin = document.getElementById('netMarginVal')?.innerText;
+    const beRoas = document.getElementById('beRoasVal')?.innerText;
+    const totalExp = document.getElementById('totalExpVal')?.innerText;
+
+    const summary = `Shopify Unit Economics Summary:
+• Selling Price: ₹${sp}
+• Total Expenses: ${totalExp}
+• Net Profit: ${profit} (${margin} Margin)
+• Break-Even ROAS: ${beRoas}
+Calculated via LabelCropNow (https://labelcropnow.pages.dev/shopify-calculator)`;
+
+    navigator.clipboard.writeText(summary).then(() => {
+      alert('Unit economics summary copied to clipboard!');
+    });
+  });
+
+  // Initial calculation on page load
+  calculateShopify();
+</script>
+
+<style>
+  .calc-page {
+    padding-top: 1.5rem;
+    padding-bottom: 4rem;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  .breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin-bottom: 1.5rem;
+  }
+  .breadcrumb a {
+    color: var(--text-muted);
+    text-decoration: none;
+  }
+  .breadcrumb a:hover {
+    color: var(--primary);
+  }
+  .page-header {
+    margin-bottom: 2.5rem;
+  }
+  .calc-logo-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: #ecfdf5;
+    padding: 0.35rem 0.85rem;
+    border-radius: 50px;
+    border: 1px solid #a7f3d0;
+    margin-bottom: 0.75rem;
+  }
+  .calc-tag {
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: #065f46;
+  }
+  .page-title {
+    font-size: 2.2rem;
+    color: var(--text-main);
+    margin: 0.5rem 0;
+  }
+  .page-subtitle {
+    font-size: 1.05rem;
+    color: var(--text-muted);
+    max-width: 650px;
+    margin: 0 auto;
+    line-height: 1.5;
+  }
+  .calc-layout-grid {
+    display: grid;
+    grid-template-columns: 1.15fr 1fr;
+    gap: 2rem;
+    margin-bottom: 3rem;
+  }
+  @media (max-width: 900px) {
+    .calc-layout-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+  .calc-card {
+    background: #ffffff;
+    border: 1px solid var(--border-subtle);
+    border-radius: 16px;
+    padding: 1.75rem;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.04);
+  }
+  .card-header {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--border-subtle);
+    margin-bottom: 1.5rem;
+  }
+  .card-title {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--text-main);
+  }
+  .form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.25rem;
+  }
+  @media (max-width: 600px) {
+    .form-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+  .form-group.full-width {
+    grid-column: 1 / -1;
+  }
+  .form-label {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-main);
+    margin-bottom: 0.4rem;
+  }
+  .form-label .hint {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+  }
+  .input-wrap {
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+  .currency-prefix {
+    position: absolute;
+    left: 0.85rem;
+    color: var(--text-muted);
+    font-weight: 600;
+    font-size: 0.95rem;
+    pointer-events: none;
+  }
+  .calc-input {
+    width: 100%;
+    padding: 0.65rem 0.85rem 0.65rem 1.75rem;
+    border: 1px solid var(--border-subtle);
+    border-radius: 8px;
+    font-size: 0.95rem;
+    background: #f8fafc;
+    color: var(--text-main);
+    outline: none;
+    transition: all 0.15s ease;
+  }
+  .calc-input:focus, .calc-select:focus {
+    border-color: #2563eb;
+    background: #ffffff;
+    box-shadow: 0 0 0 3px rgba(37,99,235,0.12);
+  }
+  .calc-select {
+    width: 100%;
+    padding: 0.65rem 0.85rem;
+    border: 1px solid var(--border-subtle);
+    border-radius: 8px;
+    font-size: 0.9rem;
+    background: #f8fafc;
+    color: var(--text-main);
+    outline: none;
+    cursor: pointer;
+  }
+  .split-inputs {
+    display: flex;
+    gap: 0.75rem;
+  }
+  .form-actions {
+    margin-top: 1.5rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--border-subtle);
+    display: flex;
+    justify-content: flex-end;
+  }
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.6rem 1.25rem;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 0.88rem;
+    cursor: pointer;
+    border: none;
+    transition: all 0.15s ease;
+  }
+  .btn-secondary {
+    background: #f1f5f9;
+    color: #334155;
+    border: 1px solid #cbd5e1;
+  }
+  .btn-secondary:hover {
+    background: #e2e8f0;
+  }
+  .btn.w-full {
+    width: 100%;
+  }
+  .calc-dashboard {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+  .profit-highlight-card {
+    background: linear-gradient(135deg, #059669 0%, #047857 100%);
+    color: #ffffff;
+    border-radius: 16px;
+    padding: 1.75rem;
+    text-align: center;
+    box-shadow: 0 8px 24px rgba(5,150,105,0.25);
+    transition: all 0.2s ease;
+  }
+  .profit-highlight-card.is-loss {
+    background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+    box-shadow: 0 8px 24px rgba(220,38,38,0.25);
+  }
+  .profit-sub {
+    font-size: 0.78rem;
+    letter-spacing: 0.08em;
+    opacity: 0.9;
+  }
+  .profit-big-val {
+    font-size: 2.8rem;
+    font-weight: 800;
+    margin: 0.4rem 0;
+    line-height: 1.1;
+  }
+  .profit-badge {
+    display: inline-block;
+    background: rgba(255,255,255,0.22);
+    backdrop-filter: blur(4px);
+    padding: 0.35rem 0.85rem;
+    border-radius: 50px;
+    font-size: 0.88rem;
+    font-weight: 600;
+  }
+  .metrics-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.85rem;
+  }
+  .metric-card {
+    background: #ffffff;
+    border: 1px solid var(--border-subtle);
+    border-radius: 12px;
+    padding: 1.1rem;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.02);
+  }
+  .metric-label {
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--text-muted);
+  }
+  .metric-val {
+    font-size: 1.45rem;
+    font-weight: 700;
+    color: var(--text-main);
+    margin: 0.25rem 0 0.15rem;
+  }
+  .metric-hint {
+    font-size: 0.72rem;
+    color: #94a3b8;
+  }
+  .breakdown-card {
+    background: #ffffff;
+    border: 1px solid var(--border-subtle);
+    border-radius: 16px;
+    padding: 1.5rem;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.04);
+  }
+  .breakdown-title {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--text-main);
+    margin-bottom: 1rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--border-subtle);
+  }
+  .breakdown-list {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 1.25rem 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.65rem;
+  }
+  .breakdown-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.88rem;
+    color: var(--text-main);
+  }
+  .item-name {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+  }
+  .dot-cogs { background: #3b82f6; }
+  .dot-shipping { background: #06b6d4; }
+  .dot-ad { background: #f59e0b; }
+  .dot-gateway { background: #8b5cf6; }
+  .dot-rto { background: #ef4444; }
+  .dot-gst { background: #64748b; }
+  .item-val {
+    font-weight: 600;
+  }
+  .guide-section {
+    background: #ffffff;
+    border: 1px solid var(--border-subtle);
+    border-radius: 16px;
+    padding: 2rem;
+  }
+  .guide-title {
+    font-size: 1.4rem;
+    color: var(--text-main);
+    margin-bottom: 1.5rem;
+    text-align: center;
+  }
+  .guide-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+  }
+  @media (max-width: 768px) {
+    .guide-grid { grid-template-columns: 1fr; }
+  }
+  .guide-card {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 1.25rem;
+  }
+  .guide-h3 {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--text-main);
+    margin-bottom: 0.4rem;
+  }
+  .guide-p {
+    font-size: 0.86rem;
+    color: var(--text-muted);
+    line-height: 1.45;
+  }
+</style>

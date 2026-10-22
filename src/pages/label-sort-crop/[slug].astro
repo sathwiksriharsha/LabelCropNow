@@ -1,0 +1,272 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import LabelWorkbench from '../../components/LabelWorkbench.astro';
+import { INDIAN_MARKETPLACE_TOOLS, type ToolPreset } from '../../config/site.js';
+
+export function getStaticPaths() {
+  return INDIAN_MARKETPLACE_TOOLS.map((preset) => ({
+    params: { slug: preset.slug },
+    props: { preset },
+  }));
+}
+
+export interface Props {
+  preset: ToolPreset;
+}
+
+const { preset } = Astro.props;
+---
+
+<BaseLayout
+  title={`${preset.shortName} Label Sort & Crop — Auto-Group by SKU & Courier Partner`}
+  description={`Batch sort and crop ${preset.shortName} shipping labels by SKU and courier partner (Valmo, Delhivery, Shadowfax, Ekart). Convert to 4x6 thermal format online free.`}
+  canonicalPath={`/label-sort-crop/${preset.slug}`}
+  faq={preset.faq}
+>
+  <div class="tool-page container">
+    <!-- Breadcrumb -->
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <a href="/">Home</a>
+      <span class="sep">/</span>
+      <a href="/supported-marketplaces#india">India Label Sorters</a>
+      <span class="sep">/</span>
+      <span class="current">{preset.shortName} Sort & Crop</span>
+    </nav>
+
+    <!-- Page Header -->
+    <header class="tool-header">
+      <div class="badge-row">
+        <span class="badge badge-emerald">🇮🇳 SKU & Courier Auto-Sorter</span>
+        <span class="badge badge-cyan">{preset.couriers.join(', ')}</span>
+        <span class="badge badge-amber">A4 to 4×6 Thermal Roll</span>
+      </div>
+      <h1 class="tool-h1">{preset.shortName} Label Sort & Crop: Group by SKU & Courier</h1>
+      <p class="tool-tagline">Automatically extract product SKU codes and courier partners, re-order your batch alphabetically, and strip tax invoices in 1 click.</p>
+    </header>
+
+    <!-- Interactive Workbench Configured for this Preset -->
+    <LabelWorkbench preset={preset} />
+
+    <!-- Paper Saver Guide Box -->
+    <section class="guide-box card">
+      <div class="guide-header">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#059669" stroke-width="2">
+          <circle cx="12" cy="12" r="10"/>
+          <line x1="12" y1="16" x2="12" y2="12"/>
+          <line x1="12" y1="8" x2="12.01" y2="8"/>
+        </svg>
+        <h2 class="guide-title">How SKU & Courier Sorting Works for {preset.shortName}</h2>
+      </div>
+      <p class="guide-text">{preset.paperSaverTip} When batch sorting is enabled, our client-side text extractor analyzes each order page, extracts SKU numbers, and re-orders the PDF pages so all identical items are grouped together for fast warehouse packing.</p>
+    </section>
+
+    <!-- Features Grid -->
+    <section class="preset-features-section">
+      <h2 class="section-title">Key Capabilities for {preset.shortName} Sellers</h2>
+      <div class="features-grid-3">
+        {preset.features.map((feature) => (
+          <div class="feature-item card">
+            <div class="feature-icon">✓</div>
+            <p class="feature-text">{feature}</p>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- Supported Couriers -->
+    <section class="couriers-section card">
+      <h2 class="couriers-title">Supported Couriers for {preset.shortName}</h2>
+      <div class="couriers-tags">
+        {preset.couriers.map((c) => (
+          <span class="courier-tag">{c}</span>
+        ))}
+      </div>
+    </section>
+  </div>
+</BaseLayout>
+
+<style>
+  .tool-page {
+    padding: 2.5rem 1.5rem 5rem;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.85rem;
+    color: var(--text-dim);
+    margin-bottom: 2rem;
+    font-family: var(--font-mono);
+  }
+
+  .breadcrumb a {
+    color: var(--text-muted);
+    text-decoration: none;
+    transition: color 0.15s ease;
+  }
+
+  .breadcrumb a:hover {
+    color: var(--color-primary);
+  }
+
+  .breadcrumb .sep {
+    color: var(--text-dim);
+  }
+
+  .breadcrumb .current {
+    color: var(--text-main);
+    font-weight: 600;
+  }
+
+  .tool-header {
+    text-align: center;
+    max-width: 820px;
+    margin: 0 auto 3rem;
+  }
+
+  .badge-row {
+    display: flex;
+    justify-content: center;
+    gap: 0.6rem;
+    flex-wrap: wrap;
+    margin-bottom: 1.25rem;
+  }
+
+  .tool-h1 {
+    font-size: 2.6rem;
+    font-weight: 800;
+    line-height: 1.2;
+    color: var(--text-main);
+    letter-spacing: -0.03em;
+    margin-bottom: 1rem;
+    font-family: var(--font-serif);
+  }
+
+  .tool-tagline {
+    font-size: 1.15rem;
+    color: var(--text-muted);
+    line-height: 1.6;
+    max-width: 700px;
+    margin: 0 auto;
+  }
+
+  .guide-box {
+    margin: 4rem 0 3rem;
+    padding: 2rem;
+    background: #f0fdf4;
+    border: 1px solid #bbf7d0;
+  }
+
+  .guide-header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+  }
+
+  .guide-title {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #166534;
+  }
+
+  .guide-text {
+    font-size: 0.95rem;
+    color: #15803d;
+    line-height: 1.65;
+    margin: 0;
+  }
+
+  .preset-features-section {
+    margin: 4rem 0 3rem;
+  }
+
+  .section-title {
+    font-size: 1.8rem;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 2.5rem;
+    letter-spacing: -0.02em;
+    font-family: var(--font-serif);
+  }
+
+  .features-grid-3 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+  }
+
+  .feature-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    padding: 1.5rem;
+  }
+
+  .feature-icon {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: #eff6ff;
+    color: #2563eb;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 0.85rem;
+    flex-shrink: 0;
+  }
+
+  .feature-text {
+    font-size: 0.95rem;
+    color: var(--text-main);
+    line-height: 1.55;
+    margin: 0;
+    font-weight: 500;
+  }
+
+  .couriers-section {
+    padding: 2.5rem;
+    text-align: center;
+    background: #ffffff;
+    border: 1px solid var(--border-subtle);
+  }
+
+  .couriers-title {
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+    font-family: var(--font-serif);
+  }
+
+  .couriers-tags {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.75rem;
+  }
+
+  .courier-tag {
+    background: #f1f5f9;
+    color: #334155;
+    font-size: 0.85rem;
+    font-weight: 600;
+    padding: 0.45rem 1rem;
+    border-radius: 9999px;
+    border: 1px solid #e2e8f0;
+    font-family: var(--font-mono);
+  }
+
+  @media (max-width: 900px) {
+    .features-grid-3 {
+      grid-template-columns: 1fr;
+    }
+
+    .tool-h1 {
+      font-size: 2rem;
+    }
+  }
+</style>

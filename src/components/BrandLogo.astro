@@ -1,0 +1,199 @@
+---
+export interface Props {
+  brand: string;
+  size?: number;
+  width?: number;
+  height?: number;
+  class?: string;
+  alt?: string;
+  fallbackText?: string;
+  asBadge?: boolean;
+}
+
+const {
+  brand,
+  size = 24,
+  width,
+  height,
+  class: className = '',
+  alt,
+  fallbackText,
+  asBadge = false,
+} = Astro.props;
+
+// Normalization key
+const key = (brand || '').toLowerCase().trim();
+
+// Verified genuine brand assets from public/brands/ manifest
+const BRAND_ASSETS: Record<string, { src: string; alt: string; name: string; isSquareDark?: boolean }> = {
+  meesho: { src: '/brands/marketplaces/meesho.jpg', alt: 'Meesho logo', name: 'Meesho', isSquareDark: true },
+  flipkart: { src: '/brands/marketplaces/flipkart.svg', alt: 'Flipkart logo', name: 'Flipkart' },
+  amazon: { src: '/brands/marketplaces/amazon.svg', alt: 'Amazon logo', name: 'Amazon' },
+  'amazon-india': { src: '/brands/marketplaces/amazon.svg', alt: 'Amazon India logo', name: 'Amazon India' },
+  'amazon fba': { src: '/brands/marketplaces/amazon.svg', alt: 'Amazon FBA logo', name: 'Amazon FBA' },
+  myntra: { src: '/brands/marketplaces/myntra.svg', alt: 'Myntra logo', name: 'Myntra' },
+  ebay: { src: '/brands/marketplaces/ebay.svg', alt: 'eBay logo', name: 'eBay' },
+  etsy: { src: '/brands/marketplaces/etsy.svg', alt: 'Etsy logo', name: 'Etsy' },
+  shopify: { src: '/brands/marketplaces/shopify.svg', alt: 'Shopify logo', name: 'Shopify' },
+  tiktok: { src: '/brands/marketplaces/tiktok.svg', alt: 'TikTok logo', name: 'TikTok' },
+  'tiktok shop': { src: '/brands/marketplaces/tiktok.svg', alt: 'TikTok Shop logo', name: 'TikTok Shop' },
+  shopee: { src: '/brands/marketplaces/shopee.svg', alt: 'Shopee logo', name: 'Shopee' },
+  snapdeal: { src: '/brands/marketplaces/snapdeal.png', alt: 'Snapdeal logo', name: 'Snapdeal' },
+  shadowfax: { src: '/brands/couriers/shadowfax.svg', alt: 'Shadowfax logo', name: 'Shadowfax' },
+  ekart: { src: '/brands/couriers/ekart.png', alt: 'Ekart Logistics logo', name: 'Ekart' },
+  bluedart: { src: '/brands/couriers/bluedart.png', alt: 'Blue Dart logo', name: 'Blue Dart' },
+  'blue dart': { src: '/brands/couriers/bluedart.png', alt: 'Blue Dart logo', name: 'Blue Dart' },
+  fedex: { src: '/brands/couriers/fedex.svg', alt: 'FedEx logo', name: 'FedEx' },
+  dhl: { src: '/brands/couriers/dhl.svg', alt: 'DHL logo', name: 'DHL' },
+  zebra: { src: '/brands/printers/zebra-technologies.svg', alt: 'Zebra Technologies logo', name: 'Zebra' },
+  'zebra technologies': { src: '/brands/printers/zebra-technologies.svg', alt: 'Zebra Technologies logo', name: 'Zebra' },
+};
+
+function resolveBrandAsset(query: string) {
+  const q = query.toLowerCase().trim();
+  if (BRAND_ASSETS[q]) return BRAND_ASSETS[q];
+  for (const [k, v] of Object.entries(BRAND_ASSETS)) {
+    if (q.includes(k)) return v;
+  }
+  return null;
+}
+
+// Restricted-review (UPS, USPS) must not display trademark logos without verification per ANTIGRAVITY-INTEGRATION.md
+const isRestrictedReview = (key.includes('ups') && !key.includes('shadowfax')) || key.includes('usps');
+const match = isRestrictedReview ? null : resolveBrandAsset(key);
+
+const w = width || size;
+const h = height || size;
+const iconPixel = Math.max(16, Math.min(w, 24));
+
+// Categorize unbundled or restricted brands for neat contextual icons
+const isCourier = key.includes('usps') || key.includes('ups') || key.includes('shiprocket') || key.includes('valmo') || key.includes('delhivery') || key.includes('courier') || key.includes('express') || key.includes('post');
+const isPrinter = key.includes('rollo') || key.includes('dymo') || key.includes('brother') || key.includes('munbyn') || key.includes('jadens') || key.includes('printer');
+
+let themeColor = '#2563eb';
+let themeBg = '#eff6ff';
+
+if (key.includes('ups')) {
+  themeColor = '#b45309';
+  themeBg = '#fffbeb';
+} else if (key.includes('usps')) {
+  themeColor = '#1d4ed8';
+  themeBg = '#eff6ff';
+} else if (key.includes('ajio')) {
+  themeColor = '#7c3aed';
+  themeBg = '#faf5ff';
+} else if (key.includes('shiprocket')) {
+  themeColor = '#0284c7';
+  themeBg = '#f0f9ff';
+} else if (key.includes('glowroad')) {
+  themeColor = '#db2777';
+  themeBg = '#fdf2f8';
+} else if (key.includes('poshmark')) {
+  themeColor = '#e11d48';
+  themeBg = '#fff1f2';
+} else if (key.includes('walmart')) {
+  themeColor = '#0891b2';
+  themeBg = '#ecfeff';
+} else if (isPrinter) {
+  themeColor = '#059669';
+  themeBg = '#ecfdf5';
+}
+---
+
+{match ? (
+  <span class={`brand-logo-wrap ${className}`} style={`--logo-size: ${w}px;`}>
+    <img
+      src={match.src}
+      alt={alt || match.alt}
+      width={w}
+      height={h}
+      class={`brand-logo-img ${match.isSquareDark ? 'brand-square-dark' : ''}`}
+      loading="lazy"
+    />
+  </span>
+) : asBadge && fallbackText ? (
+  <span class={`brand-logo-fallback font-mono ${className}`} title={fallbackText} aria-label={fallbackText}>
+    {fallbackText}
+  </span>
+) : (
+  <span
+    class={`brand-placeholder-icon ${className}`}
+    style={`width: ${w}px; height: ${h}px; color: ${themeColor}; background: ${themeBg};`}
+    title={fallbackText || brand}
+    aria-label={fallbackText || brand}
+  >
+    {isPrinter ? (
+      <svg width={iconPixel} height={iconPixel} viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="6 9 6 2 18 2 18 9" />
+        <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2" />
+        <rect x="6" y="14" width="12" height="8" />
+      </svg>
+    ) : isCourier ? (
+      <svg width={iconPixel} height={iconPixel} viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M16.5 9.4 7.55 4.24a1.78 1.78 0 0 0-1.8 0l-2.5 1.44a1.78 1.78 0 0 0-.9 1.55v7.54a1.78 1.78 0 0 0 .9 1.55l2.5 1.44a1.78 1.78 0 0 0 1.8 0l8.95-5.16a1.78 1.78 0 0 0 .9-1.55V9.4" />
+        <polyline points="3.29 7 12 12 20.71 7" />
+        <line x1="12" y1="22" x2="12" y2="12" />
+      </svg>
+    ) : (
+      <svg width={iconPixel} height={iconPixel} viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z" />
+        <line x1="3" y1="6" x2="21" y2="6" />
+        <path d="M16 10a4 4 0 0 1-8 0" />
+      </svg>
+    )}
+  </span>
+)}
+
+<style>
+  .brand-logo-wrap {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .brand-logo-img {
+    width: var(--logo-size, 24px);
+    height: var(--logo-size, 24px);
+    object-fit: contain;
+    border-radius: 4px;
+    display: block;
+  }
+
+  .brand-logo-img.brand-square-dark {
+    border-radius: 6px;
+    box-shadow: 0 1px 3px rgba(15, 23, 42, 0.15);
+  }
+
+  /* Clean, non-overflowing contextual placeholder icon for unbundled or restricted brands */
+  .brand-placeholder-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    flex-shrink: 0;
+    transition: transform 0.15s ease;
+  }
+
+  /* Accessible textual fallback badge only when explicitly requested in table rows */
+  .brand-logo-fallback {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.72rem;
+    font-weight: 700;
+    line-height: 1;
+    padding: 0.2rem 0.45rem;
+    border-radius: 6px;
+    background: #f1f5f9;
+    color: #0f172a;
+    border: 1px solid #cbd5e1;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    flex-shrink: 0;
+    white-space: nowrap;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+</style>

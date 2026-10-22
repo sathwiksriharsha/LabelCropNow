@@ -1,0 +1,265 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import LabelWorkbench from '../components/LabelWorkbench.astro';
+import ZplWorkbench from '../components/ZplWorkbench.astro';
+import { CORE_TOOLS, type ToolPreset } from '../config/site.js';
+
+export function getStaticPaths() {
+  // Exclude static pages that have dedicated .astro files
+  const standalonePages = new Set([
+    'supported-marketplaces',
+    'about',
+    'privacy',
+    'terms',
+    'contact',
+    'low-shipping',
+    'shopify-calculator',
+    'barcode-generator',
+    'image-compressor',
+    'image-converter',
+    'whatsapp'
+  ]);
+  return CORE_TOOLS
+    .filter((t) => !standalonePages.has(t.slug))
+    .map((preset) => ({
+      params: { slug: preset.slug },
+      props: { preset },
+    }));
+}
+
+export interface Props {
+  preset: ToolPreset;
+}
+
+const { preset } = Astro.props;
+const isZplTool = preset.slug === 'zpl-to-pdf-converter';
+---
+
+<BaseLayout
+  title={preset.metaTitle}
+  description={preset.metaDescription}
+  canonicalPath={`/${preset.slug}`}
+  faq={preset.faq}
+>
+  <div class="tool-page container">
+    <!-- Breadcrumb -->
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <a href="/">Home</a>
+      <span class="sep">/</span>
+      <span class="current">{preset.shortName}</span>
+    </nav>
+
+    <!-- Page Header -->
+    <header class="tool-header">
+      <div class="badge-row">
+        <span class="badge badge-emerald">Core Warehouse Tool</span>
+        <span class="badge badge-cyan">{preset.targetKeyword}</span>
+        <span class="badge badge-amber">100% Free & Offline</span>
+      </div>
+      <h1 class="tool-h1">{preset.h1}</h1>
+      <p class="tool-tagline">{preset.tagline}</p>
+    </header>
+
+    <!-- Mount Workbench (LabelWorkbench or ZplWorkbench) -->
+    {isZplTool ? (
+      <ZplWorkbench />
+    ) : (
+      <LabelWorkbench preset={preset} />
+    )}
+
+    <!-- Paper Saver Guide Box -->
+    <section class="guide-box card">
+      <div class="guide-header">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#059669" stroke-width="2">
+          <circle cx="12" cy="12" r="10"/>
+          <line x1="12" y1="16" x2="12" y2="12"/>
+          <line x1="12" y1="8" x2="12.01" y2="8"/>
+        </svg>
+        <h2 class="guide-title">Warehouse Optimization Tip: {preset.shortName}</h2>
+      </div>
+      <p class="guide-text">{preset.paperSaverTip}</p>
+    </section>
+
+    <!-- Features Grid -->
+    <section class="features-section">
+      <h2 class="section-title">Core Features & Capabilities</h2>
+      <div class="grid-2">
+        {preset.features.map((feat) => (
+          <div class="feature-item card">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#059669" stroke-width="2">
+              <polyline points="20 6 9 17 4 12"/>
+            </svg>
+            <span>{feat}</span>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- FAQ Accordion -->
+    {preset.faq && preset.faq.length > 0 && (
+      <section class="faq-section">
+        <h2 class="section-title" style="text-align: center; margin-bottom: 2rem;">Frequently Asked Questions</h2>
+        <div class="faq-list">
+          {preset.faq.map((item) => (
+            <div class="faq-item card">
+              <h3 class="faq-q">{item.q}</h3>
+              <p class="faq-a">{item.a}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+    )}
+  </div>
+</BaseLayout>
+
+<style>
+  .tool-page {
+    padding: 2.5rem 1.25rem 5rem;
+    background: #ffffff;
+  }
+
+  .breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.85rem;
+    color: var(--text-dim);
+    margin-bottom: 1.75rem;
+  }
+
+  .breadcrumb a {
+    color: var(--text-muted);
+    text-decoration: none;
+  }
+
+  .breadcrumb a:hover {
+    color: var(--accent-emerald);
+  }
+
+  .breadcrumb .sep {
+    color: var(--border-subtle);
+  }
+
+  .breadcrumb .current {
+    color: var(--text-main);
+    font-weight: 600;
+  }
+
+  .tool-header {
+    text-align: center;
+    max-width: 850px;
+    margin: 0 auto 2.5rem;
+  }
+
+  .badge-row {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 0.65rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .tool-h1 {
+    font-family: var(--font-serif);
+    font-size: 2.8rem;
+    font-weight: 500;
+    line-height: 1.15;
+    color: var(--text-main);
+    letter-spacing: -0.025em;
+    margin-bottom: 1rem;
+  }
+
+  .tool-tagline {
+    font-size: 1.1rem;
+    color: var(--text-muted);
+    line-height: 1.6;
+  }
+
+  /* Guide Box */
+  .guide-box {
+    background: #f0fdf4;
+    border: 1px solid #bbf7d0;
+    padding: 1.5rem;
+    margin-bottom: 3rem;
+  }
+
+  .guide-header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .guide-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #15803d;
+  }
+
+  .guide-text {
+    font-size: 0.95rem;
+    color: #166534;
+    line-height: 1.6;
+  }
+
+  /* Features */
+  .features-section {
+    margin-bottom: 3.5rem;
+  }
+
+  .section-title {
+    font-size: 1.6rem;
+    font-weight: 800;
+    color: var(--text-main);
+    margin-bottom: 1.5rem;
+    letter-spacing: -0.02em;
+  }
+
+  .feature-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 1rem 1.25rem;
+    font-size: 0.92rem;
+    color: var(--text-main);
+  }
+
+  .feature-item svg {
+    flex-shrink: 0;
+  }
+
+  /* FAQ */
+  .faq-section {
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  .faq-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .faq-item {
+    padding: 1.25rem 1.5rem;
+  }
+
+  .faq-q {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--text-main);
+    margin-bottom: 0.5rem;
+  }
+
+  .faq-a {
+    font-size: 0.92rem;
+    color: var(--text-muted);
+    line-height: 1.6;
+  }
+
+  @media (max-width: 900px) {
+    .tool-h1 {
+      font-size: 1.85rem;
+    }
+  }
+</style>

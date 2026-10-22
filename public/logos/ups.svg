@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+  <rect width="64" height="64" rx="14" fill="#351C15"/>
+  <path d="M32 12c10 0 16 3 16 3v20c0 10-10 16-16 18-6-2-16-8-16-18V15s6-3 16-3z" fill="#FFB500"/>
+  <path d="M32 15c8.5 0 13.5 2.5 13.5 2.5v17.5c0 8.5-8.5 13.5-13.5 15.5-5-2-13.5-7-13.5-15.5V17.5s5-2.5 13.5-2.5z" fill="#351C15"/>
+  <text x="32" y="34" fill="#FFB500" font-family="'Inter', system-ui, sans-serif" font-size="13" font-weight="900" text-anchor="middle" letter-spacing="-0.5">ups</text>
+</svg>

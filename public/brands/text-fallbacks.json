@@ -1,0 +1,127 @@
+[
+  {
+    "brand": "Valmo",
+    "group": "courier",
+    "status": "No logo bundled: official source was not reliably downloadable during preparation; use plain text."
+  },
+  {
+    "brand": "XpressBees",
+    "group": "courier",
+    "status": "No verifiable logo asset bundled; use plain text."
+  },
+  {
+    "brand": "Ecom Express",
+    "group": "courier",
+    "status": "No verifiable logo asset bundled; use plain text."
+  },
+  {
+    "brand": "DTDC",
+    "group": "courier",
+    "status": "No verifiable logo asset bundled; use plain text."
+  },
+  {
+    "brand": "India Post",
+    "group": "courier",
+    "status": "No verifiable logo asset bundled; use plain text."
+  },
+  {
+    "brand": "UPS",
+    "group": "courier",
+    "status": "Optional icon in restricted-review/ only. Use text fallback until permission is confirmed."
+  },
+  {
+    "brand": "USPS",
+    "group": "courier",
+    "status": "Optional icon in restricted-review/ only. Use text fallback until permission is confirmed."
+  },
+  {
+    "brand": "Ajio",
+    "group": "marketplace",
+    "status": "No logo bundled; use plain text."
+  },
+  {
+    "brand": "JioMart",
+    "group": "marketplace",
+    "status": "No logo bundled; use plain text."
+  },
+  {
+    "brand": "Shopsy",
+    "group": "marketplace",
+    "status": "No logo bundled; use plain text."
+  },
+  {
+    "brand": "GlowRoad",
+    "group": "marketplace",
+    "status": "No logo bundled; use plain text."
+  },
+  {
+    "brand": "Walmart",
+    "group": "marketplace",
+    "status": "No logo bundled; use plain text."
+  },
+  {
+    "brand": "Poshmark",
+    "group": "marketplace",
+    "status": "No logo bundled; use plain text."
+  },
+  {
+    "brand": "Mercari",
+    "group": "marketplace",
+    "status": "No logo bundled; use plain text."
+  },
+  {
+    "brand": "Depop",
+    "group": "marketplace",
+    "status": "No logo bundled; use plain text."
+  },
+  {
+    "brand": "Whatnot",
+    "group": "marketplace",
+    "status": "No logo bundled; use plain text."
+  },
+  {
+    "brand": "Royal Mail",
+    "group": "courier",
+    "status": "No logo bundled; use plain text."
+  },
+  {
+    "brand": "Canada Post",
+    "group": "courier",
+    "status": "No logo bundled; use plain text."
+  },
+  {
+    "brand": "Australia Post",
+    "group": "courier",
+    "status": "No logo bundled; use plain text."
+  },
+  {
+    "brand": "Rollo",
+    "group": "printer",
+    "status": "No logo bundled; use plain text."
+  },
+  {
+    "brand": "DYMO",
+    "group": "printer",
+    "status": "No logo bundled; use plain text."
+  },
+  {
+    "brand": "Brother",
+    "group": "printer",
+    "status": "No logo bundled; use plain text."
+  },
+  {
+    "brand": "Munbyn",
+    "group": "printer",
+    "status": "No logo bundled; use plain text."
+  },
+  {
+    "brand": "Jadens",
+    "group": "printer",
+    "status": "No logo bundled; use plain text."
+  },
+  {
+    "brand": "Nelko",
+    "group": "printer",
+    "status": "No logo bundled; use plain text."
+  }
+]
