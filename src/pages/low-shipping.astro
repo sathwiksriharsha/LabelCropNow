@@ -3,16 +3,20 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
 const lowShippingFaq = [
   {
-    q: 'What is the Meesho Low Shipping Image Generator?',
-    a: 'It takes your product photo and automatically generates 16 high-converting catalog variants with padding, contrast frames, subtle color borders, and promotional badges. These variations help trigger Meesho’s automated catalog scanners to qualify your listings for lower courier shipping tiers (₹49–₹79 instead of ₹120–₹200).'
+    q: 'What is the Meesho Catalog Image Optimizer & Padding Generator?',
+    a: 'It takes your raw product photos and automatically generates 16 high-converting catalog variations with clean 15%–35% margin padding, contrast frames, subtle color borders, and promotional badges. It ensures your products are perfectly centered without being cut off by the Meesho buyer app’s 1:1 square crop.'
   },
   {
-    q: 'Why does changing borders and margins affect Meesho shipping charges?',
-    a: 'Meesho calculates shipping charges based on automated catalog image dimensions, category, and seller rating. Images with 15% to 35% margin padding and clear product isolation prevent false dimensional weight penalties, reducing customer return rates and lowering courier slabs.'
+    q: 'Does adding borders or margins reduce physical courier shipping charges?',
+    a: 'No. Courier shipping charges on Meesho are determined strictly by physical package weight, volumetric package dimensions (L×W×H), and courier partner rate cards. Adding padding or frames does not alter courier rate cards; it optimizes catalog image presentation, prevents product distortion or edge cropping in mobile feeds, and increases listing CTR.'
+  },
+  {
+    q: 'Why is 15% to 35% margin padding recommended for Meesho listings?',
+    a: 'When buyers browse Meesho on smartphones, rectangular or unpadded photos can be aggressively cropped at the edges. Padding creates a buffer zone so the entire product remains visible in search results and category grids, reducing return rates caused by misleading previews.'
   },
   {
     q: 'Are my product images uploaded to any server?',
-    a: 'No! 100% of the image processing executes directly in your browser using HTML5 Canvas. Your photos never leave your computer.'
+    a: 'No! 100% of the image processing executes directly in your browser using HTML5 Canvas. Your photos never leave your device.'
   },
   {
     q: 'Which image formats and categories are supported?',
@@ -22,8 +26,8 @@ const lowShippingFaq = [
 ---
 
 <BaseLayout
-  title="Free Meesho Low Shipping Image Generator - Reduce Charges | LabelCropNow"
-  description="Create the perfect low shipping Meesho catalog image instantly for FREE. Generate 16 optimized variants with different border padding and rate tiers to reduce courier charges."
+  title="Free Meesho Catalog Image Optimizer & 1:1 Padding Generator | LabelCropNow"
+  description="Generate 16 optimized Meesho catalog product photo variants with 15%–35% margin padding, centered 1:1 square ratio, contrast borders, and promotional badges to improve listing CTR."
   canonicalPath="/low-shipping"
   faq={lowShippingFaq}
 >
@@ -32,7 +36,7 @@ const lowShippingFaq = [
     <nav class="breadcrumb" aria-label="Breadcrumb">
       <a href="/">Home</a>
       <span class="sep">/</span>
-      <span class="current">Low Shipping Image Generator</span>
+      <span class="current">Meesho Catalog Image Optimizer</span>
     </nav>
 
     <!-- Page Header -->
@@ -42,11 +46,25 @@ const lowShippingFaq = [
         <span class="badge badge-blue">16 Instant Variants</span>
         <span class="badge badge-amber">100% Browser RAM</span>
       </div>
-      <h1 class="page-title font-serif">Free Meesho Low Shipping Image Generator</h1>
+      <h1 class="page-title font-serif">Free Meesho Catalog Image & Padding Generator</h1>
       <p class="page-subtitle font-sans">
-        Generate optimized product image variants with border padding, gradient frames, and rate tiers to reduce Meesho shipping charges and boost catalog listing scores.
+        Generate 16 centered 1:1 HD square (1000×1000px) product variants with custom margin padding (15%–35%), contrast frames, and promotional badges to prevent edge clipping and boost catalog listing quality.
       </p>
     </header>
+
+    <!-- Notice on Courier Shipping Slabs -->
+    <div class="shipping-notice card">
+      <div class="notice-icon">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0284c7" stroke-width="2">
+          <circle cx="12" cy="12" r="10"/>
+          <line x1="12" y1="16" x2="12" y2="12"/>
+          <line x1="12" y1="8" x2="12.01" y2="8"/>
+        </svg>
+      </div>
+      <div class="notice-content">
+        <strong>Seller Transparency Notice:</strong> Physical courier shipping charges on Meesho depend strictly on parcel weight, package dimensions (L×W×H), and courier partner rate cards. Adding borders or padding does not alter courier rate cards; it optimizes catalog image presentation, prevents product distortion, and improves listing CTR.
+      </div>
+    </div>
 
     <!-- Main Generator Workbench Card -->
     <div class="lowship-card card">
@@ -104,16 +122,16 @@ const lowShippingFaq = [
       <!-- Loading State -->
       <div class="loading-state" id="loadingState" style="display: none;">
         <div class="spinner"></div>
-        <p class="loading-text font-sans">Generating 16 low-shipping catalog variations on HTML5 Canvas...</p>
-        <span class="loading-sub font-mono">Computing padding, contrast borders, emoji highlights & shipping rate tiers</span>
+        <p class="loading-text font-sans">Generating 16 centered catalog variations on HTML5 Canvas...</p>
+        <span class="loading-sub font-mono">Rendering margin padding, contrast borders, emoji highlights & 1:1 square crop</span>
       </div>
 
       <!-- Results Area -->
       <div class="results-area" id="resultsArea" style="display: none;">
         <div class="results-top-bar">
           <div>
-            <h2 class="results-title font-sans">16 Low-Shipping Catalog Variations</h2>
-            <p class="results-sub font-sans">Test these variants on Meesho Seller Panel to capture the lowest courier slab</p>
+            <h2 class="results-title font-sans">16 Optimized Catalog Variations</h2>
+            <p class="results-sub font-sans">Choose the best padding style for your Meesho product listing</p>
           </div>
           <div class="results-actions">
             <button type="button" class="btn btn-secondary" id="btnChangePhoto">
@@ -131,9 +149,9 @@ const lowShippingFaq = [
         </div>
 
         <div class="legend-row">
-          <div class="legend-item"><span class="rate-dot dot-low"></span> <strong>₹50–₹90:</strong> Lowest Shipping Tier (Green)</div>
-          <div class="legend-item"><span class="rate-dot dot-med"></span> <strong>₹91–₹140:</strong> Standard Shipping Tier (Amber)</div>
-          <div class="legend-item"><span class="rate-dot dot-high"></span> <strong>₹141–₹200:</strong> Heavy Weight Tier (Red)</div>
+          <div class="legend-item"><span class="rate-dot dot-low"></span> <strong>Clean Margin (15%–25%):</strong> Optimal for mobile app product centering</div>
+          <div class="legend-item"><span class="rate-dot dot-med"></span> <strong>Contrast Frames:</strong> Subtle pastel & shadow highlights for visual depth</div>
+          <div class="legend-item"><span class="rate-dot dot-high"></span> <strong>Promotional Badges:</strong> CTR boosters for flash deals & bestseller items</div>
         </div>
 
         <div class="variations-grid" id="variationsGrid">
@@ -144,22 +162,22 @@ const lowShippingFaq = [
 
     <!-- Educational Guide Section -->
     <section class="guide-section card">
-      <h2 class="guide-title font-serif">How to Get the Lowest Shipping Charge on Meesho</h2>
+      <h2 class="guide-title font-serif">Best Practices for Meesho Catalog Photography</h2>
       <div class="guide-grid">
         <div class="guide-card">
           <div class="guide-icon">1</div>
-          <h3 class="guide-h3 font-sans">Upload High-Padding Photo</h3>
-          <p class="guide-p font-sans">Use our generated variants with 15% to 35% margin padding so Meesho's image classifier accurately detects the product borders.</p>
+          <h3 class="guide-h3 font-sans">1:1 Square Ratio with Margin Padding</h3>
+          <p class="guide-p font-sans">Ensure your product sits inside 70%–80% of the canvas with at least 15% margin padding to prevent mobile app edge-clipping.</p>
         </div>
         <div class="guide-card">
           <div class="guide-icon">2</div>
-          <h3 class="guide-h3 font-sans">Select Low Shipping (Green)</h3>
-          <p class="guide-p font-sans">Upload 2 to 3 green-tagged variants as catalog primary images in your Meesho supplier panel to trigger lower weight tiers.</p>
+          <h3 class="guide-h3 font-sans">High Contrast Background</h3>
+          <p class="guide-p font-sans">Use clean white or subtle pastel borders to make your product stand out against dark mode and light mode feeds.</p>
         </div>
         <div class="guide-card">
           <div class="guide-icon">3</div>
-          <h3 class="guide-h3 font-sans">Check Listing Score</h3>
-          <p class="guide-p font-sans">Ensure your product title and description have zero promotional text to maintain a 5/5 Meesho Catalog Quality Score.</p>
+          <h3 class="guide-h3 font-sans">Accurate Packaging & Weight</h3>
+          <p class="guide-p font-sans">Input exact dead weight and volumetric box dimensions in Meesho Supplier Panel to avoid weight dispute penalties.</p>
         </div>
       </div>
     </section>
@@ -171,9 +189,8 @@ const lowShippingFaq = [
 
   interface VariationPreset {
     name: string;
-    rate: string;
-    rateNum: number;
-    tag: 'low' | 'medium' | 'high';
+    badge: string;
+    badgeType: 'emerald' | 'cyan' | 'purple' | 'amber';
     effect: string;
     colorData?: string | string[];
     emojiData?: string;
@@ -192,45 +209,24 @@ const lowShippingFaq = [
   let loadedImg: HTMLImageElement | null = null;
   let generatedBlobs: { name: string; blob: Blob; url: string }[] = [];
 
-  function generateRandomRates(count: number): number[] {
-    const arr: number[] = [];
-    const lowCount = Math.floor(count * 0.65);
-    const medCount = Math.floor(count * 0.25);
-    const highCount = count - lowCount - medCount;
-    for (let i = 0; i < lowCount; i++) arr.push(Math.floor(Math.random() * (85 - 50 + 1)) + 50);
-    for (let i = 0; i < medCount; i++) arr.push(Math.floor(Math.random() * (135 - 91 + 1)) + 91);
-    for (let i = 0; i < highCount; i++) arr.push(Math.floor(Math.random() * (195 - 141 + 1)) + 141);
-    for (let i = arr.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [arr[i], arr[j]] = [arr[j], arr[i]];
-    }
-    return arr;
-  }
-
-  const BASE_EFFECTS = [
-    { name: 'Pure White Border (15% Margin)', effect: 'white-border' },
-    { name: 'Deep Shadow Frame', effect: 'drop-shadow' },
-    { name: 'Rounded Smooth Corners', effect: 'rounded-corners' },
-    { name: 'Subtle Pastel Blue Frame', effect: 'solid-frame', colorData: '#e0f2fe' },
-    { name: 'Subtle Pastel Emerald Frame', effect: 'solid-frame', colorData: '#d1fae5' },
-    { name: 'Subtle Rose Pink Padding', effect: 'padding-color', colorData: '#ffe4e6' },
-    { name: 'Subtle Amber Glow Frame', effect: 'solid-frame', colorData: '#fef3c7' },
-    { name: 'Multi-Color Neon Edge', effect: 'multi-color-border', colorData: ['#38bdf8', '#818cf8', '#c084fc', '#f472b6'] },
-    { name: 'Linear Gradient Frame', effect: 'gradient-border', colorData: ['#22c55e', '#10b981'] },
-    { name: 'Sunset Gradient Frame', effect: 'gradient-border', colorData: ['#f97316', '#ec4899'] },
-    { name: 'Best Seller Badge (🔥)', effect: 'emoji', emojiData: '🔥' },
-    { name: 'Top Rated Badge (⭐)', effect: 'emoji', emojiData: '⭐' },
-    { name: 'Fast Dispatch Badge (⚡)', effect: 'emoji', emojiData: '⚡' },
-    { name: 'Combo Offer Badge (✨)', effect: 'emoji', emojiData: '✨' },
-    { name: 'Super Zoom Center Focus', effect: 'zoom' },
-    { name: 'Dual Contrast Border', effect: 'dual-border' }
+  const BASE_EFFECTS: VariationPreset[] = [
+    { name: 'Pure White Border (15% Margin)', badge: '15% Margin', badgeType: 'emerald', effect: 'white-border' },
+    { name: 'Deep Shadow Frame', badge: '3D Depth', badgeType: 'purple', effect: 'drop-shadow' },
+    { name: 'Rounded Smooth Corners', badge: 'Curved Edge', badgeType: 'cyan', effect: 'rounded-corners' },
+    { name: 'Subtle Pastel Blue Frame', badge: 'Pastel Frame', badgeType: 'cyan', effect: 'solid-frame', colorData: '#e0f2fe' },
+    { name: 'Subtle Pastel Emerald Frame', badge: 'Pastel Frame', badgeType: 'emerald', effect: 'solid-frame', colorData: '#d1fae5' },
+    { name: 'Subtle Rose Pink Padding', badge: 'Fashion Accent', badgeType: 'purple', effect: 'padding-color', colorData: '#ffe4e6' },
+    { name: 'Subtle Amber Glow Frame', badge: 'Warm Accent', badgeType: 'amber', effect: 'solid-frame', colorData: '#fef3c7' },
+    { name: 'Multi-Color Neon Edge', badge: 'Vibrant Border', badgeType: 'purple', effect: 'multi-color-border', colorData: ['#38bdf8', '#818cf8', '#c084fc', '#f472b6'] },
+    { name: 'Linear Gradient Frame', badge: 'Gradient Border', badgeType: 'emerald', effect: 'gradient-border', colorData: ['#22c55e', '#10b981'] },
+    { name: 'Sunset Gradient Frame', badge: 'Gradient Border', badgeType: 'amber', effect: 'gradient-border', colorData: ['#f97316', '#ec4899'] },
+    { name: 'Best Seller Badge (🔥)', badge: 'Best Seller', badgeType: 'amber', effect: 'emoji', emojiData: '🔥' },
+    { name: 'Top Rated Badge (⭐)', badge: '5-Star Quality', badgeType: 'amber', effect: 'emoji', emojiData: '⭐' },
+    { name: 'Fast Dispatch Badge (⚡)', badge: 'Fast Dispatch', badgeType: 'cyan', effect: 'emoji', emojiData: '⚡' },
+    { name: 'Combo Offer Badge (✨)', badge: 'Combo Deal', badgeType: 'purple', effect: 'emoji', emojiData: '✨' },
+    { name: 'Super Zoom Center Focus', badge: 'Close-Up Detail', badgeType: 'cyan', effect: 'zoom' },
+    { name: 'Dual Contrast Border', badge: 'Dual Border', badgeType: 'emerald', effect: 'dual-border' }
   ];
-
-  function getRateTag(rate: number): 'low' | 'medium' | 'high' {
-    if (rate <= 90) return 'low';
-    if (rate <= 140) return 'medium';
-    return 'high';
-  }
 
   function renderVariantCanvas(img: HTMLImageElement, preset: VariationPreset): Promise<Blob> {
     return new Promise((resolve) => {
@@ -370,42 +366,29 @@ const lowShippingFaq = [
     variationsGrid.innerHTML = '';
     generatedBlobs = [];
 
-    const rates = generateRandomRates(BASE_EFFECTS.length);
-    const presets: VariationPreset[] = BASE_EFFECTS.map((eff, i) => {
-      const rateVal = rates[i];
-      return {
-        name: eff.name,
-        rate: `₹${rateVal}`,
-        rateNum: rateVal,
-        tag: getRateTag(rateVal),
-        effect: eff.effect,
-        colorData: (eff as any).colorData,
-        emojiData: (eff as any).emojiData
-      };
-    });
+    const presets: VariationPreset[] = BASE_EFFECTS;
 
     for (let i = 0; i < presets.length; i++) {
       const preset = presets[i];
       const blob = await renderVariantCanvas(img, preset);
       const url = URL.createObjectURL(blob);
-      const fileName = `meesho_variant_${i + 1}_${preset.tag}_shipping.jpg`;
+      const fileName = `meesho_catalog_1000x1000_${i + 1}_${preset.name.toLowerCase().replace(/[^a-z0-9]+/g, '_')}.jpg`;
       generatedBlobs.push({ name: fileName, blob, url });
 
       const card = document.createElement('div');
       card.className = 'variation-card';
-      const badgeClass = preset.tag === 'low' ? 'badge-low' : preset.tag === 'medium' ? 'badge-med' : 'badge-high';
-      const badgeText = preset.tag === 'low' ? 'Low Shipping' : preset.tag === 'medium' ? 'Standard' : 'Heavy';
+      const badgeClass = `badge-${preset.badgeType}`;
 
       card.innerHTML = `
         <div class="card-thumb-wrap">
           <img src="${url}" alt="${preset.name}" class="card-thumb" />
-          <span class="card-rate-badge ${badgeClass}">${preset.rate} <small>(${badgeText})</small></span>
+          <span class="card-rate-badge ${badgeClass}">${preset.badge}</span>
         </div>
         <div class="card-body">
           <h4 class="card-title font-sans">${preset.name}</h4>
           <a href="${url}" download="${fileName}" class="btn-card-download font-sans">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-            <span>Download</span>
+            <span>Download (1:1 HD)</span>
           </a>
         </div>
       `;
@@ -537,6 +520,28 @@ const lowShippingFaq = [
     justify-content: center;
     gap: 0.5rem;
     flex-wrap: wrap;
+  }
+  .shipping-notice {
+    background: #f0f9ff;
+    border: 1px solid #bae6fd;
+    border-radius: 12px;
+    padding: 1rem 1.25rem;
+    margin-bottom: 2rem;
+    display: flex;
+    align-items: flex-start;
+    gap: 0.85rem;
+  }
+  .shipping-notice .notice-icon {
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+  .shipping-notice .notice-content {
+    font-size: 0.9rem;
+    color: #0369a1;
+    line-height: 1.5;
+  }
+  .shipping-notice strong {
+    color: #0c4a6e;
   }
   .lowship-card {
     background: #ffffff;
@@ -776,6 +781,22 @@ const lowShippingFaq = [
     font-weight: 700;
     font-size: 0.78rem;
     color: #ffffff;
+  }
+  :global(.badge-emerald) {
+    background: linear-gradient(135deg, #10b981, #059669);
+    box-shadow: 0 2px 6px rgba(16, 185, 129, 0.4);
+  }
+  :global(.badge-cyan) {
+    background: linear-gradient(135deg, #0284c7, #0369a1);
+    box-shadow: 0 2px 6px rgba(2, 132, 199, 0.4);
+  }
+  :global(.badge-purple) {
+    background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+    box-shadow: 0 2px 6px rgba(139, 92, 246, 0.4);
+  }
+  :global(.badge-amber) {
+    background: linear-gradient(135deg, #f59e0b, #d97706);
+    box-shadow: 0 2px 6px rgba(245, 158, 11, 0.4);
   }
   :global(.badge-low) {
     background: linear-gradient(135deg, #10b981, #059669);

@@ -13,17 +13,31 @@ describe('LabelCropNow SEO, Canonical Domain, Sitemap & Privacy Invariants', () 
       'robots.txt',
       '_headers',
       '_redirects',
+      '404.html',
+      'favicon.ico',
     ];
 
     for (const file of requiredFiles) {
       const filePath = path.join(distDir, file);
       expect(fs.existsSync(filePath), `Expected ${file} to exist in dist`).toBe(true);
-      const content = fs.readFileSync(filePath, 'utf-8');
+      const content = fs.readFileSync(filePath);
       expect(content.length).toBeGreaterThan(0);
     }
   });
 
-  it('verifies sitemaps strictly reference canonical host https://labelcropnow.pages.dev', () => {
+  it('verifies favicon.ico is a valid binary ICO file with proper header', () => {
+    const icoPath = path.join(distDir, 'favicon.ico');
+    expect(fs.existsSync(icoPath)).toBe(true);
+    const buf = fs.readFileSync(icoPath);
+    expect(buf.length).toBeGreaterThan(100);
+    // Standard ICO magic number: 00 00 01 00
+    expect(buf[0]).toBe(0x00);
+    expect(buf[1]).toBe(0x00);
+    expect(buf[2]).toBe(0x01);
+    expect(buf[3]).toBe(0x00);
+  });
+
+  it('verifies sitemaps strictly reference canonical host https://labelcropnow.pages.dev with trailing slashes', () => {
     const sitemap0Path = path.join(distDir, 'sitemap-0.xml');
     const sitemapIndex = path.join(distDir, 'sitemap-index.xml');
 
@@ -35,18 +49,18 @@ describe('LabelCropNow SEO, Canonical Domain, Sitemap & Privacy Invariants', () 
     expect(sitemap0Content).not.toContain('shiplabelkit');
     expect(indexContent).not.toContain('shiplabelkit');
 
-    // Verify key high-value route URLs are indexed
-    expect(sitemap0Content).toContain('/crop/meesho');
-    expect(sitemap0Content).toContain('/crop/flipkart');
-    expect(sitemap0Content).toContain('/shopify-calculator');
-    expect(sitemap0Content).toContain('/low-shipping');
-    expect(sitemap0Content).toContain('/barcode-generator');
-    expect(sitemap0Content).toContain('/image-compressor');
-    expect(sitemap0Content).toContain('/image-converter');
-    expect(sitemap0Content).toContain('/whatsapp');
-    expect(sitemap0Content).toContain('/us/amazon-fba-8-5x11-to-4x6');
-    expect(sitemap0Content).toContain('/zpl-to-pdf-converter');
-    expect(sitemap0Content).toContain('/a4-4-labels-per-page-converter');
+    // Verify key high-value route URLs are indexed with trailing slashes
+    expect(sitemap0Content).toContain('/crop/meesho/');
+    expect(sitemap0Content).toContain('/crop/flipkart/');
+    expect(sitemap0Content).toContain('/shopify-calculator/');
+    expect(sitemap0Content).toContain('/low-shipping/');
+    expect(sitemap0Content).toContain('/barcode-generator/');
+    expect(sitemap0Content).toContain('/image-compressor/');
+    expect(sitemap0Content).toContain('/image-converter/');
+    expect(sitemap0Content).toContain('/whatsapp/');
+    expect(sitemap0Content).toContain('/us/amazon-fba-8-5x11-to-4x6/');
+    expect(sitemap0Content).toContain('/zpl-to-pdf-converter/');
+    expect(sitemap0Content).toContain('/a4-4-labels-per-page-converter/');
   });
 
   it('verifies robots.txt strictly points to sitemap-index.xml on https://labelcropnow.pages.dev', () => {
@@ -111,16 +125,20 @@ describe('LabelCropNow SEO, Canonical Domain, Sitemap & Privacy Invariants', () 
       expect(descSet.has(desc), `Duplicate <meta name="description"> found in ${file}`).toBe(false);
       descSet.add(desc);
 
-      // Extract canonical URL: must start strictly with https://labelcropnow.pages.dev
+      // Extract canonical URL: must start strictly with https://labelcropnow.pages.dev and end with /
       const canonMatch = html.match(/<link\s+rel=["']canonical["']\s+href=["']([^"']+)["']/i);
       expect(canonMatch, `Missing canonical link in ${file}`).toBeTruthy();
-      expect(canonMatch![1].startsWith(CANONICAL_ORIGIN), `Canonical tag ${canonMatch![1]} does not start with ${CANONICAL_ORIGIN} in ${file}`).toBe(true);
-      expect(canonMatch![1]).not.toContain('shiplabelkit');
+      const canonUrl = canonMatch![1];
+      expect(canonUrl.startsWith(CANONICAL_ORIGIN), `Canonical tag ${canonUrl} does not start with ${CANONICAL_ORIGIN} in ${file}`).toBe(true);
+      expect(canonUrl.endsWith('/'), `Canonical URL ${canonUrl} must end with a trailing slash in ${file}`).toBe(true);
+      expect(canonUrl).not.toContain('shiplabelkit');
 
-      // Extract OpenGraph URL: must start strictly with https://labelcropnow.pages.dev
+      // Extract OpenGraph URL: must start strictly with https://labelcropnow.pages.dev and end with /
       const ogUrlMatch = html.match(/<meta\s+property=["']og:url["']\s+content=["']([^"']+)["']/i);
       if (ogUrlMatch) {
-        expect(ogUrlMatch[1].startsWith(CANONICAL_ORIGIN), `og:url ${ogUrlMatch[1]} does not start with ${CANONICAL_ORIGIN} in ${file}`).toBe(true);
+        const ogUrl = ogUrlMatch[1];
+        expect(ogUrl.startsWith(CANONICAL_ORIGIN), `og:url ${ogUrl} does not start with ${CANONICAL_ORIGIN} in ${file}`).toBe(true);
+        expect(ogUrl.endsWith('/'), `og:url ${ogUrl} must end with a trailing slash in ${file}`).toBe(true);
       }
 
       // JSON-LD validation: schemas should reference LabelCropNow and CANONICAL_ORIGIN

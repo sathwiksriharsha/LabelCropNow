@@ -68,7 +68,7 @@ const isSpecificPreset = !!preset;
         </div>
       </div>
       <div class="active-channel-right">
-        <a href="/supported-marketplaces" class="btn-switch-preset font-mono">Change Channel Preset →</a>
+        <a href="/supported-marketplaces/" class="btn-switch-preset font-mono">Change Channel Preset →</a>
       </div>
     </div>
   ) : (
@@ -647,29 +647,26 @@ const isSpecificPreset = !!preset;
     width: 100%;
     height: 100%;
     cursor: pointer;
+    z-index: 1;
   }
 
-  .dropzone-icon {
-    margin-bottom: 1rem;
+  .dropzone-inner {
+    position: relative;
+    z-index: 5;
+    pointer-events: none;
   }
 
-  .dropzone-title {
-    font-size: 1.35rem;
-    font-weight: 700;
-    color: var(--text-main);
-    margin-bottom: 0.35rem;
-  }
-
-  .dropzone-subtitle {
-    font-size: 0.9rem;
-    color: var(--text-muted);
-    margin-bottom: 1.75rem;
+  .dropzone-icon, .dropzone-title, .dropzone-subtitle {
+    pointer-events: none;
   }
 
   .sample-pills {
+    position: relative;
+    z-index: 20;
     margin-top: 1.25rem;
     padding-top: 1.25rem;
     border-top: 1px dashed var(--border-subtle);
+    pointer-events: auto;
   }
 
   .sample-label {
@@ -677,13 +674,24 @@ const isSpecificPreset = !!preset;
     font-size: 0.8rem;
     color: var(--text-dim);
     margin-bottom: 0.75rem;
+    pointer-events: none;
   }
 
   .sample-btns {
+    position: relative;
+    z-index: 25;
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
     gap: 0.65rem;
+    pointer-events: auto;
+  }
+
+  .btn-sample {
+    position: relative;
+    z-index: 30;
+    pointer-events: auto;
+    cursor: pointer;
   }
 
   /* Loading State */
@@ -1461,6 +1469,7 @@ const isSpecificPreset = !!preset;
 
   // Dynamic Sample Button (on Preset Pages)
   btnDynamicSample?.addEventListener('click', async (e) => {
+    e.preventDefault();
     e.stopPropagation();
     const slug = btnDynamicSample.getAttribute('data-slug') || 'meesho';
     showLoading(`Generating realistic sample PDF for ${slug}...`);
@@ -1471,6 +1480,7 @@ const isSpecificPreset = !!preset;
 
   // Sample Buttons
   btnSampleMeesho?.addEventListener('click', async (e) => {
+    e.preventDefault();
     e.stopPropagation();
     showLoading('Generating 6-Page Meesho Ready-to-Ship PDF in memory...');
     const bytes = await generateMeeshoSamplePdf();
@@ -1479,6 +1489,7 @@ const isSpecificPreset = !!preset;
   });
 
   btnSampleFlipkart?.addEventListener('click', async (e) => {
+    e.preventDefault();
     e.stopPropagation();
     showLoading('Generating Flipkart Ekart Sample PDF...');
     const bytes = await generateFlipkartSamplePdf();
@@ -1487,6 +1498,7 @@ const isSpecificPreset = !!preset;
   });
 
   btnSampleTikTok?.addEventListener('click', async (e) => {
+    e.preventDefault();
     e.stopPropagation();
     showLoading('Generating TikTok Shop Sample PDF...');
     const bytes = await generateTikTokShopSamplePdf();
@@ -1495,6 +1507,7 @@ const isSpecificPreset = !!preset;
   });
 
   btnSampleFba?.addEventListener('click', async (e) => {
+    e.preventDefault();
     e.stopPropagation();
     showLoading('Generating Amazon FBA 8.5x11 Sample PDF...');
     const bytes = await generateAmazonFbaSamplePdf();
@@ -1599,6 +1612,28 @@ const isSpecificPreset = !!preset;
     } catch (err) {
       console.warn('Text parsing skipped, proceeding with vector crop:', err);
       parsedMetadata = [];
+    }
+
+    // Resilience fallback: If text parsing returned 0 pages (scanned/vector or parser worker fallback),
+    // extract exact page count using pdf-lib so all pages are represented in preview map & export!
+    if (!parsedMetadata || parsedMetadata.length === 0) {
+      try {
+        const doc = await PDFDocument.load(bytes);
+        const pageCount = doc.getPageCount();
+        parsedMetadata = Array.from({ length: pageCount }, (_, i) => ({
+          pageIndex: i,
+          pageNumber: i + 1,
+          courier: 'Ready Label',
+          sku: `ORDER-ITEM-${i + 1}`,
+          qty: 1,
+          orderId: `ORDER-${1000 + i}`,
+          customerName: '',
+          rawText: '',
+          isMultiQty: false,
+        }));
+      } catch (docErr) {
+        console.error('Failed to inspect PDF with pdf-lib:', docErr);
+      }
     }
 
     // Update UI elements
@@ -1887,7 +1922,7 @@ const isSpecificPreset = !!preset;
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
-      URL.revokeObjectURL(url);
+      setTimeout(() => URL.revokeObjectURL(url), 2000);
 
       const stepPill2 = document.getElementById('stepPill2');
       const stepPill3 = document.getElementById('stepPill3');

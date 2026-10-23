@@ -1,3 +1,32 @@
+# Domain Level Canonical 301 Redirects
 https://labelcropnow.com/* https://labelcropnow.pages.dev/:splat 301!
 https://shiplabelkit.com/* https://labelcropnow.pages.dev/:splat 301!
 https://shiplabelkit.pages.dev/* https://labelcropnow.pages.dev/:splat 301!
+
+# WhatsApp Route Canonicalization
+/whatsapp-direct-message /whatsapp/ 301
+/whatsapp-direct-message/ /whatsapp/ 301
+
+# Amazon Route Canonicalization
+/crop/amazon-india /crop/amazon/ 301
+/crop/amazon-india/ /crop/amazon/ 301
+/amazon-label-crop /crop/amazon/ 301
+/amazon-label-crop/ /crop/amazon/ 301
+
+# Indian Marketplace Primary Tool Canonicalization
+/meesho-label-crop /crop/meesho/ 301
+/meesho-label-crop/ /crop/meesho/ 301
+/flipkart-label-crop /crop/flipkart/ 301
+/flipkart-label-crop/ /crop/flipkart/ 301
+
+# Consolidate Duplicate Doorway Route prefix /label-sort-crop/ to canonical /crop/
+/label-sort-crop/:slug /crop/:slug/ 301
+/label-sort-crop/:slug/ /crop/:slug/ 301
+/label-sort-crop /supported-marketplaces/ 301
+/label-sort-crop/ /supported-marketplaces/ 301
+
+# Consolidate Meesho Image Generator Doorways to Canonical /low-shipping/
+/low-shipping-image-generator /low-shipping/ 301
+/low-shipping-image-generator/ /low-shipping/ 301
+/meesho-image-generator /low-shipping/ 301
+/meesho-image-generator/ /low-shipping/ 301

@@ -31,3 +31,7 @@ pnpm-debug.log*
 # OS metadata
 .DS_Store
 Thumbs.db
+
+# Development & Planning Scratch
+.superpowers/
+scratch/

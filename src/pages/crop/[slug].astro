@@ -20,7 +20,7 @@ const { preset } = Astro.props;
 <BaseLayout
   title={preset.metaTitle}
   description={preset.metaDescription}
-  canonicalPath={`/crop/${preset.slug}`}
+  canonicalPath={`/crop/${preset.slug}/`}
   faq={preset.faq}
 >
   <div class="tool-page container">
@@ -28,9 +28,11 @@ const { preset } = Astro.props;
     <nav class="breadcrumb" aria-label="Breadcrumb">
       <a href="/">Home</a>
       <span class="sep">/</span>
-      <a href="/supported-marketplaces#india">India Croppers</a>
+      <a href="/supported-marketplaces/">India Label Tools</a>
       <span class="sep">/</span>
-      <span class="current">{preset.shortName}</span>
+      <span>{preset.shortName}</span>
+      <span class="sep">/</span>
+      <span class="current">Cropper</span>
     </nav>
 
     <!-- Page Header -->
@@ -46,6 +48,218 @@ const { preset } = Astro.props;
 
     <!-- Interactive Workbench Configured for this Preset -->
     <LabelWorkbench preset={preset} />
+
+    <!-- Printer Hardware Disclaimer Callout -->
+    <div class="printer-disclaimer card">
+      <div class="disclaimer-icon">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#d97706" stroke-width="2">
+          <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+          <line x1="12" y1="9" x2="12" y2="13"/>
+          <line x1="12" y1="17" x2="12.01" y2="17"/>
+        </svg>
+      </div>
+      <div class="disclaimer-content">
+        <h3 class="disclaimer-title">Printer Hardware Compatibility Notice</h3>
+        <p class="disclaimer-text">
+          <strong>Direct Thermal Roll:</strong> Requires a 4-inch barcode printer (TSC TE244, Everycom, TVS, Xprinter, Zebra ZD220) with 100×150mm (4×6") adhesive rolls.<br/>
+          <strong>Inkjet & Laser Printers:</strong> If using a standard office printer (HP, Canon, Epson) with regular A4 sheets, select <strong>"A4 4-Up Grid"</strong> to print 4 peel-and-stick labels per sheet with zero wasted paper. Always set printer dialog scale to <strong>"Actual size / 100%"</strong>.
+        </p>
+      </div>
+    </div>
+
+    <!-- Synthetic Before / After Visual Comparison Card -->
+    <section class="comparison-section card">
+      <div class="section-badge-wrap">
+        <span class="badge badge-purple">Visual Workflow Transformation</span>
+      </div>
+      <h2 class="section-title text-center">Before & After: {preset.shortName} Label Cropping</h2>
+      <p class="section-subtitle text-center">
+        See how LabelCropNow converts unoptimized marketplace A4 dispatch slips into ready-to-stick 4×6" thermal labels without manual scissors.
+      </p>
+
+      <div class="comparison-grid">
+        <!-- Before: Raw A4 Dispatch Slip -->
+        <div class="compare-card before-card">
+          <div class="compare-header">
+            <span class="badge badge-amber">BEFORE: Raw Marketplace A4</span>
+            <span class="compare-tag">50% Wasted Paper</span>
+          </div>
+          <div class="mock-sheet mock-a4">
+            <!-- Top Half: Shipping Label -->
+            <div class="mock-label-half">
+              <div class="mock-brand-row">
+                <span class="mock-brand">{preset.shortName.toUpperCase()}</span>
+                <span class="mock-courier">{preset.slug === 'flipkart' ? 'EKART LOGISTICS' : 'VALMO COURIER'}</span>
+              </div>
+              <div class="mock-barcode-box">
+                <div class="mock-barcode-lines"></div>
+                <span class="mock-awb">{preset.slug === 'flipkart' ? 'AWB: FMPC9482019482' : 'AWB: VLM849201948'}</span>
+              </div>
+              <div class="mock-order-info">
+                <span>Order: {preset.slug === 'flipkart' ? 'OD30291049281' : 'MEE-847291'}</span>
+                <span>Customer: {preset.slug === 'flipkart' ? 'Rakesh Gupta' : 'Aarav Sharma'}</span>
+              </div>
+            </div>
+
+            <!-- Scissor Divider Line -->
+            <div class="mock-scissor-line">
+              <span>✂ CUT LINE (Invoice fold)</span>
+            </div>
+
+            <!-- Bottom Half: Tax Invoice / Packing Slip -->
+            <div class="mock-invoice-half">
+              <div class="mock-invoice-title">TAX INVOICE / PACKING SLIP</div>
+              <div class="mock-invoice-lines">
+                <div class="mock-line line-wide"></div>
+                <div class="mock-line line-med"></div>
+                <div class="mock-line line-small"></div>
+              </div>
+              <span class="mock-waste-badge">❌ Scissor Cutting Required & Paper Wasted</span>
+            </div>
+          </div>
+          <p class="compare-desc">
+            Standard marketplace downloads merge the shipping label with the tax invoice on a single A4 page. Requires manual scissor cuts and wastes thermal roll paper.
+          </p>
+        </div>
+
+        <!-- After: Cropped 4x6 Thermal Label -->
+        <div class="compare-card after-card">
+          <div class="compare-header">
+            <span class="badge badge-emerald">AFTER: Cropped 4×6" Thermal</span>
+            <span class="compare-tag">100% Vector Crisp</span>
+          </div>
+          <div class="mock-sheet mock-thermal">
+            <div class="mock-thermal-content">
+              <div class="mock-brand-row">
+                <span class="mock-brand font-bold">{preset.shortName.toUpperCase()}</span>
+                <span class="mock-courier badge badge-cyan">{preset.slug === 'flipkart' ? 'EKART LOGISTICS' : 'VALMO'}</span>
+              </div>
+              <div class="mock-barcode-box barcode-lg">
+                <div class="mock-barcode-lines vector-sharp"></div>
+                <span class="mock-awb-lg">{preset.slug === 'flipkart' ? 'TRACKING: FMPC9482019482' : 'AWB: VLM849201948'}</span>
+              </div>
+              <div class="mock-details-box">
+                <p><strong>Ship To:</strong> {preset.slug === 'flipkart' ? 'Rakesh Gupta, Indiranagar, Bengaluru - 560038' : 'Aarav Sharma, Bellandur, Bengaluru - 560103'}</p>
+                <p><strong>SKU:</strong> {preset.slug === 'flipkart' ? 'SHOES-SNEAK-WHITE-9' : 'KURTI-SILK-BLUE-M'} | Qty: 1</p>
+              </div>
+              <div class="mock-sticker-footer">
+                <span class="badge-ready">✓ Ready to Stick on Box</span>
+              </div>
+            </div>
+          </div>
+          <p class="compare-desc">
+            100% Vector Lossless: bottom invoice cleanly stripped, label resized to 100×150mm (4×6") roll. Barcodes scan at automated courier sort hubs in 0.2 seconds.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Output Layout Modes Table -->
+    <section class="modes-section card">
+      <h2 class="section-title text-center">Output Format Options for {preset.shortName} Sellers</h2>
+      <p class="section-subtitle text-center">
+        Select the layout that matches your warehouse printer hardware and packaging workflow.
+      </p>
+
+      <div class="table-responsive">
+        <table class="modes-table">
+          <thead>
+            <tr>
+              <th>Output Mode</th>
+              <th>Target Dimensions</th>
+              <th>Recommended Printer</th>
+              <th>Paper Utilization</th>
+              <th>Packing Speed</th>
+              <th>Barcode Fidelity</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <strong>4×6" Thermal Roll</strong><br/>
+                <small class="text-muted">(Default / Recommended)</small>
+              </td>
+              <td>100 × 150 mm<br/>(288 × 432 pt)</td>
+              <td>Thermal Label Printers<br/>(TSC, Zebra, Xprinter, TVS)</td>
+              <td><span class="badge badge-emerald">100% (Zero Waste)</span></td>
+              <td>⚡ 2 sec / parcel</td>
+              <td>100% Vector (203 / 300 DPI)</td>
+            </tr>
+            <tr>
+              <td>
+                <strong>A4 4-Up Grid (2×2)</strong><br/>
+                <small class="text-muted">(Paper Saver Mode)</small>
+              </td>
+              <td>210 × 297 mm<br/>(4 labels / sheet)</td>
+              <td>Laser / Inkjet Printers<br/>(HP, Canon, Brother, Epson)</td>
+              <td><span class="badge badge-cyan">75% Paper Savings</span></td>
+              <td>⏱️ 12 sec / parcel</td>
+              <td>100% Vector (600 / 1200 DPI)</td>
+            </tr>
+            <tr>
+              <td>
+                <strong>Keep Invoice Half</strong><br/>
+                <small class="text-muted">(Tax Audit Mode)</small>
+              </td>
+              <td>210 × 297 mm<br/>(Full A4 Page)</td>
+              <td>Standard Office Printers</td>
+              <td><span class="badge badge-amber">Standard A4</span></td>
+              <td>⏱️ 20 sec / parcel</td>
+              <td>100% Vector Original</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Differentiated Troubleshooting Guide -->
+    <section class="troubleshooting-section">
+      <h2 class="section-title text-center">Troubleshooting & Printing Guidelines for {preset.shortName}</h2>
+      <p class="section-subtitle text-center">Avoid courier return rejections and packaging delays with these warehouse standards.</p>
+
+      <div class="trouble-grid">
+        <div class="trouble-card card">
+          <div class="trouble-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2">
+              <path d="M4 7V4h16v3M9 20h6M12 4v16"/>
+            </svg>
+          </div>
+          <h3 class="trouble-title">Invoice Height Variations</h3>
+          <p class="trouble-text">
+            While most {preset.shortName} dispatch slips place the invoice fold exactly at 50% height, orders with multiple line items or GST tax breakdowns may expand the invoice header. Use LabelCropNow's <strong>Custom Margin Sliders</strong> in the workbench to adjust the bottom cutoff by ±5% without clipping customer details.
+          </p>
+        </div>
+
+        <div class="trouble-card card">
+          <div class="trouble-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#059669" stroke-width="2">
+              <rect x="3" y="4" width="18" height="16" rx="2"/>
+              <line x1="7" y1="8" x2="7" y2="16"/>
+              <line x1="11" y1="8" x2="11" y2="16"/>
+              <line x1="15" y1="8" x2="15" y2="16"/>
+            </svg>
+          </div>
+          <h3 class="trouble-title">Barcode Symbology (Code 128 & PDF417)</h3>
+          <p class="trouble-text">
+            Courier automated sorting hubs (Ekart, Valmo, Delhivery) scan 1D Code 128 barcodes at high belt speeds. LabelCropNow manipulates PDF vector coordinates directly instead of rasterizing to JPG/PNG images. Barcode black/white edges remain mathematically sharp, eliminating unreadable scan errors.
+          </p>
+        </div>
+
+        <div class="trouble-card card">
+          <div class="trouble-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#d97706" stroke-width="2">
+              <circle cx="12" cy="12" r="10"/>
+              <line x1="12" y1="8" x2="12" y2="12"/>
+              <line x1="12" y1="16" x2="12.01" y2="16"/>
+            </svg>
+          </div>
+          <h3 class="trouble-title">Printer Scale: Actual Size (100%)</h3>
+          <p class="trouble-text">
+            When opening the browser or Acrobat print dialog, ALWAYS select <strong>"Actual size" (100%)</strong>. Never choose "Fit to printable area" or "Shrink oversized pages". Auto-shrink adds artificial white margins, reducing barcode line width and causing courier hub rejection.
+          </p>
+        </div>
+      </div>
+    </section>
 
     <!-- Paper Saver Guide Box -->
     <section class="guide-box card">
@@ -92,7 +306,7 @@ const { preset } = Astro.props;
         <div class="step-card">
           <div class="step-num">3</div>
           <h3 class="step-title">Auto-Sort & Multi-Qty Alert</h3>
-          <p class="step-desc">Organize labels alphabetically by SKU or grouped by courier partner (Valmo, Delhivery, etc.) to streamline packing.</p>
+          <p class="step-desc">Organize labels alphabetically by SKU or grouped by courier partner ({preset.couriers[0] || 'Courier'}, etc.) to streamline packing.</p>
         </div>
         <div class="step-card">
           <div class="step-num">4</div>
@@ -180,6 +394,309 @@ const { preset } = Astro.props;
     font-size: 1.1rem;
     color: var(--text-muted);
     line-height: 1.6;
+  }
+
+  /* Printer Hardware Disclaimer */
+  .printer-disclaimer {
+    background: #fffbeb;
+    border: 1px solid #fde68a;
+    border-radius: 14px;
+    padding: 1.25rem 1.5rem;
+    margin-bottom: 2.5rem;
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+  .disclaimer-icon {
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+  .disclaimer-title {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #92400e;
+    margin-bottom: 0.35rem;
+  }
+  .disclaimer-text {
+    font-size: 0.9rem;
+    color: #78350f;
+    line-height: 1.55;
+    margin: 0;
+  }
+
+  /* Comparison Section */
+  .comparison-section {
+    padding: 2.5rem 1.75rem;
+    margin-bottom: 3.5rem;
+    background: #fbfdff;
+    border: 1px solid var(--border-subtle);
+  }
+  .section-badge-wrap {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 0.75rem;
+  }
+  .section-subtitle {
+    font-size: 1rem;
+    color: var(--text-muted);
+    max-width: 650px;
+    margin: 0.5rem auto 2rem;
+    line-height: 1.5;
+  }
+  .comparison-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    max-width: 950px;
+    margin: 0 auto;
+  }
+  .compare-card {
+    background: #ffffff;
+    border: 1px solid var(--border-subtle);
+    border-radius: 12px;
+    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.03);
+  }
+  .compare-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+  }
+  .compare-tag {
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--text-muted);
+  }
+  .compare-desc {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    line-height: 1.45;
+    margin-top: 1rem;
+  }
+
+  /* Mock PDF Sheets */
+  .mock-sheet {
+    background: #f8fafc;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  .mock-a4 {
+    height: 310px;
+    display: flex;
+    flex-direction: column;
+  }
+  .mock-label-half {
+    padding: 0.75rem;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    background: #ffffff;
+  }
+  .mock-brand-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--text-main);
+  }
+  .mock-barcode-box {
+    background: #f1f5f9;
+    border: 1px solid #e2e8f0;
+    border-radius: 4px;
+    padding: 0.5rem;
+    text-align: center;
+  }
+  .mock-barcode-lines {
+    height: 32px;
+    background: repeating-linear-gradient(90deg, #0f172a, #0f172a 2px, transparent 2px, transparent 5px);
+    margin-bottom: 0.25rem;
+  }
+  .mock-barcode-lines.vector-sharp {
+    height: 44px;
+    background: repeating-linear-gradient(90deg, #000000, #000000 2.5px, transparent 2.5px, transparent 5.5px);
+  }
+  .mock-awb {
+    font-family: var(--font-mono, monospace);
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #334155;
+  }
+  .mock-order-info {
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+  .mock-scissor-line {
+    border-top: 2px dashed #94a3b8;
+    background: #f1f5f9;
+    text-align: center;
+    padding: 3px 0;
+    font-size: 0.68rem;
+    font-weight: 700;
+    color: #64748b;
+    letter-spacing: 0.05em;
+  }
+  .mock-invoice-half {
+    padding: 0.75rem;
+    background: #f8fafc;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  .mock-invoice-title {
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: #475569;
+  }
+  .mock-invoice-lines {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin: 0.5rem 0;
+  }
+  .mock-line {
+    height: 6px;
+    background: #cbd5e1;
+    border-radius: 3px;
+  }
+  .line-wide { width: 90%; }
+  .line-med { width: 65%; }
+  .line-small { width: 40%; }
+  .mock-waste-badge {
+    font-size: 0.68rem;
+    font-weight: 600;
+    color: #b91c1c;
+    background: #fee2e2;
+    padding: 2px 6px;
+    border-radius: 4px;
+    display: inline-block;
+  }
+
+  /* Mock Thermal */
+  .mock-thermal {
+    height: 310px;
+    background: #ffffff;
+    border: 2px solid #059669;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  .mock-thermal-content {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    height: 100%;
+    justify-content: space-between;
+  }
+  .barcode-lg {
+    padding: 0.65rem;
+  }
+  .mock-awb-lg {
+    font-family: var(--font-mono, monospace);
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #000000;
+  }
+  .mock-details-box {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    padding: 0.5rem;
+    font-size: 0.75rem;
+    line-height: 1.4;
+  }
+  .mock-details-box p {
+    margin: 2px 0;
+  }
+  .mock-sticker-footer {
+    text-align: center;
+  }
+  .badge-ready {
+    background: #dcfce7;
+    color: #15803d;
+    font-size: 0.8rem;
+    font-weight: 700;
+    padding: 4px 10px;
+    border-radius: 6px;
+    display: inline-block;
+  }
+
+  /* Modes Table */
+  .modes-section {
+    padding: 2.25rem 1.75rem;
+    margin-bottom: 3.5rem;
+  }
+  .table-responsive {
+    overflow-x: auto;
+  }
+  .modes-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.92rem;
+    text-align: left;
+  }
+  .modes-table th {
+    background: #f8fafc;
+    padding: 0.85rem 1rem;
+    font-weight: 700;
+    color: var(--text-main);
+    border-bottom: 2px solid #e2e8f0;
+  }
+  .modes-table td {
+    padding: 1rem;
+    border-bottom: 1px solid #e2e8f0;
+    vertical-align: top;
+    color: var(--text-main);
+  }
+  .modes-table tr:hover td {
+    background: #fbfdff;
+  }
+
+  /* Troubleshooting */
+  .troubleshooting-section {
+    margin-bottom: 3.5rem;
+  }
+  .trouble-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    margin-top: 2rem;
+  }
+  .trouble-card {
+    padding: 1.5rem;
+    border-radius: 12px;
+  }
+  .trouble-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    background: #f1f5f9;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1rem;
+  }
+  .trouble-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--text-main);
+    margin-bottom: 0.5rem;
+  }
+  .trouble-text {
+    font-size: 0.88rem;
+    color: var(--text-muted);
+    line-height: 1.6;
+    margin: 0;
   }
 
   /* Guide Box */
@@ -311,6 +828,16 @@ const { preset } = Astro.props;
   @media (max-width: 900px) {
     .tool-h1 {
       font-size: 1.85rem;
+    }
+
+    .comparison-grid {
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+
+    .trouble-grid {
+      grid-template-columns: 1fr;
+      gap: 1rem;
     }
 
     .steps-grid {

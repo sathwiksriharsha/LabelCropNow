@@ -7,6 +7,10 @@ const siteUrl = process.env.PUBLIC_SITE_URL || 'https://labelcropnow.pages.dev';
 export default defineConfig({
   output: 'static',
   site: siteUrl,
+  trailingSlash: 'always',
+  build: {
+    format: 'directory',
+  },
   integrations: [sitemap()],
   vite: {
     build: {

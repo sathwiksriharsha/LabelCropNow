@@ -18,9 +18,12 @@ const {
   faq = []
 } = Astro.props;
 
-// Ensure clean canonical URL with no double slashes or trailing dots
-const cleanPath = canonicalPath.startsWith('/') ? canonicalPath : `/${canonicalPath}`;
-const canonicalUrl = `${siteConfig.url}${cleanPath}`;
+// Ensure clean canonical URL with trailing slash (except files with extensions)
+let normalizedPath = canonicalPath.startsWith('/') ? canonicalPath : `/${canonicalPath}`;
+normalizedPath = normalizedPath.replace(/\/+$/, '');
+const isFile = /\.[a-z0-9]+$/i.test(normalizedPath);
+const finalPath = isFile ? normalizedPath : (normalizedPath ? `${normalizedPath}/` : '/');
+const canonicalUrl = `${siteConfig.url}${finalPath}`;
 
 // JSON-LD Schema
 const schemaData: any[] = [
@@ -95,6 +98,7 @@ if (faq && faq.length > 0) {
 
     <!-- Theme & Icons -->
     <meta name="theme-color" content="#ffffff" />
+    <link rel="icon" href="/favicon.ico" sizes="any" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
     <link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png" />
